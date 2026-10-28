@@ -2,11 +2,11 @@
 
 ## Quick setup — five steps
 
-1. **Extract the ZIP and open `Code-AI-Setup-<version>`.** On Windows, use Extract All first. An approved Python 3.9+ interpreter must already be available.
-2. **Double-click the macOS or Windows start file beside the README in that folder.** You do not need to enter `WORKSPACE_SETUP` or open a terminal first.
-3. **Review the settings and press Enter or type `y`/`yes` to continue to the read-only preview `[Y/n]`.** If changes are needed, decline, edit `WORKSPACE_SETUP/settings.json`, save and relaunch.
-4. **Review the folders/files preview and type `y`/`yes` to create `[y/N]`; Enter cancels.** Setup creates the new directory, validates it and reports completion. Review the result, then type `q` or `quit` to finish setup.
-5. **Open your repositories in your preferred IDE.** VS Code users can open the helper file printed by setup; the generated README explains other IDEs and daily tools.
+1. **Get the files.** Clone/download the repository, or extract the release ZIP and open `Code-AI-Setup-<version>`. On Windows, use Extract All first. An approved Python 3.9+ interpreter must already be available.
+2. **Create the development folder.** Double-click the macOS or Windows Start file beside `WORKSPACE_SETUP`. Review settings and press Enter to reach the read-only preview `[Y/n]`; type `y`/`yes` to create `[y/N]` (Enter cancels). Setup validates the result; type `q`/`quit` to finish. To change settings, decline, edit `WORKSPACE_SETUP/settings.json`, save and relaunch.
+3. **Add your repositories.** Clone/add folders under the generated repository groups (defaults: `MAIN_PROJECT`, `OTHER_PROJECTS`, `COMPANY_DOCS`). Unused groups may stay empty. Setup does not clone anything.
+4. **Refresh before opening VS Code.** In the generated development folder, double-click the refresh_vscode_workspace launcher for your OS. Review and approve registration, then the workspace folder-list update. Type `q`/`quit` to finish.
+5. **Open the saved VS Code workspace** at the path printed by setup. Registered, enabled repositories now appear alongside AI Work and Knowledge. Other IDE users can open/import repositories normally; see the generated README for daily use.
 
 The ZIP contains one enclosing `Code-AI-Setup-<version>/` folder, with the README, both start files and `WORKSPACE_SETUP/` together. An extractor may add another outer folder; open the folder containing the start files. The default generated development folder is created beside those start files, inside the setup folder. You may move the whole generated folder afterward or set `parent_directory` before setup. Keep or move that generated folder before removing installer files; do not delete its enclosing setup folder while it still contains your work.
 
@@ -71,11 +71,13 @@ For noninteractive preview/creation use `WORKSPACE_SETUP/scripts/workspace.py pl
 
 All computer changes outside the generated folder remain manual: install approved prerequisites if absent; handle OS file trust/associations under company policy; open VS Code and make trust choices; sign in to approved Copilot; clone approved repositories; select an allowed backup location. No setup command performs these steps.
 
-The generated root README contains the self-contained folder map, repository-inventory refresh steps, skill discovery check/fallback and backup/recovery guidance. Its `<ai_work>/DAILY_WORK.md` contains direct ticket and validation commands. No daily command depends on `WORKSPACE_SETUP`; retain only the generated workspace if desired. Keep a trusted release separately if future fresh initialization is needed.
+The generated root README contains the self-contained folder map, repository-inventory refresh steps, skill discovery check/fallback and backup/recovery guidance. Its `<ai_work>/DAILY_WORK.md` leads with Copilot skills and refresh launchers; direct Python commands are an optional reference at the bottom. No daily command depends on `WORKSPACE_SETUP`; retain only the generated workspace if desired. Keep a trusted release separately if future fresh initialization is needed.
 
 ## Add repositories and refresh VS Code
 
 After initialization, clone or add approved folders directly under your three configured repository groups. Double-click `refresh_vscode_workspace macOS.command` or `refresh_vscode_workspace Windows.cmd` in the **generated development folder**. These daily launchers use the same style, interpreter discovery and console retention as Start; they need no installer. The macOS launcher is created executable.
+
+For initial VS Code setup, run this launcher manually before opening the saved workspace. Later, `/ca-workspace-refresh` offers a chat preview and approval flow using the same tool. Updating an open workspace, especially its first folder, may restart extensions and interrupt Copilot; use the launcher to inspect and finish updates if needed. Actual skill discovery and interruption behavior remain manual checks.
 
 The first preview lists new enabled registrations and missing-entry warnings. `y`/`yes` registers additions and retains missing entries; `remove-missing` registers additions and removes **all displayed missing entries from configuration only**. It never deletes folders or Git data. `n`/`no`, blank or EOF cancels. When no registration changes or missing entries exist, no prompt appears.
 
@@ -106,9 +108,9 @@ Local instruction discovery depends on `github.copilot.chat.codeGeneration.useIn
 
 ## Local ticket skills
 
-The generated AI Work root contains five optional workflows: `ca-jira-ticket-init`, `ca-jira-ticket-archive`, `ca-jira-ticket-restore`, `ca-change-review` and `ca-config-audit`. In a supported Copilot chat, `/ca-jira-ticket-init A-111 - implement a hello world application using python` creates the local ticket and records the supplied details in its new brief. With no description, the brief starts unrecorded. Missing context and requirements can be refined later; initialization does not invent them or fetch Jira. Existing briefs are preserved, and supplied details that were not applied are reported explicitly.
+The generated AI Work root contains six optional workflows: `ca-jira-ticket-init`, `ca-jira-ticket-archive`, `ca-jira-ticket-restore`, `ca-change-review`, `ca-config-audit` and `ca-workspace-refresh`. In a supported Copilot chat, `/ca-jira-ticket-init A-111 - implement a hello world application using python` creates the local ticket and records the supplied details in its new brief. With no description, the brief starts unrecorded. Missing context and requirements can be refined later; initialization does not invent them or fetch Jira. Existing briefs are preserved, and supplied details that were not applied are reported explicitly.
 
-Use `/ca-jira-ticket-archive A-111` and `/ca-jira-ticket-restore A-111` to move the complete local ticket between active and archive. These skills share the deterministic ticket tool, retain attachments and refuse collisions. No Jira status or Git history changes occur. The generated AI Work/DAILY_WORK.md documents direct-command fallback, including `ticket create ID --description TEXT`. Verify all five skills in the actual IDE; prior direct-command results do not certify the new skill wrappers.
+Use `/ca-jira-ticket-archive A-111` and `/ca-jira-ticket-restore A-111` to move the complete local ticket between active and archive. These skills share the deterministic ticket tool, retain attachments and refuse collisions. No Jira status or Git history changes occur. The generated AI Work/DAILY_WORK.md documents direct-command fallback, including `ticket create ID --description TEXT`. Verify all six skills in the actual IDE; prior direct-command results do not certify the new skill wrappers.
 
 ## Using another IDE
 

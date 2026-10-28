@@ -52,6 +52,7 @@ LAYOUT = [
     ("root", "refresh_vscode_workspace Windows.cmd", "framework"),
     ("ai_work", "project/overview.md", "user"), ("ai_work", "project/reference-map.md", "user"),
     ("ai_work", ".github/skills/ca-config-audit/SKILL.md", "user"),
+    ("ai_work", ".github/skills/ca-workspace-refresh/SKILL.md", "user"),
     ("ai_work", ".github/skills/ca-jira-ticket-init/SKILL.md", "user"),
     ("ai_work", ".github/skills/ca-jira-ticket-archive/SKILL.md", "user"),
     ("ai_work", ".github/skills/ca-jira-ticket-restore/SKILL.md", "user"),
@@ -399,7 +400,7 @@ def validate_root(root, config, state, initializing=False):
         except (WorkspaceError, OSError, UnicodeError, ValueError) as exc:
             result.append(finding("error", path, str(exc)))
     ai = config["directories"]["ai_work"]
-    for name in ("ca-jira-ticket-init", "ca-jira-ticket-archive", "ca-jira-ticket-restore", "ca-change-review", "ca-config-audit"):
+    for name in ("ca-jira-ticket-init", "ca-jira-ticket-archive", "ca-jira-ticket-restore", "ca-change-review", "ca-config-audit", "ca-workspace-refresh"):
         skill = ai + "/.github/skills/" + name
         try:
             skill_metadata(below(root, skill + "/SKILL.md"), root, True)

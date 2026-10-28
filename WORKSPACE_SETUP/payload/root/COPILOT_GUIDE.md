@@ -4,7 +4,7 @@ The [orientation file](.github/copilot-instructions.md) gives Copilot directions
 
 ## Prepare once
 
-1. Open [{{vscode_workspace_name}}.code-workspace](../ide_configs/{{vscode_workspace_name_link}}.code-workspace) in VS Code. If **AI Work**, **Knowledge** or repositories are missing, [refresh the workspace](../README.md#add-hide-or-remove-a-repository).
+1. For initial setup, manually run the root folder's [refresh launcher](../README.md#get-started), then open [{{vscode_workspace_name}}.code-workspace](../ide_configs/{{vscode_workspace_name_link}}.code-workspace) in VS Code. If **AI Work**, **Knowledge** or repositories are missing, [refresh the workspace](../README.md#add-hide-or-remove-a-repository).
 2. Sign in with your approved Copilot account and select **Local** as the chat's execution environment. Use **Ask** for questions, **Plan** for planning and **Agent** for approved changes. Available modes and tools vary.
 3. Fill in the context files from verified sources:
 
@@ -39,11 +39,13 @@ You can edit the orientation; refresh preserves it. Keep its links relative.
 
 ## Check the skills
 
-Skills are on-demand workflows. Type `/` in chat to find the [five `ca-` commands](DAILY_WORK.md#copilot-commands); their discovery is separate from orientation loading.
+Skills are on-demand workflows. Type `/` in chat to find the [six `ca-` commands](DAILY_WORK.md#copilot-commands); their discovery is separate from orientation loading.
 
 Using a made-up ticket, check creation, preserved edits on repeat creation, archive/restore and unchanged attachments. Check review loads its checklist and audit returns findings. Python success does not prove skill loading.
 
-For unavailable skills, use [Python commands](DAILY_WORK.md#run-commands-without-copilot). For reviews, attach the [procedure](.github/skills/ca-change-review/SKILL.md) and [checklist](.github/skills/ca-change-review/resources/review-checklist.md).
+For later updates, `/ca-workspace-refresh` previews changes and applies them after approval. Changing the first workspace folder can [restart extensions](https://code.visualstudio.com/api/references/vscode-api#workspace.onDidChangeWorkspaceFolders), potentially interrupting Copilot. Test this separately; use the launcher if chat is interrupted.
+
+For unavailable skills, use the [optional Python reference](DAILY_WORK.md#optional-python-reference). For reviews, attach the [procedure](.github/skills/ca-change-review/SKILL.md) and [checklist](.github/skills/ca-change-review/resources/review-checklist.md).
 
 ## Further help
 

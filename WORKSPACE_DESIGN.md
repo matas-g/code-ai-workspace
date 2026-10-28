@@ -71,7 +71,7 @@ The concrete names, JSON schema, command interface, Python implementation, and m
 - After accepting settings, show the actual file/directory preview and ask separately for creation approval. Freeze the validated settings before either prompt; never reread different values during creation.
 - After creation, validate automatically. Print success only after validation succeeds; retain the console on success, preview cancellation and error until `q`/`quit` or manual closure. Initial settings rejection exits without a keep-open shell. Physical macOS Terminal closure depends on the user's profile; never change that profile or automate unrelated windows.
 - Use an already installed approved Python 3.9+ and standard library. Never download/install Python, use an automatic-install manager, change quarantine/execution policy, authenticate, clone or configure backups.
-- Daily commands reside only at `<ai_work>/tools/workspace_manager.py`, independently of installer files. Local metadata resides at `<ai_work>/.framework/`. All five skills are local daily workflows.
+- Daily commands reside only at `<ai_work>/tools/workspace_manager.py`, independently of installer files. Local metadata resides at `<ai_work>/.framework/`. All six skills are local daily workflows.
 
 ### 1.5 Naming and editor scope
 
@@ -90,7 +90,7 @@ Shared files and Python tools are usable with any editor, including manual Intel
 5. Project overview and reference-map templates.
 6. A topic-oriented knowledge-base skeleton.
 7. Ticket create, archive, and restore commands.
-8. Five workspace skills: `ca-jira-ticket-init`, `ca-jira-ticket-archive`, `ca-jira-ticket-restore`, `ca-change-review`, and `ca-config-audit`.
+8. Six workspace skills: `ca-jira-ticket-init`, `ca-jira-ticket-archive`, `ca-jira-ticket-restore`, `ca-change-review`, `ca-config-audit`, and `ca-workspace-refresh`.
 9. Read-only structural validation and configuration auditing.
 10. Manual setup, backup, recovery, and removal instructions.
 11. Automated tests of the file operations and a documented VS Code/Copilot smoke test on both platforms.
@@ -168,6 +168,7 @@ The following tree uses placeholders for configurable names; section 5.4 maps ea
     │   └── reports/             # empty until explicitly saving a report
     ├── .github/skills/
     │   ├── ca-config-audit/SKILL.md
+    │   ├── ca-workspace-refresh/SKILL.md
     │   ├── ca-change-review/
     │   │   ├── SKILL.md
     │   │   └── resources/review-checklist.md
@@ -390,7 +391,7 @@ Refresh, repository display_name and include_in_workspace apply only to the gene
 
 ### 7.2 Daily maintenance without installer sources
 
-Do not create a maintenance workspace. The daily AI root exposes all five explicit skills and `tools/workspace_manager.py`. Validation, audit, refresh and ticket commands derive their paths from that installed script and local `.framework` files. No command reads a source manifest or installer folder after initialization. Daily refresh launchers and their console/JSONC helpers are installed alongside the runtime.
+Do not create a maintenance workspace. The daily AI root exposes all six explicit skills and `tools/workspace_manager.py`. Validation, audit, refresh and ticket commands derive their paths from that installed script and local `.framework` files. No command reads a source manifest or installer folder after initialization. Daily refresh launchers and their console/JSONC helpers are installed alongside the runtime.
 
 ### 7.3 Discovery, refresh and configuration changes
 
@@ -414,6 +415,8 @@ The noninteractive refresh command previews discovery plus workspace changes wit
 Use the shared maintenance lock and atomic same-directory writes. Recheck configuration, installed state, relevant folder availability and workspace bytes before applying their reviewed phase; refuse concurrent changes. Each approved phase is durable independently. A failure after workspace replacement but before recording its new state hash leaves user-editable workspace content recoverable; validation accepts it and a rerun can continue. No multi-file transaction or automatic rollback deletion is claimed.
 
 Directory names and the VS Code filename remain fixed after initialization. Existing installations are not silently upgraded. New installations include the independent runtime, JSONC helper, console helper and daily launchers.
+
+For initial VS Code setup, recommend manually running the refresh launcher before opening the saved workspace. The optional explicit ca-workspace-refresh skill supports later chat-driven updates through the existing noninteractive preview/apply interface. It summarizes the preview, obtains approval for the displayed changes, retains missing entries unless configuration cleanup is explicitly requested, and repeats the preview before applying; changed proposals require renewed approval. Applying is its final tool action, with no required follow-up tool calls. The skill must explain that changes to the open workspace, especially its first root, may restart extensions and interrupt Copilot; actual behavior requires manual IDE testing. If interrupted, the launcher can inspect current state and finish remaining changes. The skill must not edit JSON itself, automatically retry failed writes, reopen the editor or perform Git/global changes.
 
 ## 8. Deterministic command-line tools
 
@@ -530,7 +533,7 @@ disable-model-invocation: true
 ---
 ```
 
-Use the same explicit-invocation setting for `ca-jira-ticket-archive`, `ca-jira-ticket-restore`, `ca-change-review` and `ca-config-audit`. No experimental forked context, hooks, custom agents, additional discovery settings, or plugin installation is needed. These are workflow choices, not security enforcement.
+Use the same explicit-invocation setting for `ca-jira-ticket-archive`, `ca-jira-ticket-restore`, `ca-change-review`, `ca-config-audit` and `ca-workspace-refresh`. No experimental forked context, hooks, custom agents, additional discovery settings, or plugin installation is needed. These are workflow choices, not security enforcement.
 
 ### 9.2 Repository instructions and shared context
 
@@ -666,7 +669,7 @@ Do not automatically index/attach all notes or reference repositories to a promp
 - Internal generated links and selected knowledge example asset links.
 - Drift in framework/generated documentation and informational changes in user-owned files. Workspace settings/manual edits are permitted; compare its folders array to inventory without enforcing a whole-file hash.
 
-No third-party YAML parser is required merely to check five controlled skills. Parse and validate the documented small frontmatter subset used by this package. For unfamiliar repository skills, report unsupported/uncertain metadata rather than pretending to validate full YAML.
+No third-party YAML parser is required merely to check six controlled skills. Parse and validate the documented small frontmatter subset used by this package. For unfamiliar repository skills, report unsupported/uncertain metadata rather than pretending to validate full YAML.
 
 Classify findings as `error`, `warning`, `pending-manual`, or `info`. Broken required files or unsafe paths are errors. Uncloned configured repositories and unverified Copilot discovery are pending manual steps; they do not mean initialization failed. Return nonzero for errors and distinguish `structurally valid` from `ready for all intended AI workflows`.
 
@@ -714,7 +717,9 @@ The implementation MUST deliver `SETUP_GUIDE.md` with actual tested commands. It
 
 ### 14.1 Required guide order
 
-Start with at most five short setup steps: unzip with prerequisites available, open the enclosing setup folder and click its launcher, accept settings or edit the named JSON and relaunch, review/confirm preview and automatic validation, open the generated workspace. Longer reference information follows and is optional for default initialization.
+Start with at most five short setup steps: obtain the repository/release files with prerequisites available; run the launcher, accept settings and confirm creation/validation; manually populate the generated repository groups; manually refresh registrations and the VS Code folder list; open the saved workspace. Settings changes require editing the named JSON and relaunching. Longer reference information follows and is optional for default initialization.
+
+The repository/release README is a landing page: explain the project's purpose and useful capabilities, prerequisites, the quick start, generated layout, scope/portability, help and contributor entry points. Keep detailed operation in linked guides. Maintain its shared source in WORKSPACE_SETUP/README.md; preparation rewrites package-relative Markdown links for the root/ZIP copy while preserving external URLs and same-document anchors.
 
 Provide precise settings fields, approved-package integrity checks, direct-command alternatives, refusal/error handling and manual external actions below the quick start. Generated user guides must be self-contained for daily folder usage, repository inventory/refresh, validation, tickets, local skill discovery/fallback, backup/recovery and safe removal. They must never require an installer guide that users may delete.
 
@@ -759,9 +764,11 @@ The root README should stay concise and link to the AI working DAILY_WORK.md. It
 
 Give each generated guide one primary job: the root README covers getting started, repository refresh and recovery; the AI working DAILY_WORK.md covers tickets and daily commands; COPILOT_GUIDE.md covers context preparation, loading checks and fallback. Put the common task first, use short action headings and link to the other guide instead of repeating it. Keep essential preservation/cancellation/recovery rules, but leave implementation details in the design and less common CLI options in subcommand help. These guides must remain self-contained without the installer.
 
+The main DAILY_WORK.md workflow uses Copilot skills and prepared refresh launchers. Keep manual Python invocations together in an optional reference at the bottom, collapsed where Markdown rendering supports it. Direct commands remain available for users without Copilot, troubleshooting and other editors; they are not a required daily step.
+
 Do not require a chat per phase, a plan for every change, an approval record for trivial edits, or a custom agent selection. Use a fresh review chat for complex/high-risk work when independent context is useful. AI is optional; its output remains subject to developer judgment and actual tests.
 
-Persistent repository guidance should remain concise. Keep architecture, ticket history and checklists in on-demand files. The comprehensive design and package templates stay outside daily roots. Three initial skill descriptions are sufficient; build specialist skills only after repeated use justifies them.
+Persistent repository guidance should remain concise. Keep architecture, ticket history and checklists in on-demand files. The comprehensive design and package templates stay outside daily roots. Keep the current six skills focused; build specialist skills only after repeated use justifies them.
 
 No model, vendor, effort level, or context-window size is required to install or operate the CLI. The guide can recommend a company-approved general coding model for routine assistance and a stronger approved model for difficult design/review, but must not prescribe stale model names, unverified context controls, or an expensive model for copying files.
 
@@ -812,7 +819,7 @@ When asked to implement this design, first identify the authorized implementatio
 3. Implement preview and exclusive new-root initialization.
 4. Implement installed validation, folder discovery and workspace-only refresh with previews and concurrent-edit checks.
 5. Implement self-contained ticket operations and templates.
-6. Write the five skills as thin interfaces to deterministic operations or the review procedure.
+6. Write the six skills as thin interfaces to deterministic operations or the review procedure.
 7. Write the short READMEs and full setup guide with real commands.
 8. Run synthetic automated tests, including negative/path-boundary cases.
 9. Manually verify native VS Code/Copilot on Windows and macOS where available.
@@ -883,9 +890,9 @@ A macOS pilot may be published while Windows testing is pending. State untested 
 1. Record native OS, Python, exact latest stable VS Code and Copilot extension versions used, Local configuration/harness, account policy restrictions, package version, and date; no secrets in reports. Check Ask, Plan, and Agent behavior without requiring a different execution environment.
 2. Run preview/init from a reviewed local package; verify no software/configuration changes were requested.
 3. Open the generated daily workspace manually. Check separate root display and independent repo source-control behavior using mock repositories created manually for the test.
-4. Verify orientation discovery/inclusion from each MAIN/OTHER/DOCS root in fresh Local chats and available Ask/Plan/Agent modes. Inspect References/debug evidence and context reads/answer correctness, then repeat with renamed folders and after relocation. Verify all five skills and their resources separately; exercise explicit-attachment/direct CLI fallback. Record results in the maintainer tracker without shipping it.
+4. Verify orientation discovery/inclusion from each MAIN/OTHER/DOCS root in fresh Local chats and available Ask/Plan/Agent modes. Inspect References/debug evidence and context reads/answer correctness, then repeat with renamed folders and after relocation. Verify all six skills and their resources separately; exercise explicit-attachment/direct CLI fallback. Test refresh with the target workspace open, including first-root changes and interruption recovery through the launcher. Record results in the maintainer tracker without shipping it.
 5. Create a mock ticket, select optional files, archive and restore an attachment.
-6. Verify the daily AI root exposes all five skills, run read-only audit, and check that no installer material is needed. Remove/move the extracted installer and repeat direct daily commands.
+6. Verify the daily AI root exposes all six skills, run read-only audit, and check that no installer material is needed. Remove/move the extracted installer and repeat direct daily commands.
 7. Make a trivial manual edit and an AI-assisted mock change. Confirm ordinary tests/review remain usable and no mandatory documentation ceremony appears.
 8. Review a synthetic regression from a saved per-repo baseline; check findings against executable evidence.
 9. Confirm no global customization installation or protection bypass was needed. If policy blocks skills, record degraded/manual support rather than bypassing it.

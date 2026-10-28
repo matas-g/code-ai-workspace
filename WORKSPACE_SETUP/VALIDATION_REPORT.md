@@ -3,6 +3,32 @@
 **Date:** 28 October 2026  
 **Status:** macOS pilot. Copilot orientation inclusion across roots/modes, native Windows and physical GUI behavior remain manual checks.
 
+## Unreleased verification — repository landing README
+
+The shared repository/release README now explains capabilities, prerequisites, a five-step quick start, generated layout, scope/portability, help and contribution entry points. Repository population and manual refresh precede opening VS Code. The setup guide follows the same sequence. The structure follows [GitHub's README guidance](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes), checked on 28 October 2026. The builder relocates package-relative Markdown links for the root copy, including fragments, while preserving external URLs and same-document anchors.
+
+On 28 October 2026, **98 behavioral tests passed** on Python 3.9.6 and Python 3.15.0 on macOS 26.6.2, Apple Silicon. Commands: `/usr/bin/python3 -I -S -B _tmp/readme-landing/verification/WORKSPACE_SETUP/tests/test_workspace.py` and `python3 -I -S -B _tmp/readme-landing/verification/WORKSPACE_SETUP/tests/test_workspace.py`, run serially. Logs are `_tmp/readme-landing/python39-tests.log` and `_tmp/readme-landing/python315-tests.log`. The release test additionally verifies that relocated guide links reach the same bytes and preserve external/section targets.
+
+Additional checks passed all 12 local file/section links in each of the repository, package, extracted-root and extracted-package README copies. A 47-file test archive initialized default/custom-name trees; synthetic repository folders in all three groups, followed by approved interactive refresh, produced the expected five VS Code roots and successful validation. Results are `_tmp/readme-landing/navigation-checks.json`. These checks do not open VS Code or certify usability; DOC-03 remains pending on both platforms. No new delivery ZIP was created, and the existing release archive/version remain unchanged.
+
+## Unreleased documentation verification — daily workflow
+
+DAILY_WORK.md now leads with Copilot skills and refresh launchers, with all manual Python examples in a collapsed optional reference at the bottom. The guide is 633 words, down from 825 (about 23% shorter). Baseline capture, initial manual refresh, preservation and recovery guidance remain included.
+
+Read-only default/custom-name plans each verified 44 local links/anchors across the guides, orientation and refresh skill, and parsed all six Python examples against the current CLI. Checks also confirmed terminal examples appear only in the final disclosure, source hashes match and design copies are synchronized. Results are recorded in `_tmp/daily-work-focus/verification.json`. Runtime behavior is unchanged; the behavioral suite was not rerun for this documentation edit. Actual rendering and first-use readability remain pending under DOC-02 in MANUAL_TESTS.md. No new release ZIP was created.
+
+## Unreleased development verification — refresh skill
+
+The new explicit ca-workspace-refresh skill delegates to the existing noninteractive refresh tool. It previews changes, requests approval, repeats the preview before applying, retains missing registrations unless cleanup is explicitly requested, and applies as its final tool action. Guides recommend the manual launcher before first opening the VS Code workspace and explain possible Copilot interruption during later updates. No refresh algorithm, configuration schema or automatic upgrade behavior changes.
+
+On 28 October 2026, **98 behavioral tests passed** on Python 3.9.6 and Python 3.15.0, run serially against `_tmp/workspace-refresh-skill/verification/WORKSPACE_SETUP` on macOS 26.6.2, Apple Silicon. Commands: `/usr/bin/python3 -I -S -B _tmp/workspace-refresh-skill/verification/WORKSPACE_SETUP/tests/test_workspace.py` and `python3 -I -S -B _tmp/workspace-refresh-skill/verification/WORKSPACE_SETUP/tests/test_workspace.py`. Logs are `_tmp/workspace-refresh-skill/python39-tests.log` and `_tmp/workspace-refresh-skill/python315-tests.log`.
+
+The extended namespace test requires all six skill folders. A new behavioral test covers default/custom-name installation, metadata and deployed links, user ownership, relocation, read-only preview, application with settings/repository-content preservation, and validation errors when the new skill is removed. Existing archive/manifest, launcher, ticket and concurrent-edit tests also pass. The unreleased source inventory has 43 inputs and generates 30 daily files; these counts do not describe the existing released archive below.
+
+Final read-only default/custom-name plans each passed 44 local file/section link checks across the three guides, orientation and new skill. All 43 current source hashes match the manifest and both design copies are synchronized.
+
+The generic Codex skill validator could not run because its local PyYAML dependency is unavailable. The actual Copilot frontmatter was checked with the framework's strict metadata validator; no dependency was installed. Automated checks do not execute Copilot or prove its approval behavior. SKILL-05 in MANUAL_TESTS.md remains pending on both platforms for discovery, approval/reapproval, first-root changes, interruption and launcher recovery. No new delivery ZIP was created; version and released archive remain unchanged.
+
 ## Unreleased development verification — centralized release versioning
 
 On 28 October 2026, **97 behavioral tests passed** on Python 3.9.6 and Python 3.15.0, run serially against an isolated source copy. Commands: `/usr/bin/python3 -I -S -B _tmp/release-versioning/verification/WORKSPACE_SETUP/tests/test_workspace.py` and `python3 -I -S -B _tmp/release-versioning/verification/WORKSPACE_SETUP/tests/test_workspace.py`. Logs are `_tmp/release-versioning/python39-tests.log` and `_tmp/release-versioning/python315-tests.log`.
@@ -108,9 +134,9 @@ Validation/audit require both files, check their local links and inventory owner
 
 The development project has a separate MANUAL_TESTS.md tracker, outside WORKSPACE_SETUP. It records stable IDs, priorities, separate macOS/Windows status, evidence requirements and a run template. Historical inspection of a debug export confirms orientation inclusion while a MAIN file is active; the full cross-root/mode discovery matrix remains incomplete. Earlier macOS testing reported successful original three-skill and small task/refresh/direct archive/restore checks. Exact IDE/Python versions and the wider matrix were not supplied, so these reports are scoped separately from the 0.1.10 init-capture/lifecycle checks and 0.1.11 prefixed-command discovery checks, which remain pending. This tracker is excluded from the release archive and generated development folders; it remains a maintainer aid across versions.
 
-## Packaging and compatibility
+## Packaging and compatibility — released 0.1.17
 
-The archive has **42 allowlisted source inputs**, their manifest and three enclosing README/setup-launcher copies: **46 files** under `Code-AI-Setup-0.1.17/`. Generated development folders contain **29 daily files**. Source hashes and the separate SHA-256 sidecar are integrity checks; trusted delivery provides authenticity. Both design copies are synchronized. Configuration/manifest/state schemas remain 1; design version remains 1.0.
+The archive has **42 allowlisted source inputs**, their manifest and three enclosing README/setup-launcher copies: **46 files** under `Code-AI-Setup-0.1.17/`. Development folders generated from that release contain **29 daily files**. Source hashes and the separate SHA-256 sidecar are integrity checks; trusted delivery provides authenticity. Both design copies are synchronized. Configuration/manifest/state schemas remain 1; design version remains 1.0.
 
 Existing generated workspaces are not automatically upgraded. New installations use a fresh absent destination. Previous release ZIPs/checksums are moved into the project's _old zips folder as release housekeeping, not by the installer/runtime.
 

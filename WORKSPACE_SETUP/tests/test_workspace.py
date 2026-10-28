@@ -653,7 +653,7 @@ class WorkspaceTests(unittest.TestCase):
         root = self.init()
         skills = root / 'AI_WORK/.github/skills'
         expected = {'ca-jira-ticket-init', 'ca-jira-ticket-archive', 'ca-jira-ticket-restore',
-                    'ca-change-review', 'ca-config-audit'}
+                    'ca-change-review', 'ca-config-audit', 'ca-workspace-refresh'}
         self.assertEqual({p.name for p in skills.iterdir()}, expected)
         for name in expected:
             path = skills / name / 'SKILL.md'
@@ -677,13 +677,61 @@ class WorkspaceTests(unittest.TestCase):
                 builder.manifest(self.source)
         self.assertEqual((self.source / 'package-manifest.json').read_bytes(), before)
 
+    def test_refresh_skill_deployment_and_relocated_command_workflow(self):
+        for name in ('default', 'renamed'):
+            with self.subTest(layout=name):
+                config = w.validate_config(w.load_json(PACKAGE / 'configuration-examples' / (name + '.json')))
+                root = self.init(config=config, target=self.work / ('Original ' + name))
+                moved = self.work / ('Moved ' + name)
+                root.rename(moved)
+                ai = moved / config['directories']['ai_work']
+                skill = ai / '.github/skills/ca-workspace-refresh/SKILL.md'
+                self.assertEqual(w.runtime.skill_metadata(skill, moved, True)['name'], 'ca-workspace-refresh')
+                self.assertEqual(w.runtime.markdown_links(skill, moved), [])
+                _, _, state = self.live(moved)
+                entry = next(item for item in state['managed_files'] if item['path'] == skill.relative_to(moved).as_posix())
+                self.assertEqual(entry['owner'], 'user')
+                workspace = moved / w.vscode_workspace_path(config)
+                data = w.load_json(workspace)
+                data['settings'] = {'editor.tabSize': 7}
+                workspace.write_bytes(w.json_bytes(data))
+                repo = moved / config['directories']['primary_repositories'] / 'new-repo'
+                repo.mkdir()
+                (repo / 'keep.txt').write_bytes(b'Unchanged repository contents')
+                daily = module_at('relocated_refresh_skill_runtime', ai / 'tools/workspace_manager.py')
+                before = self.snapshot(moved)
+                with guard('readonly'):
+                    preview, code = daily.execute(daily.build_parser().parse_args(['refresh']))
+                self.assertEqual(code, 0)
+                self.assertEqual(self.snapshot(moved), before)
+                self.assertEqual([item['directory'] for item in preview['registration_additions']], ['new-repo'])
+                with guard(moved):
+                    result, code = daily.execute(daily.build_parser().parse_args(['refresh', '--apply']))
+                self.assertEqual(code, 0)
+                self.assertEqual(result['status'], 'refreshed')
+                updated = w.load_json(workspace)
+                self.assertEqual(updated['settings'], {'editor.tabSize': 7})
+                self.assertEqual(updated['folders'][0]['name'], 'MAIN · new-repo')
+                self.assertEqual((repo / 'keep.txt').read_bytes(), b'Unchanged repository contents')
+                skill.unlink()
+                root, config, state = self.live(moved)
+                with guard('readonly'):
+                    findings = w.validate_root(root, config, state)
+                self.assertTrue(any(item['severity'] == 'error' and 'ca-workspace-refresh' in item['path']
+                                    for item in findings))
+
     def test_release_allowlist_excludes_private_data(self):
+        import re
+        from urllib.parse import unquote, urlsplit
         builder = module_at('release_under_test', self.source / 'scripts/build_release.py')
         (self.source / 'installation.json').write_text('private user choices')
         (self.source / 'reports').mkdir()
         (self.source / 'reports/private.txt').write_text('not for distribution')
         (self.source / 'payload/unexpected-secret.txt').write_text('not for distribution')
         (self.source / 'MANUAL_TESTS.md').write_text('maintainer-only manual test notes')
+        with (self.source / 'README.md').open('ab') as readme:
+            readme.write(b'\n## Synthetic navigation check\n\n[Section](#synthetic-navigation-check) '
+                         b'[External](https://example.invalid/docs#help)\n')
         output = self.work / 'package.zip'
         builder.build(output, self.source)
         with zipfile.ZipFile(output) as archive:
@@ -701,6 +749,19 @@ class WorkspaceTests(unittest.TestCase):
             self.assertIn('(WORKSPACE_SETUP/SETUP_GUIDE.md)', (folder / 'README.md').read_text())
             self.assertIn('(WORKSPACE_SETUP/VALIDATION_REPORT.md)', (folder / 'README.md').read_text())
             self.assertEqual(w.runtime.markdown_links(folder / 'README.md', folder), [])
+            # Every package-relative guide link must reach the same bytes after
+            # README relocation; external URLs and same-document anchors stay intact.
+            source_links = re.findall(r'\[[^\]]*\]\(([^)]+)\)', (self.source / 'README.md').read_text())
+            root_links = re.findall(r'\[[^\]]*\]\(([^)]+)\)', (folder / 'README.md').read_text())
+            self.assertEqual(len(source_links), len(root_links))
+            for source_link, root_link in zip(source_links, root_links):
+                if urlsplit(source_link).scheme or source_link.startswith(('#', '/')):
+                    self.assertEqual(root_link, source_link)
+                else:
+                    original, relocated = urlsplit(source_link), urlsplit(root_link)
+                    self.assertEqual(original.fragment, relocated.fragment)
+                    self.assertEqual((self.source / unquote(original.path)).read_bytes(),
+                                     (folder / unquote(relocated.path)).read_bytes())
         self.assertTrue(Path(str(output) + '.sha256').read_text().startswith(hashlib.sha256(output.read_bytes()).hexdigest()))
         with self.assertRaises(ValueError):
             builder.build(output, self.source)

@@ -34,6 +34,7 @@ INVENTORY = [
     'payload/skills/ca-jira-ticket-init/templates/notes.md',
     'payload/skills/ca-change-review/SKILL.md', 'payload/skills/ca-change-review/resources/review-checklist.md',
     'payload/skills/ca-config-audit/SKILL.md',
+    'payload/skills/ca-workspace-refresh/SKILL.md',
 ]
 
 
@@ -75,7 +76,10 @@ def release_versions(package=PACKAGE):
 
 
 def outer_readme(data):
-    return data.replace(b'(SETUP_GUIDE.md)', b'(WORKSPACE_SETUP/SETUP_GUIDE.md)').replace(b'(settings.json)', b'(WORKSPACE_SETUP/settings.json)').replace(b'(VALIDATION_REPORT.md)', b'(WORKSPACE_SETUP/VALIDATION_REPORT.md)')
+    # The shared README is shown at the repository/ZIP root. Source links in
+    # WORKSPACE_SETUP/README.md remain relative to that package directory.
+    return re.sub(rb'(\]\()(?![a-zA-Z][a-zA-Z0-9+.-]*:|/|#)([^)]+)(\))',
+                  lambda match: match[1] + b'WORKSPACE_SETUP/' + match[2] + match[3], data)
 
 
 def default_output(directory, package=PACKAGE):

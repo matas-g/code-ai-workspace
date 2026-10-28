@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Rework the shared repository/release README as a landing page with prerequisites, a five-step quick start, generated layout and guide links. Make repository population and manual refresh explicit before opening VS Code; preserve package-relative links in root/ZIP copies.
+- Add the explicit ca-workspace-refresh skill for previewing and applying approved repository-list updates through the existing tool. Recommend the manual refresh launcher before first opening the VS Code workspace; document possible Copilot interruption and track IDE verification separately.
+- Organize DAILY_WORK.md around Copilot skills and refresh launchers, with a compact ticket workflow and a collapsed optional Python reference at the bottom. Distinguish Code-AI framework checks from VS Code repository-list updates, explain ca-config-audit coverage and update incoming links.
+- Clarify that ticket initialization leaves baselines unfilled, with an explicit prompt to record each affected repository's commit hash and existing work before editing code.
+- Document manual ticket-folder moves as an alternative to archive/restore commands, with precautions and the commands' additional checks.
 - Use workspace_manager.py as the single source for product and design version constants. Release preparation updates the README version before hashing; optionally synchronizes project-root README/design copies and derives the ZIP filename with --output-dir.
 - Remove unnecessary current-version references from general guides. Preserve historical changelog and test evidence; keep release dates separate from the fixed reproducible ZIP timestamp. No new runtime dependency or automatic upgrade is added.
 

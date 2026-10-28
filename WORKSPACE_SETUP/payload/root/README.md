@@ -5,7 +5,7 @@ Keep repositories, task notes and reusable knowledge in one development folder. 
 ## Get started
 
 1. **Clone repositories** directly under the groups below, for example `{{primary_repositories}}/my-repo/`. Ordinary documentation folders work too; groups can stay empty.
-2. **Refresh.** Double-click [refresh_vscode_workspace macOS.command](refresh_vscode_workspace%20macOS.command) or [refresh_vscode_workspace Windows.cmd](refresh_vscode_workspace%20Windows.cmd). Review two steps: record folders in local configuration, then update VS Code's folder list. Type `q` to finish.
+2. **Refresh manually for initial setup.** Double-click [refresh_vscode_workspace macOS.command](refresh_vscode_workspace%20macOS.command) or [refresh_vscode_workspace Windows.cmd](refresh_vscode_workspace%20Windows.cmd). Review two steps: record folders in local configuration, then update VS Code's folder list. Type `q` to finish. Use the launcher before opening the saved workspace; the Copilot refresh skill is optional for later updates.
 3. **Open [{{vscode_workspace_name}}.code-workspace](ide_configs/{{vscode_workspace_name_link}}.code-workspace)** in VS Code to see selected repositories together. For Copilot, read the [Copilot guide]({{ai_work_link}}/COPILOT_GUIDE.md).
 
 ## Where things go
@@ -37,12 +37,12 @@ Refresh checks immediate child folders only, preserving custom labels and select
 
 Refresh replaces the VS Code folder list, including manually added folders; settings, tasks and other content are preserved. If files change during preview, rerun. Restore missing group folders and review warnings.
 
-For terminal use, see the [daily commands]({{ai_work_link}}/DAILY_WORK.md#run-commands-without-copilot).
+For terminal use, see the [optional Python reference]({{ai_work_link}}/DAILY_WORK.md#optional-python-reference).
 
 ## Move, back up or remove this folder
 
 - **Move:** Close the editor, move the entire development folder (including hidden files), then reopen the saved workspace. Keep setup-created names and the VS Code filename unchanged. Added repositories/tools may have external paths to check.
-- **Back up:** Use permitted storage with recoverable history. Git restores committed files; also back up uncommitted work and untracked notes/attachments. Test a restore elsewhere, run [validation]({{ai_work_link}}/DAILY_WORK.md#check-the-workspace) and check your files.
+- **Back up:** Use permitted storage with recoverable history. Git restores committed files; also back up uncommitted work and untracked notes/attachments. Test a restore elsewhere, run a [framework check]({{ai_work_link}}/DAILY_WORK.md#check-the-code-ai-framework) and check your files.
 - **Discard the installer:** Keep the generated tree, including its refresh launchers, `{{ai_work}}/tools/` and `{{ai_work}}/.framework/`. Move it out of the setup folder before deleting that enclosing folder.
 
 Delete this folder only after checking your backup. There is no automatic upgrade or restore; initialization always needs a new folder.

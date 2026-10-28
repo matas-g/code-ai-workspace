@@ -11,27 +11,27 @@
     },
     {
       "source": "CHANGELOG.md",
-      "sha256": "fe332570237b7195cbeaa87d271d48dd95dcfe3b364f998b36f87511b8cfaf37",
+      "sha256": "ff1224198b840d7aadedf792622ac068f60baa8d61a9bf85372742b548c5f3f7",
       "destinations": []
     },
     {
       "source": "DESIGN.md",
-      "sha256": "26a29786b8abeb2fe8ce8cecdcfc49235eeeb50c5d60d6ef84604a3e04a6b42b",
+      "sha256": "834d0f1622f0dd6575a374a4c156165364d5174a22c7dda63fdfac2094ca36a6",
       "destinations": []
     },
     {
       "source": "README.md",
-      "sha256": "1cf6e95137209170de1966c869b4eb8a93d89984e3bb85342a347dd49b5c6c4b",
+      "sha256": "c494d9001aee4c35942b0c09d7877f329d4375cbdb629e4fbc2896002bce7ac5",
       "destinations": []
     },
     {
       "source": "SETUP_GUIDE.md",
-      "sha256": "9131603019d5e8ef1f8cf6b5d5f595cccd210c6e35711825b9800a87d9dc3a68",
+      "sha256": "c83466e96e42bcf10dd28656a60506077543ab38576013f80f29f5681536a78c",
       "destinations": []
     },
     {
       "source": "VALIDATION_REPORT.md",
-      "sha256": "fa20f1510b3716e4b35e2bf27f3b568a1394c96328896f2f74bf32dd6df69ddc",
+      "sha256": "07f6c830b39bf3c2b8e8ee3648cc4236a6ae2c2d898af5cd124332f2c91c9bd7",
       "destinations": []
     },
     {
@@ -145,7 +145,7 @@
     },
     {
       "source": "payload/root/COPILOT_GUIDE.md",
-      "sha256": "4736da4aee566355ded452a3a90390c9639f57c8bfd7420f3667d6044f1a1be9",
+      "sha256": "057a1e28751bc7b821d8a4f599aa5550bc72284c75d966daf99dec707c6ffc64",
       "destinations": [
         {
           "directory_id": "ai_work",
@@ -157,7 +157,7 @@
     },
     {
       "source": "payload/root/DAILY_WORK.md",
-      "sha256": "6a25cde47b5bd3c35a9d2f94f73bf80f042434c760d0bdee9a9bafc6435c0661",
+      "sha256": "9bf7f3ea0972be37a480ba2d0316139b71315404867e5b7f91037b1c2cbce7ac",
       "destinations": [
         {
           "directory_id": "ai_work",
@@ -169,7 +169,7 @@
     },
     {
       "source": "payload/root/README.md",
-      "sha256": "4927f87bc9b4014344d381a596a3c12a784e3b62c8fe672729e0c17c781cc710",
+      "sha256": "b00abaf38431cc7d1ce9a1306b9db5162d87d37e5518b40b87b7909192a3a819",
       "destinations": [
         {
           "directory_id": "root",
@@ -336,8 +336,20 @@
       ]
     },
     {
+      "source": "payload/skills/ca-workspace-refresh/SKILL.md",
+      "sha256": "9c5bb51d622687b207c6b67797e141f383e0a6184afe27063ca0093c18e25780",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": ".github/skills/ca-workspace-refresh/SKILL.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
       "source": "scripts/build_release.py",
-      "sha256": "05270f771ef2b0b6f74fc3807b143068a7a944a4ceb0456092ce108cb1a2d087",
+      "sha256": "cbfb0c664bcf2413fd0cd3cd5ce4d2076113244bc5c86002b7215d79dfa6b6da",
       "destinations": []
     },
     {
@@ -376,7 +388,7 @@
     },
     {
       "source": "scripts/workspace_manager.py",
-      "sha256": "f225e97a65b66ba23e016909aacd9d1dee7749d8c9a516ff66a5b36d7bf88fcc",
+      "sha256": "c872adafb3a3e386f503eadc3a4892a6c1bd18045b1395f9fe23bb3604d7aece",
       "destinations": [
         {
           "directory_id": "ai_work",
@@ -394,7 +406,7 @@
     },
     {
       "source": "tests/test_workspace.py",
-      "sha256": "ccff2cea2c8354fefdff443cb3402343ae9be082571877a630d00fbbf4885ba6",
+      "sha256": "12ded3098c1b8e8ddfae7122e4c227de23ffa088bce621f254aaae556dd9d149",
       "destinations": []
     }
   ],
