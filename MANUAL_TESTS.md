@@ -1,10 +1,10 @@
 # Manual tests — Code-AI development tracker
 
-**Last updated:** 28 October 2026  
+**Last updated:** 29 October 2026<br>
 **Version tracking:** See `VERSION` in [workspace_manager.py](WORKSPACE_SETUP/scripts/workspace_manager.py) for the current source version; each result below records the release actually tested.<br>
 **Purpose:** Keep track of manual checks while developing this solution. Read this file when asked what still needs manual testing. Update results from explicit tester reports or actual observed manual tests; never infer a pass from an automated test or from file presence.
 
-This is a maintainer-only project file. Keep it outside WORKSPACE_SETUP and exclude it from the ZIP and generated development folders. Product instructions belong in the generated COPILOT_GUIDE.md and SETUP_GUIDE.md. Preserve this tracker and its evidence across releases; reopen a passed test only when a relevant change or a new platform/version needs retesting.
+This is a maintainer-only project file. Keep it outside WORKSPACE_SETUP and exclude it from the ZIP and generated development folders. Product instructions belong in SETUP_GUIDE.md and the generated user guides. Preserve this tracker and its evidence across releases; reopen a passed test only when a relevant change or a new platform/version needs retesting.
 
 ## Status and evidence
 
@@ -46,6 +46,8 @@ P0 = verify before relying on automatic context. P1 = normal pilot/platform chec
 | DOC-01 | P1 | 0.1.17 onboarding (filenames: root README.md, AI Work/DAILY_WORK.md and COPILOT_GUIDE.md): a new user can follow the three shortened guides to open the workspace, create/review/archive a ticket, refresh repositories, find command help and use the Copilot attachment fallback. Check that repository labels, local ticket folders, starting Git commits, refresh choices and the Python working directory are understood. Check rendered tables and links with default/custom names. Automated link checks do not certify readability or Copilot discovery. | PENDING | PENDING |
 | DOC-02 | P1 | Unreleased DAILY_WORK.md: a new user can follow the main workflow using Copilot skills and refresh launchers without entering Python commands. Verify the optional Python reference is at the bottom, its disclosure opens/renders correctly, and direct links reach it with default/custom names. Preserve baseline, refresh interruption and transfer-recovery guidance. | PENDING | PENDING |
 | DOC-03 | P1 | Unreleased repository/release landing README: a new user can identify prerequisites, create the development folder, add repositories, run the manual refresh launcher and then open the populated VS Code workspace. Verify GitHub/source-download and extracted-release entry points, rendered layout/tables, help links and custom-path wording. | PENDING | PENDING |
+| DOC-04 | P1 | Unreleased guide organization: follow installation/settings in SETUP_GUIDE.md, folder management/recovery in the generated README, ticket/audit workflows in DAILY_WORK.md and context/discovery in COPILOT_GUIDE.md. Verify cross-guide links, manual ticket moves, refresh interruption recovery and optional terminal examples with default/custom names, without the installer present. Automated link checks do not establish readability. | PENDING | PENDING |
+| DOC-05 | P1 | Unreleased end-to-end onboarding: follow the quick setup through Copilot sign-in/Local selection, verified overview/reference-map content, orientation review, one-root/mode context check and sample ticket/audit. Verify source-template links lead to the corresponding generated sections with default/custom names; editing orientation and running the full maintainer matrix are not required. Exercise unavailable-feature fallbacks before daily work. | PENDING | PENDING |
 | OTHER-IDE-01 | P2 | If adopting IntelliJ/Eclipse, test manual project import, shared notes/tools and actual Copilot features separately. | PENDING | PENDING |
 
 Since 0.1.11, all current framework skills use the `ca-` prefix. Earlier recorded results below retain their original names and do not certify discovery of the renamed skills. Use the current prefixed names when running SKILL-01 through SKILL-03, and record discovery separately under SKILL-04.

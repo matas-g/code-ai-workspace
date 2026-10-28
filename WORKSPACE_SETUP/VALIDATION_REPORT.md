@@ -1,7 +1,27 @@
 # Validation report — design 1.0
 
-**Date:** 28 October 2026  
+**Date:** 29 October 2026<br>
 **Status:** macOS pilot. Copilot orientation inclusion across roots/modes, native Windows and physical GUI behavior remain manual checks.
+
+## Unreleased documentation verification — complete Copilot onboarding
+
+On 29 October 2026, the quick setup was extended through prerequisites, creation, repository population, refresh, opening VS Code, verified overview/reference-map context, orientation review, a basic context/ticket/audit check and the first daily task. Links identify packaged templates and direct users to their generated copies. Orientation editing is optional; unavailable features have explicit fallback checks. Extended maintainer checks remain separate. The mixed manual-completion table was replaced with focused prerequisites, optional follow-up and conditional troubleshooting. The landing/generated READMEs and design section 14.1 now use the same handoff; runtime behavior and schemas are unchanged.
+
+Fresh default/custom-name installations each passed **62 local file/section links**, the **six daily Python examples**, the new `TEST-1` sample through the direct-command fallback, manual archive/command restore, validation/audit and report saving. Synthetic overview/reference-map edits remained informational. Static project/package documents passed **40 local file/section links**; all **43 source hashes** and both root document mirrors matched. Command: `python3 -I -S -B _tmp/copilot-onboarding/check_guides.py -final`. Results are `_tmp/copilot-onboarding/verification.json`. The setup guide is 1719 words versus 1658 before this change (about 4% longer).
+
+The linked official [instruction](https://code.visualstudio.com/docs/agent-customization/custom-instructions) and [skill](https://code.visualstudio.com/docs/agent-customization/agent-skills) references were rechecked on 29 October 2026. No IDE/Copilot session was exercised; these checks do not certify onboarding usability, automatic loading or skill execution by Copilot. DOC-05 remains pending on both platforms. The behavioral suite was not rerun for this documentation-only change; prior results below retain their original scope. No new delivery ZIP or product/design version change was made.
+
+## Unreleased documentation verification — guide organization
+
+Reviewed the current implementation and project documents, excluding release ZIPs, machine metadata and the `_tmp`/`_old zips` development folders. The landing README retains the project overview and quick start; SETUP_GUIDE.md owns installation/settings/troubleshooting; the generated root README owns folder management, refresh choices and recovery; DAILY_WORK.md owns ticket/review/audit workflows and the optional Python reference; COPILOT_GUIDE.md owns context preparation, discovery and fallback. Knowledge guides retain their separate note-authoring purpose. The comprehensive design and historical evidence are preserved.
+
+Repeated refresh, ticket and Copilot procedures in the setup guide were replaced with guide pointers; short entry-point quick starts remain usable independently. The setup guide is **1658 words**, down from **2672** (about 38% shorter). The five distinct landing/setup/generated guides are about **19% shorter overall**, using whitespace-delimited counts that include headings, tables and commands. Wording also clarifies manual ticket moves, external ticket links, audit scope and outer-folder renaming. Runtime behavior is unchanged.
+
+The organization follows [GitHub's README guidance](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes) and [Google's linking guidance](https://developers.google.com/style/cross-references): keep a useful landing page, provide enough context for the immediate action and link selectively to related detail. VS Code's [instruction](https://code.visualstudio.com/docs/agent-customization/custom-instructions), [skill](https://code.visualstudio.com/docs/agent-customization/agent-skills) and [workspace event](https://code.visualstudio.com/api/references/vscode-api#workspace.onDidChangeWorkspaceFolders) references were rechecked on 28 October 2026; their documented behavior does not establish this layout's actual Copilot compatibility.
+
+On 28 October 2026, **98 behavioral tests passed** on Python 3.9.6 and Python 3.15.0 on macOS, run serially against an isolated source copy. Commands: `/usr/bin/python3 -I -S -B _tmp/guide-coherence/verification/WORKSPACE_SETUP/tests/test_workspace.py` and `python3 -I -S -B _tmp/guide-coherence/verification/WORKSPACE_SETUP/tests/test_workspace.py`. Logs are `_tmp/guide-coherence/python39-tests.log` and `_tmp/guide-coherence/python315-tests.log`.
+
+Default and custom-name installations each passed **56 local file/section links**, all **six daily Python examples**, manual archive followed by command restore with unchanged brief contents, JSON validation/audit and explicit report saving. Static project/package documentation passed **32 local file/section links**. The 43 source hashes and root README/design mirrors match; results are `_tmp/guide-coherence/verification.json`. These automated checks do not certify rendered usability or IDE discovery. DOC-04 remains pending on both platforms; prior manual results are unchanged. No new delivery ZIP or version change was made; the released archive below retains its original contents.
 
 ## Unreleased verification — repository landing README
 
@@ -142,6 +162,6 @@ Existing generated workspaces are not automatically upgraded. New installations 
 
 ## Remaining checks
 
-Full automatic orientation coverage for fresh Local chats across MAIN/OTHER/DOCS and available Ask/Plan/Agent modes remains unverified, including custom names and relocation. First MAIN-request inclusion has direct debug evidence, and the original three-skill flow has reported success. Prompt capture and discovery/resource loading for all five renamed skills need fresh manual checks. Use the generated COPILOT_GUIDE.md and explicit attachments where automatic loading is unavailable; do not bypass policy or change global settings automatically.
+Full automatic orientation coverage for fresh Local chats across MAIN/OTHER/DOCS and available Ask/Plan/Agent modes remains unverified, including custom names and relocation. First MAIN-request inclusion has direct debug evidence, and the original three-skill flow has reported success. Prompt capture and discovery/resource loading for the current six skills, including the unreleased refresh skill, need fresh manual checks. Use the generated COPILOT_GUIDE.md and explicit attachments where automatic loading is unavailable; do not bypass policy or change global settings automatically.
 
 Native Windows interpreter discovery, paths/reparse handling, rendering/input and console closure remain untested. Finder associations/trust prompts and physical macOS window closure require user testing; q/quit exits the process and the existing Terminal profile controls its window. Actual IntelliJ/Eclipse integration remains manual. No organizational approval, OS sandbox or automatic instruction compliance is claimed.

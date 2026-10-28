@@ -11,27 +11,27 @@
     },
     {
       "source": "CHANGELOG.md",
-      "sha256": "ff1224198b840d7aadedf792622ac068f60baa8d61a9bf85372742b548c5f3f7",
+      "sha256": "a141acaace14a1340ffba8c3436d5b28cef1c917f59414c96d2a8e98c5de1e11",
       "destinations": []
     },
     {
       "source": "DESIGN.md",
-      "sha256": "834d0f1622f0dd6575a374a4c156165364d5174a22c7dda63fdfac2094ca36a6",
+      "sha256": "800b9f59086994f4a650ce086377e5808f6b3dbbf9855c54dfb3f7e172bd345e",
       "destinations": []
     },
     {
       "source": "README.md",
-      "sha256": "c494d9001aee4c35942b0c09d7877f329d4375cbdb629e4fbc2896002bce7ac5",
+      "sha256": "ce28287491b74c35daf27257ef8ab25be4bdd17cde9f19728cfc26df8745fb9c",
       "destinations": []
     },
     {
       "source": "SETUP_GUIDE.md",
-      "sha256": "c83466e96e42bcf10dd28656a60506077543ab38576013f80f29f5681536a78c",
+      "sha256": "35d1fc493362919b22b2da315c8f6705d39494db21a471b7ebff8345729112a9",
       "destinations": []
     },
     {
       "source": "VALIDATION_REPORT.md",
-      "sha256": "07f6c830b39bf3c2b8e8ee3648cc4236a6ae2c2d898af5cd124332f2c91c9bd7",
+      "sha256": "9774d2eeba03e3d0bb8d55fc58334a4b767b4a3fba9be7c7ff02531eb0af45b8",
       "destinations": []
     },
     {
@@ -145,7 +145,7 @@
     },
     {
       "source": "payload/root/COPILOT_GUIDE.md",
-      "sha256": "057a1e28751bc7b821d8a4f599aa5550bc72284c75d966daf99dec707c6ffc64",
+      "sha256": "af372838add37577331e502ae95c9c6ca8f647c9944856cfc6db47cbb4c7c057",
       "destinations": [
         {
           "directory_id": "ai_work",
@@ -157,7 +157,7 @@
     },
     {
       "source": "payload/root/DAILY_WORK.md",
-      "sha256": "9bf7f3ea0972be37a480ba2d0316139b71315404867e5b7f91037b1c2cbce7ac",
+      "sha256": "8f2bfd3fb237974dca4382043cdf2558cb504b01eef414b6cb77d688117ecab3",
       "destinations": [
         {
           "directory_id": "ai_work",
@@ -169,7 +169,7 @@
     },
     {
       "source": "payload/root/README.md",
-      "sha256": "b00abaf38431cc7d1ce9a1306b9db5162d87d37e5518b40b87b7909192a3a819",
+      "sha256": "bd8173298765a0b57da95d18b92c443be9cb8386d6d3e34c84b6564ca0b25727",
       "destinations": [
         {
           "directory_id": "root",

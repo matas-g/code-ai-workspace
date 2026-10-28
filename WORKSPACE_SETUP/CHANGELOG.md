@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Extend the quick setup through Copilot sign-in, verified overview/reference-map context, orientation review and a small context/ticket/audit check. Link the detailed generated guides, distinguish basic onboarding from the maintainer matrix, and separate prerequisites, optional follow-up and conditional troubleshooting. Runtime behavior is unchanged.
+- Align documentation by purpose: keep installation/settings in SETUP_GUIDE.md, repository refresh/recovery in the generated README, routine tasks/commands in DAILY_WORK.md and context/discovery checks in COPILOT_GUIDE.md. Replace repeated procedures with focused links and shorten the setup reference without changing runtime behavior.
 - Rework the shared repository/release README as a landing page with prerequisites, a five-step quick start, generated layout and guide links. Make repository population and manual refresh explicit before opening VS Code; preserve package-relative links in root/ZIP copies.
 - Add the explicit ca-workspace-refresh skill for previewing and applying approved repository-list updates through the existing tool. Recommend the manual refresh launcher before first opening the VS Code workspace; document possible Copilot interruption and track IDE verification separately.
 - Organize DAILY_WORK.md around Copilot skills and refresh launchers, with a compact ticket workflow and a collapsed optional Python reference at the bottom. Distinguish Code-AI framework checks from VS Code repository-list updates, explain ca-config-audit coverage and update incoming links.

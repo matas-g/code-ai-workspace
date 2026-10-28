@@ -1,6 +1,6 @@
 # Daily work
 
-Use **Copilot skills for daily work** and **refresh launchers for initial setup**. See [Copilot setup](COPILOT_GUIDE.md) for help. [Python commands](#optional-python-reference) are optional reference only.
+Use **Copilot skills** for the workflows below, or the [optional Python commands](#optional-python-reference). For workspace setup, see the [root guide](../README.md#get-started); for Copilot context and discovery, see the [Copilot guide](COPILOT_GUIDE.md).
 
 ## Work on a ticket
 
@@ -19,9 +19,9 @@ Use **Copilot skills for daily work** and **refresh launchers for initial setup*
 3. **Implement, test and review.** Attach the brief and relevant context, then request `/ca-change-review` against the recorded baselines.
 4. **Archive when finished.** Run `/ca-jira-ticket-archive A-111`. Use `/ca-jira-ticket-restore A-111` to resume later.
 
-Init creates only a brief unless you request optional files. Repeating it **preserves existing briefs without adding details**. Archive/restore preserve attachments, refuse collisions and leave Jira/Git unchanged.
+Init creates only a brief unless you request optional files. Repeating it **preserves existing briefs without adding details**. Archive/restore leave Jira/Git unchanged.
 
-Manual moves are also allowed: move the whole ticket folder unchanged between active/archive, keep one copy and wait for ticket commands to finish. The skills add collision checks and file verification.
+You can also move the whole ticket folder, including attachments, between `tickets/active/` and `tickets/archive/`. Keep it unchanged, keep one copy and wait for ticket commands to finish. The commands refuse collisions and verify copied contents. External links to the ticket may need updating after either method.
 
 ## Copilot commands
 
@@ -34,20 +34,17 @@ Manual moves are also allowed: move the whole ticket folder unchanged between ac
 | `/ca-config-audit` | Check Code-AI files, links and AI customizations |
 | `/ca-workspace-refresh` | Preview and apply approved VS Code repository-list updates |
 
-Missing commands? See [skill checks and fallback](COPILOT_GUIDE.md#check-the-skills).
+Type `/` in Copilot chat to choose a command; add your ticket ID or review context. Missing commands? See [skill checks and fallback](COPILOT_GUIDE.md#check-the-skills).
 
 ## Update the VS Code repository list
 
-- **Initial setup:** Double-click the development root's **refresh_vscode_workspace macOS.command** or **refresh_vscode_workspace Windows.cmd**, then open the saved VS Code workspace.
-- **Later folder changes:** Use **`/ca-workspace-refresh`** in Copilot, or run the launcher again. Review and approve the proposed updates.
-
-Refreshing the open workspace may interrupt Copilot, especially if its first folder changes; use the launcher if needed. IDE behavior remains unverified. See [refresh choices](../README.md#add-hide-or-remove-a-repository) for cancellation and missing folders.
+After adding, renaming or removing repository folders, use `/ca-workspace-refresh` or a root refresh launcher. The [root guide](../README.md#add-hide-or-remove-a-repository) explains approvals, missing folders, selections and possible chat interruption. For initial setup, use the launcher before opening VS Code.
 
 ## Check the Code-AI framework
 
-Use **`/ca-config-audit`** after customization or for missing/damaged framework files. It checks the Code-AI folder (including its VS Code workspace file), links and duplicate skill names, and explains findings.
+Use `/ca-config-audit` after customization or for missing/damaged framework files. It validates the layout, files and links, then inspects AI Work and registered repository customizations for issues such as duplicate skill names. Global configuration and ticket attachments are excluded.
 
-Checks include validation; normal context/configuration edits appear as notes. It does not repair files, test project code or prove Copilot loading.
+Intentional context/configuration edits appear as notes; changed tools/generated guides can be errors. Checks do not repair files, test project code or prove Copilot loading. Reports are saved only when requested.
 
 ## Find your files
 
@@ -83,6 +80,6 @@ python3 -I -S -B tools/workspace_manager.py audit
 python3 -I -S -B tools/workspace_manager.py refresh --interactive
 ```
 
-Replace the example ID/description with yours. Add `--with plan,review,notes,files` to creation for selected optional resources. Add `--help` after a subcommand, such as `audit --help`, for more options. Saved audit reports go under `.framework/reports/`.
+Replace the example ID/description with yours. For optional resources, add `--with plan,review,notes,files` to creation, listing only what you need. Use `--format json` with validate/audit, or `audit --save-report check.json` to save under `.framework/reports/`. Subcommand `--help` lists other options.
 
 </details>

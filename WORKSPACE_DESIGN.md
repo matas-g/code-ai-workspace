@@ -2,7 +2,7 @@
 
 **Design version:** 1.0  
 **Prepared:** 20 October 2026  
-**Updated:** 28 October 2026<br>
+**Updated:** 29 October 2026<br>
 **Status:** Current implementation specification; platform validation results and remaining checks are recorded in VALIDATION_REPORT.md.  
 **Audience:** Developers, maintainers, security reviewers, and an AI agent implementing the solution.  
 **Supported initial environments:** Native Windows 11 and macOS; shared files/Python tools usable with any editor. Generated IDE integration is VS Code only; other IDE project import and Copilot discovery require manual setup/testing.  
@@ -717,7 +717,7 @@ The implementation MUST deliver `SETUP_GUIDE.md` with actual tested commands. It
 
 ### 14.1 Required guide order
 
-Start with at most five short setup steps: obtain the repository/release files with prerequisites available; run the launcher, accept settings and confirm creation/validation; manually populate the generated repository groups; manually refresh registrations and the VS Code folder list; open the saved workspace. Settings changes require editing the named JSON and relaunching. Longer reference information follows and is optional for default initialization.
+Start with a short end-to-end setup checklist: obtain the repository/release files with prerequisites available; run the launcher, accept settings and confirm creation/validation; manually populate the generated repository groups; manually refresh registrations and the VS Code folder list; open the saved workspace; prepare Copilot and verified overview/reference-map context; check instruction loading and a small ticket/audit workflow; continue to daily work. Link to detailed generated-guide procedures through clearly identified packaged templates. Editing the generated orientation is optional. Basic onboarding checks one intended root/mode and verifies a documented fallback where features are unavailable; the full maintainer platform/root/mode matrix remains separate. Settings changes require editing the named JSON and relaunching. Prerequisites, optional follow-up and conditional troubleshooting follow as focused reference sections.
 
 The repository/release README is a landing page: explain the project's purpose and useful capabilities, prerequisites, the quick start, generated layout, scope/portability, help and contributor entry points. Keep detailed operation in linked guides. Maintain its shared source in WORKSPACE_SETUP/README.md; preparation rewrites package-relative Markdown links for the root/ZIP copy while preserving external URLs and same-document anchors.
 

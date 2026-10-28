@@ -6,7 +6,7 @@ Keep repositories, task notes and reusable knowledge in one development folder. 
 
 1. **Clone repositories** directly under the groups below, for example `{{primary_repositories}}/my-repo/`. Ordinary documentation folders work too; groups can stay empty.
 2. **Refresh manually for initial setup.** Double-click [refresh_vscode_workspace macOS.command](refresh_vscode_workspace%20macOS.command) or [refresh_vscode_workspace Windows.cmd](refresh_vscode_workspace%20Windows.cmd). Review two steps: record folders in local configuration, then update VS Code's folder list. Type `q` to finish. Use the launcher before opening the saved workspace; the Copilot refresh skill is optional for later updates.
-3. **Open [{{vscode_workspace_name}}.code-workspace](ide_configs/{{vscode_workspace_name_link}}.code-workspace)** in VS Code to see selected repositories together. For Copilot, read the [Copilot guide]({{ai_work_link}}/COPILOT_GUIDE.md).
+3. **Open [{{vscode_workspace_name}}.code-workspace](ide_configs/{{vscode_workspace_name_link}}.code-workspace)** in VS Code to see selected repositories together. For Copilot, [prepare project context]({{ai_work_link}}/COPILOT_GUIDE.md#prepare-once) and [verify your setup]({{ai_work_link}}/COPILOT_GUIDE.md#verify-your-setup), then continue with [daily work]({{ai_work_link}}/DAILY_WORK.md).
 
 ## Where things go
 
@@ -19,11 +19,11 @@ Keep repositories, task notes and reusable knowledge in one development folder. 
 | [{{knowledge}}]({{knowledge_link}}/README.md) | Reusable guides/assets (**Knowledge**) |
 | `ide_configs/` | Saved workspaces and other IDE-specific configuration files |
 
-Repositories appear separately, for example **MAIN · my-repo**. **DOCS** is a label, not a read-only restriction. See the [daily guide]({{ai_work_link}}/DAILY_WORK.md) for tickets and commands.
+Repositories appear separately, for example **MAIN · my-repo**. **DOCS** is a label, not a read-only restriction.
 
 ## Add, hide or remove a repository
 
-Refresh checks immediate child folders only, preserving custom labels and selections.
+After folder changes, run either root refresh launcher or `/ca-workspace-refresh` in Copilot. Refresh checks immediate child folders only, preserving custom labels and selections.
 
 | What you want | What to do |
 |---|---|
@@ -33,15 +33,17 @@ Refresh checks immediate child folders only, preserving custom labels and select
 | Remove missing registrations | Choose `remove-missing`: remove **all listed missing registrations**, without deleting folders. |
 | Rename a folder or move it between groups | Refresh treats it as a missing old entry and a new entry. Custom labels/selections do not transfer. |
 
-**Enter or `n` cancels the current step.** Approved registrations stay saved if you cancel the workspace update; rerun refresh to finish. Up-to-date steps show **No changes** without prompting.
+In the launcher, **Enter or `n` cancels the current step.** Approved registrations stay saved if you cancel the workspace update; rerun refresh to finish. Up-to-date steps show **No changes** without prompting.
 
 Refresh replaces the VS Code folder list, including manually added folders; settings, tasks and other content are preserved. If files change during preview, rerun. Restore missing group folders and review warnings.
+
+Updating an open workspace, especially its first folder, can [restart extensions](https://code.visualstudio.com/api/references/vscode-api#workspace.onDidChangeWorkspaceFolders) and interrupt Copilot. If interrupted, use the launcher to inspect and finish the update. Actual IDE behavior remains a manual check.
 
 For terminal use, see the [optional Python reference]({{ai_work_link}}/DAILY_WORK.md#optional-python-reference).
 
 ## Move, back up or remove this folder
 
-- **Move:** Close the editor, move the entire development folder (including hidden files), then reopen the saved workspace. Keep setup-created names and the VS Code filename unchanged. Added repositories/tools may have external paths to check.
+- **Move:** Close the editor, move or rename the entire development folder (including hidden files), then reopen the saved workspace. Keep internal folder names and the VS Code filename unchanged. Added repositories/tools may have external paths to check.
 - **Back up:** Use permitted storage with recoverable history. Git restores committed files; also back up uncommitted work and untracked notes/attachments. Test a restore elsewhere, run a [framework check]({{ai_work_link}}/DAILY_WORK.md#check-the-code-ai-framework) and check your files.
 - **Discard the installer:** Keep the generated tree, including its refresh launchers, `{{ai_work}}/tools/` and `{{ai_work}}/.framework/`. Move it out of the setup folder before deleting that enclosing folder.
 

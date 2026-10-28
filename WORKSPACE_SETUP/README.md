@@ -22,7 +22,7 @@ Have **Python 3.9+** installed. For the intended workflow, also have Git, VS Cod
 2. **Create your development folder.** Double-click the Start file for your OS. Review [settings](settings.json): Enter continues to the read-only preview `[Y/n]`; type `y`/`yes` to create `[y/N]` (Enter cancels). Setup creates and validates the new folder; type `q` to finish. To change settings, decline, edit `WORKSPACE_SETUP/settings.json` and relaunch.
 3. **Add your repositories.** Inside the generated folder, clone/add repositories under `MAIN_PROJECT/`, `OTHER_PROJECTS/` or `COMPANY_DOCS/`. Ordinary documentation folders work too; unused groups can stay empty.
 4. **Refresh before opening VS Code.** In the **generated development folder**, double-click `refresh_vscode_workspace macOS.command` or `refresh_vscode_workspace Windows.cmd`. Approve folder registration, then the VS Code folder-list update. Type `q` to finish. Use this launcher manually for initial setup.
-5. **Open the ready workspace.** Open `Code-AI/ide_configs/Development.code-workspace` in VS Code. Registered, enabled repositories appear alongside **AI Work** and **Knowledge**. Read the generated README, then `AI_WORK/COPILOT_GUIDE.md` and `AI_WORK/DAILY_WORK.md` for daily use.
+5. **Open the workspace and complete Copilot setup.** Open `Code-AI/ide_configs/Development.code-workspace` in VS Code. In the generated `AI_WORK/COPILOT_GUIDE.md`, prepare project context and verify instruction loading and a sample skill, using its documented fallback where needed. Then follow `AI_WORK/DAILY_WORK.md`. The [complete setup checklist](SETUP_GUIDE.md#quick-setup) links each remaining step.
 
 Paths above use the defaults. [Settings](settings.json) can change the development folder's name/location, group names and VS Code filename; setup prints the actual paths. No manual Python commands are needed for these steps.
 
@@ -52,7 +52,8 @@ Use the guides inside your generated folder for daily work. Repository links bel
 
 | Guide | What it covers |
 |---|---|
-| [Setup guide](SETUP_GUIDE.md) | Settings, prerequisites, launcher troubleshooting and other editors |
+| [Setup guide](SETUP_GUIDE.md) | Complete setup through Copilot verification, settings and troubleshooting |
+| [Development folder guide template](payload/root/README.md) | Folder map, repository registration, backup and removal |
 | [Daily workflow template](payload/root/DAILY_WORK.md) | Copilot skills, ticket workflow and optional Python reference |
 | [Copilot guide template](payload/root/COPILOT_GUIDE.md) | Context preparation, discovery checks and fallback |
 | [Validation results](VALIDATION_REPORT.md) | What was tested and what remains unverified |
