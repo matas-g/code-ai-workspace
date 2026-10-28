@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+installation.json
+installed-state.json
+reports/
+.test-sandbox/
+.initialization-incomplete.json
+.maintenance.lock
+.DS_Store
+
+# Default-only convenience rule for CLI runs inside this source folder.
+# Custom root_folder_name/parent_directory choices need their own manual ignore rules.
+/Code-AI/

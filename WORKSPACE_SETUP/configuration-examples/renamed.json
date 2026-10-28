@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "root_folder_name": "My Development",
+  "parent_directory": ".",
+  "vscode_workspace_name": "Data Platform View",
+  "directories": {
+    "primary_repositories": "Data Platform",
+    "other_repositories": "Other Projects",
+    "company_documentation": "Company Docs",
+    "ai_work": "Work Notes",
+    "knowledge": "My Knowledge"
+  },
+  "repositories": [
+    {
+      "id": "platform-sql",
+      "group": "primary_repositories",
+      "directory": "sql-repo",
+      "display_name": "SQL Development",
+      "access": "develop",
+      "include_in_workspace": true
+    },
+    {
+      "id": "engineering-docs",
+      "group": "company_documentation",
+      "directory": "engineering-docs",
+      "display_name": "Engineering",
+      "access": "reference",
+      "include_in_workspace": true
+    }
+  ]
+}

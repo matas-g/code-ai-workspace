@@ -1,0 +1,16 @@
+# Local development aids; never include in the product distribution.
+/_tmp/
+/_old zips/
+
+# Machine metadata and local test/runtime output.
+.DS_Store
+__pycache__/
+*.py[cod]
+.test-sandbox/
+/Code-AI/
+
+# Local credentials and environment configuration.
+.env
+.env.*
+*.pem
+*.key

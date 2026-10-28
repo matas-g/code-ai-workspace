@@ -1,0 +1,402 @@
+{
+  "schema_version": 1,
+  "package_version": "0.1.16",
+  "design_version": "1.0",
+  "minimum_python": "3.9",
+  "files": [
+    {
+      "source": ".gitignore",
+      "sha256": "da3827bcf4b742379cfd1d750327842dc1e71d5bdf39d79bb9e17795591d95f3",
+      "destinations": []
+    },
+    {
+      "source": "CHANGELOG.md",
+      "sha256": "3808dd98ae26a8b44a780a80fa2074472adda9d52806f580b353a2b16822f060",
+      "destinations": []
+    },
+    {
+      "source": "DESIGN.md",
+      "sha256": "9607e17000207d25ed3ade7b437587f2c2587bb28ffdc6ec94262a73da8c69e2",
+      "destinations": []
+    },
+    {
+      "source": "README.md",
+      "sha256": "52235437fff6f422267629f707e6278b942cf700186a7ef96493c16d229f5b19",
+      "destinations": []
+    },
+    {
+      "source": "SETUP_GUIDE.md",
+      "sha256": "bd8c903385e55fa19f6f45ae8ab414a442e3df9232d7ec30d7155f1aadc3b938",
+      "destinations": []
+    },
+    {
+      "source": "VALIDATION_REPORT.md",
+      "sha256": "e0ce7770ce170fde258ff1c851e0e2723c203f3a6091b0eb73e0e9b6004f0124",
+      "destinations": []
+    },
+    {
+      "source": "configuration-examples/default.json",
+      "sha256": "afe4217cbb67872ddb153b08d36e133f8b04cecce8cee3ec9a53b341ba42bf12",
+      "destinations": []
+    },
+    {
+      "source": "configuration-examples/renamed.json",
+      "sha256": "908f3a0b5d3f668595ecd2cc0bb64fa213f2ab7a5b4201f8e6571e8e700558aa",
+      "destinations": []
+    },
+    {
+      "source": "launchers/Start Windows.cmd",
+      "sha256": "9823c6453a8ba525297173f9f0000da396c041f302a090384c65333f7361aca4",
+      "destinations": []
+    },
+    {
+      "source": "launchers/Start macOS.command",
+      "sha256": "6552d8668ddd419fccc13316e6aab463adb1b165841c4e1ab8de053f29a9e566",
+      "destinations": []
+    },
+    {
+      "source": "launchers/refresh_vscode_workspace Windows.cmd",
+      "sha256": "56e70f40736c09b057528d22e82c2e9c938158935edbf193891bded919f0adfc",
+      "destinations": [
+        {
+          "directory_id": "root",
+          "relative_path": "refresh_vscode_workspace Windows.cmd",
+          "render": "markdown",
+          "owner": "framework"
+        }
+      ]
+    },
+    {
+      "source": "launchers/refresh_vscode_workspace macOS.command",
+      "sha256": "367789fbca3da6eb4e6f828d4c465d2c4874f4bf0945a9f07d2aec7e9b52da9d",
+      "destinations": [
+        {
+          "directory_id": "root",
+          "relative_path": "refresh_vscode_workspace macOS.command",
+          "render": "markdown",
+          "owner": "framework"
+        }
+      ]
+    },
+    {
+      "source": "payload/examples/copilot-instructions.md",
+      "sha256": "1908f1b3f5f71df2d51a7acf7441cb4badc36d4861a14de502f03e698aff5d69",
+      "destinations": []
+    },
+    {
+      "source": "payload/knowledge/README.md",
+      "sha256": "1ead44837fc29f83a77f2f9bf70921bcb21ca09c88aeea00e3a3965974e4d798",
+      "destinations": [
+        {
+          "directory_id": "knowledge",
+          "relative_path": "README.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/knowledge/examples/example-guide/assets/example-diagram.svg",
+      "sha256": "dbf849304a0d1909fd25dfd5c19e9a4d2f7ceb9921471c7931eed62d53d1c7d1",
+      "destinations": [
+        {
+          "directory_id": "knowledge",
+          "relative_path": "examples/example-guide/assets/example-diagram.svg",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/knowledge/examples/example-guide/guide.md",
+      "sha256": "9338f59f95efc60cd2f0ab48b5950ef8d86c8482fdd0bcce03ed04c9b70c7ba9",
+      "destinations": [
+        {
+          "directory_id": "knowledge",
+          "relative_path": "examples/example-guide/guide.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/project/overview.md",
+      "sha256": "ff3b38cf2415bd8f18183c56d4b221ca4d9433ae131b477ecedf6e0e79a22978",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": "project/overview.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/project/reference-map.md",
+      "sha256": "f8fef56516a3319816765432dc13c3f941cb7be57938ad0f076f4040a24c532a",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": "project/reference-map.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/root/COPILOT_GUIDE.md",
+      "sha256": "2194653743cbf2aa802a561dd5363721db4bec6dc48bc6e744a642742fcca026",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": "COPILOT_GUIDE.md",
+          "render": "markdown",
+          "owner": "generated"
+        }
+      ]
+    },
+    {
+      "source": "payload/root/DAILY_WORK.md",
+      "sha256": "b38b609c95ec355b2c9455fa18dfdefca6b688bf9b54b76bd5077cf5dcb90503",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": "DAILY_WORK.md",
+          "render": "markdown",
+          "owner": "generated"
+        }
+      ]
+    },
+    {
+      "source": "payload/root/README.md",
+      "sha256": "0e00c1357951e6b12886805186fc2a5ad9c22077668f99403c0f3f6bc8982433",
+      "destinations": [
+        {
+          "directory_id": "root",
+          "relative_path": "README.md",
+          "render": "markdown",
+          "owner": "generated"
+        }
+      ]
+    },
+    {
+      "source": "payload/root/copilot-instructions.md",
+      "sha256": "1762d2f4e45a524d20f65d60f16e0775bec9657dedff414810a9ba1305163345",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": ".github/copilot-instructions.md",
+          "render": "markdown",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/root/gitignore.txt",
+      "sha256": "c1b75894d37209da896c94653006e54238a4552744b94c4dee2d11a448f8ccff",
+      "destinations": [
+        {
+          "directory_id": "root",
+          "relative_path": ".gitignore",
+          "render": "markdown",
+          "owner": "generated"
+        }
+      ]
+    },
+    {
+      "source": "payload/skills/ca-change-review/SKILL.md",
+      "sha256": "0f828e5504ef2e48f7377332a0b928280cfc59823d33a4f941ecd5c98e141a08",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": ".github/skills/ca-change-review/SKILL.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/skills/ca-change-review/resources/review-checklist.md",
+      "sha256": "b6554dfda085c7e89425b11e61d96a6c487b35538142a17e17538c8e8e7819ec",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": ".github/skills/ca-change-review/resources/review-checklist.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/skills/ca-config-audit/SKILL.md",
+      "sha256": "a3c854ce06b1561492c1e5ac6c76d0cb3ef3b4399e718fab91b0d6764f962bb6",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": ".github/skills/ca-config-audit/SKILL.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/skills/ca-jira-ticket-archive/SKILL.md",
+      "sha256": "9fffb627ca1d248acfd7abcd040634f1fc3a4934f216b79874c54ba776957e7d",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": ".github/skills/ca-jira-ticket-archive/SKILL.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/skills/ca-jira-ticket-init/SKILL.md",
+      "sha256": "b2a8cfea78ef8d166b8b10b4eadaf81c0e1ccf5d5d01c0e763ce7bb1ec6ed257",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": ".github/skills/ca-jira-ticket-init/SKILL.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/skills/ca-jira-ticket-init/scripts/ticket.py",
+      "sha256": "ef7fc09fc6d46f34de18740fca858c1e5ef8f823aa8866cb6216e45b5bd22cc4",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": ".github/skills/ca-jira-ticket-init/scripts/ticket.py",
+          "render": "copy",
+          "owner": "framework"
+        }
+      ]
+    },
+    {
+      "source": "payload/skills/ca-jira-ticket-init/templates/brief.md",
+      "sha256": "d44f471799c3422e3f32de216f323ba1b8e1932d5473eee2eac44e19fda47538",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": ".github/skills/ca-jira-ticket-init/templates/brief.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/skills/ca-jira-ticket-init/templates/notes.md",
+      "sha256": "3ffa50cd484b7efe82cefa69ad8fdfde95fbacf731376b9bc3d3590836a725f9",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": ".github/skills/ca-jira-ticket-init/templates/notes.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/skills/ca-jira-ticket-init/templates/plan.md",
+      "sha256": "8ba9da745931d45ddd6c1801805b79308e3b2b2a3f14b8b0cb3ff0550a2401fe",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": ".github/skills/ca-jira-ticket-init/templates/plan.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/skills/ca-jira-ticket-init/templates/review.md",
+      "sha256": "3bff214d7caf6d3aaaa3b48e47a8388ab3999effaa98d75863a8e754d264ef75",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": ".github/skills/ca-jira-ticket-init/templates/review.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "payload/skills/ca-jira-ticket-restore/SKILL.md",
+      "sha256": "80842a074079cf3381422c647aefd2cfd453d81aa97859624dc9df71968ab344",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": ".github/skills/ca-jira-ticket-restore/SKILL.md",
+          "render": "copy",
+          "owner": "user"
+        }
+      ]
+    },
+    {
+      "source": "scripts/build_release.py",
+      "sha256": "f75a244c38dc77ff978792c35e81785cb9672ff38b1c271b9ba156d37600e864",
+      "destinations": []
+    },
+    {
+      "source": "scripts/start.py",
+      "sha256": "89093a443af3c70abb57d12ad0e3d9464a77c8c50078976deaa08cb7186945da",
+      "destinations": []
+    },
+    {
+      "source": "scripts/terminal_output_formatter.py",
+      "sha256": "c4604eb3694feaa618f76a21229219c7eb8ef3c0a94a3803d669e174ca2936ed",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": "tools/terminal_output_formatter.py",
+          "render": "copy",
+          "owner": "framework"
+        }
+      ]
+    },
+    {
+      "source": "scripts/vscode_workspace_updater.py",
+      "sha256": "91b0b754c4153190e23a81b38ef699aa1c567ddef5c8563ff0382f7035864b56",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": "tools/vscode_workspace_updater.py",
+          "render": "copy",
+          "owner": "framework"
+        }
+      ]
+    },
+    {
+      "source": "scripts/workspace.py",
+      "sha256": "6019c4878f19352b73c7e9f260a16e373c322606105cc9ea5abb4593a07d9bab",
+      "destinations": []
+    },
+    {
+      "source": "scripts/workspace_manager.py",
+      "sha256": "4f389cd77e1deeb03d6c64c90da1b335aca9707fec69246201454f2b157e57af",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": "tools/workspace_manager.py",
+          "render": "copy",
+          "owner": "framework"
+        }
+      ]
+    },
+    {
+      "source": "settings.json",
+      "sha256": "afe4217cbb67872ddb153b08d36e133f8b04cecce8cee3ec9a53b341ba42bf12",
+      "destinations": [],
+      "mutable": true
+    },
+    {
+      "source": "tests/test_workspace.py",
+      "sha256": "63d928b7d40c849ea65fec5005d484e4b6e6ed19dbfdd06fff3fdb96ee382e23",
+      "destinations": []
+    }
+  ],
+  "directories": []
+}
