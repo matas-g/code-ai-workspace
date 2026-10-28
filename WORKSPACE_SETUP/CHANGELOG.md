@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+No changes yet.
+
+## 0.1.18 — 29 October 2026
+
 - Extend the quick setup through Copilot sign-in, verified overview/reference-map context, orientation review and a small context/ticket/audit check. Link the detailed generated guides, distinguish basic onboarding from the maintainer matrix, and separate prerequisites, optional follow-up and conditional troubleshooting. Runtime behavior is unchanged.
 - Align documentation by purpose: keep installation/settings in SETUP_GUIDE.md, repository refresh/recovery in the generated README, routine tasks/commands in DAILY_WORK.md and context/discovery checks in COPILOT_GUIDE.md. Replace repeated procedures with focused links and shorten the setup reference without changing runtime behavior.
 - Rework the shared repository/release README as a landing page with prerequisites, a five-step quick start, generated layout and guide links. Make repository population and manual refresh explicit before opening VS Code; preserve package-relative links in root/ZIP copies.
@@ -11,6 +15,7 @@
 - Document manual ticket-folder moves as an alternative to archive/restore commands, with precautions and the commands' additional checks.
 - Use workspace_manager.py as the single source for product and design version constants. Release preparation updates the README version before hashing; optionally synchronizes project-root README/design copies and derives the ZIP filename with --output-dir.
 - Remove unnecessary current-version references from general guides. Preserve historical changelog and test evidence; keep release dates separate from the fixed reproducible ZIP timestamp. No new runtime dependency or automatic upgrade is added.
+- Package the reviewed source as the next pilot release. Existing generated workspaces retain their original files; initialize a fresh destination to use this release.
 
 ## 0.1.17 — 28 October 2026
 

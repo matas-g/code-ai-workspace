@@ -2,7 +2,7 @@
 
 A portable development folder for multiple Git repositories, shared project context and GitHub Copilot workflows. Keep each repository independent while working with them together in VS Code.
 
-**Development status:** 0.1.17 pilot; native Windows and full Copilot/GUI verification remain pending. See [validation results](VALIDATION_REPORT.md) and [unreleased changes](CHANGELOG.md#unreleased).
+**Development status:** 0.1.18 pilot; native Windows and full Copilot/GUI verification remain pending. See [validation results](VALIDATION_REPORT.md) and the [changelog](CHANGELOG.md).
 
 ## What you get
 

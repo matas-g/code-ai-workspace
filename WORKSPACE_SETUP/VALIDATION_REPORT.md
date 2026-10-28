@@ -3,6 +3,20 @@
 **Date:** 29 October 2026<br>
 **Status:** macOS pilot. Copilot orientation inclusion across roots/modes, native Windows and physical GUI behavior remain manual checks.
 
+## Release verification — 0.1.18
+
+Prepared on 29 October 2026 on macOS 26.6.2, Apple Silicon. This release includes the six-skill inventory with ca-workspace-refresh, centralized release-version preparation, revised guides and complete Copilot onboarding. Configuration/manifest/state schemas remain 1 and design version remains 1.0. Existing generated workspaces are not automatically upgraded.
+
+- Python 3.9.6: **98 behavioral tests passed**. Command: `/usr/bin/python3 -I -S -B _tmp/release-0.1.18/verification/WORKSPACE_SETUP/tests/test_workspace.py`.
+- Python 3.15.0: **98 behavioral tests passed**. Command: `python3 -I -S -B _tmp/release-0.1.18/verification/WORKSPACE_SETUP/tests/test_workspace.py`.
+- Runs were serial against an isolated source copy with synthetic fixtures. Logs are `_tmp/release-0.1.18/python39-tests.log` and `_tmp/release-0.1.18/python315-tests.log`.
+- Default/custom-name installations from the extracted final archive each passed **62 local file/section links**, all **six daily Python examples**, the sample ticket command, manual archive/command restore, validation/audit and report saving. Fresh trees contain **30 daily files**, six correctly named skills and installed version 0.1.18. Static project/package documentation passed **40 local file/section links**. The same workflow checks passed against the prepared source.
+- The archive has **43 allowlisted source inputs**, their manifest and three enclosing README/launcher copies: **47 files** under `Code-AI-Setup-0.1.18/`. Member bytes, ZIP integrity, executable macOS entrypoint metadata, all source hashes, root document mirrors and the SHA-256 sidecar match. A second build is byte-identical. AGENTS.md, MANUAL_TESTS.md, development fixtures and machine metadata remain outside the archive.
+
+Packaged workflow command: `python3 -I -S -B _tmp/release-0.1.18/check_release.py _tmp/release-0.1.18/extracted/Code-AI-Setup-0.1.18/WORKSPACE_SETUP -packaged`. Results are `_tmp/release-0.1.18/verification.json` and `_tmp/release-0.1.18/archive-verification.json`. The superseded 0.1.17 ZIP/checksum are archived without overwriting existing files.
+
+Native Windows, physical GUI behavior, first-use readability and actual Copilot instruction/skill execution remain manual checks. Pending tracker entries now identify 0.1.18; no manual result was marked passed. The pre-release entries below retain their original dates, version scope and statements about artifacts available at that time; “unreleased” there describes their development-stage status.
+
 ## Unreleased documentation verification — complete Copilot onboarding
 
 On 29 October 2026, the quick setup was extended through prerequisites, creation, repository population, refresh, opening VS Code, verified overview/reference-map context, orientation review, a basic context/ticket/audit check and the first daily task. Links identify packaged templates and direct users to their generated copies. Orientation editing is optional; unavailable features have explicit fallback checks. Extended maintainer checks remain separate. The mixed manual-completion table was replaced with focused prerequisites, optional follow-up and conditional troubleshooting. The landing/generated READMEs and design section 14.1 now use the same handoff; runtime behavior and schemas are unchanged.
