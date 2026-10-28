@@ -1,4 +1,4 @@
-# Validation report — version 0.1.16, design 1.0
+# Validation report — version 0.1.17, design 1.0
 
 **Date:** 28 October 2026  
 **Status:** macOS pilot. Copilot orientation inclusion across roots/modes, native Windows and physical GUI behavior remain manual checks.
@@ -8,9 +8,17 @@
 - macOS 26.6.2, Apple Silicon.
 - Python 3.9.6: **93 behavioral tests passed**.
 - Python 3.15.0: **93 behavioral tests passed**.
-- Commands: `/usr/bin/python3 -I -S -B WORKSPACE_SETUP/tests/test_workspace.py` and `python3 -I -S -B WORKSPACE_SETUP/tests/test_workspace.py`, run serially against the reviewed sources; each test uses isolated synthetic directories. Logs remain in the ignored `_tmp` development folder.
+- Commands: `/usr/bin/python3 -I -S -B _tmp/guide-review-0.1.17/verification/WORKSPACE_SETUP/tests/test_workspace.py` and `python3 -I -S -B _tmp/guide-review-0.1.17/verification/WORKSPACE_SETUP/tests/test_workspace.py`, run serially against an isolated source copy; each test uses synthetic directories. Logs remain in the ignored `_tmp` development folder.
 - Existing default/custom-name, local-link, relocation, audit, ownership and package-inventory checks use the renamed daily tools. The distribution-boundary test also verifies exclusion of a synthetic maintainer MANUAL_TESTS.md input.
 - Synthetic fixtures only; no real development workspace, corporate repository, sign-in, global setting or Copilot session was changed.
+
+## New-user guide review (0.1.17)
+
+The generated README clarifies repository labels, the two refresh approvals, disabled/missing entries and backup coverage. DAILY_WORK.md explains local ticket folders, recording a starting Git commit before edits, the Python working directory and incomplete-transfer recovery. COPILOT_GUIDE.md defines orientation and skills, explains where to find customization controls and preserves separate discovery/loading checks. Contributor-only AGENTS.md is organized as short maintenance rules.
+
+The three guide templates total **1467 words**, down from **1553** (about 6% shorter), counting headings, tables and commands. The design's operating boundaries, configuration schema and command behavior are unchanged. VS Code instruction/skill documentation was rechecked on 28 October 2026; references are linked in COPILOT_GUIDE.md.
+
+Default and custom-name generation each passed 41 local file/section link checks, all six documented Python commands, validation, audit and explicit report saving, alongside the existing behavioral suite. These checks establish structural correctness, not first-use usability or actual Copilot loading. DOC-01 and the existing platform/Copilot checks remain pending; no manual result is inferred from automated checks. Existing workspaces retain their original generated guides.
 
 ## IDE configuration wording
 
@@ -94,7 +102,7 @@ The development project has a separate MANUAL_TESTS.md tracker, outside WORKSPAC
 
 ## Packaging and compatibility
 
-The archive has **42 allowlisted source inputs**, their manifest and three enclosing README/setup-launcher copies: **46 files** under `Code-AI-Setup-0.1.16/`. Generated development folders contain **29 daily files**. Source hashes and the separate SHA-256 sidecar are integrity checks; trusted delivery provides authenticity. Both design copies are synchronized. Configuration/manifest/state schemas remain 1; design version remains 1.0.
+The archive has **42 allowlisted source inputs**, their manifest and three enclosing README/setup-launcher copies: **46 files** under `Code-AI-Setup-0.1.17/`. Generated development folders contain **29 daily files**. Source hashes and the separate SHA-256 sidecar are integrity checks; trusted delivery provides authenticity. Both design copies are synchronized. Configuration/manifest/state schemas remain 1; design version remains 1.0.
 
 Existing generated workspaces are not automatically upgraded. New installations use a fresh absent destination. Previous release ZIPs/checksums are moved into the project's _old zips folder as release housekeeping, not by the installer/runtime.
 

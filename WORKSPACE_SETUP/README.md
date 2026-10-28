@@ -2,7 +2,7 @@
 
 A portable development folder for independent repositories, project context, ticket notes and optional GitHub Copilot workflows in VS Code. The Python tools also work without Copilot.
 
-**Development status:** 0.1.16 pilot; native Windows and some Copilot/GUI checks remain pending. See [validation results](VALIDATION_REPORT.md).
+**Development status:** 0.1.17 pilot; native Windows and some Copilot/GUI checks remain pending. See [validation results](VALIDATION_REPORT.md).
 
 1. **Extract the ZIP and open the `Code-AI-Setup-<version>` folder containing this README.** On Windows, use Extract All first. An approved Python 3.9+ interpreter must already be installed.
 2. **Double-click `Start macOS.command` or `Start Windows.cmd`.** Both files are beside this README, outside `WORKSPACE_SETUP`.

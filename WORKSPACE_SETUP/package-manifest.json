@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package_version": "0.1.16",
+  "package_version": "0.1.17",
   "design_version": "1.0",
   "minimum_python": "3.9",
   "files": [
@@ -11,27 +11,27 @@
     },
     {
       "source": "CHANGELOG.md",
-      "sha256": "3808dd98ae26a8b44a780a80fa2074472adda9d52806f580b353a2b16822f060",
+      "sha256": "d8da078dc982c27486c081a2ebc1e1a9425ee522dfa6d135646e636d37095eef",
       "destinations": []
     },
     {
       "source": "DESIGN.md",
-      "sha256": "9607e17000207d25ed3ade7b437587f2c2587bb28ffdc6ec94262a73da8c69e2",
+      "sha256": "1d0dd174cd0735221ef5915507817c8078ed55e3a09f2b91cf974e799bf28b02",
       "destinations": []
     },
     {
       "source": "README.md",
-      "sha256": "52235437fff6f422267629f707e6278b942cf700186a7ef96493c16d229f5b19",
+      "sha256": "1cf6e95137209170de1966c869b4eb8a93d89984e3bb85342a347dd49b5c6c4b",
       "destinations": []
     },
     {
       "source": "SETUP_GUIDE.md",
-      "sha256": "bd8c903385e55fa19f6f45ae8ab414a442e3df9232d7ec30d7155f1aadc3b938",
+      "sha256": "d199e98f9fab004e56b93ccb65886b2b5d8f4948ce23b065db04fa660383ae0a",
       "destinations": []
     },
     {
       "source": "VALIDATION_REPORT.md",
-      "sha256": "e0ce7770ce170fde258ff1c851e0e2723c203f3a6091b0eb73e0e9b6004f0124",
+      "sha256": "c43cf57481e2961460478231dc8a2fcee59280586875f78f7d25f8f308e56964",
       "destinations": []
     },
     {
@@ -145,7 +145,7 @@
     },
     {
       "source": "payload/root/COPILOT_GUIDE.md",
-      "sha256": "2194653743cbf2aa802a561dd5363721db4bec6dc48bc6e744a642742fcca026",
+      "sha256": "4736da4aee566355ded452a3a90390c9639f57c8bfd7420f3667d6044f1a1be9",
       "destinations": [
         {
           "directory_id": "ai_work",
@@ -157,7 +157,7 @@
     },
     {
       "source": "payload/root/DAILY_WORK.md",
-      "sha256": "b38b609c95ec355b2c9455fa18dfdefca6b688bf9b54b76bd5077cf5dcb90503",
+      "sha256": "6a25cde47b5bd3c35a9d2f94f73bf80f042434c760d0bdee9a9bafc6435c0661",
       "destinations": [
         {
           "directory_id": "ai_work",
@@ -169,7 +169,7 @@
     },
     {
       "source": "payload/root/README.md",
-      "sha256": "0e00c1357951e6b12886805186fc2a5ad9c22077668f99403c0f3f6bc8982433",
+      "sha256": "4927f87bc9b4014344d381a596a3c12a784e3b62c8fe672729e0c17c781cc710",
       "destinations": [
         {
           "directory_id": "root",
@@ -337,7 +337,7 @@
     },
     {
       "source": "scripts/build_release.py",
-      "sha256": "f75a244c38dc77ff978792c35e81785cb9672ff38b1c271b9ba156d37600e864",
+      "sha256": "6af79189cd02b5fc363d4c2793438f7aa9e0a6cca7dc4d964f903d260390b33b",
       "destinations": []
     },
     {
@@ -376,7 +376,7 @@
     },
     {
       "source": "scripts/workspace_manager.py",
-      "sha256": "4f389cd77e1deeb03d6c64c90da1b335aca9707fec69246201454f2b157e57af",
+      "sha256": "3c545371d58cdf72af682b6f0fb913908fd37edb468f24196682abb2929f6285",
       "destinations": [
         {
           "directory_id": "ai_work",

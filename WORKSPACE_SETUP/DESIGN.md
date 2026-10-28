@@ -2,7 +2,7 @@
 
 **Design version:** 1.0  
 **Prepared:** 20 October 2026  
-**Updated:** 25 October 2026  
+**Updated:** 28 October 2026<br>
 **Status:** Current implementation specification; platform validation results and remaining checks are recorded in VALIDATION_REPORT.md.  
 **Audience:** Developers, maintainers, security reviewers, and an AI agent implementing the solution.  
 **Supported initial environments:** Native Windows 11 and macOS; shared files/Python tools usable with any editor. Generated IDE integration is VS Code only; other IDE project import and Copilot discovery require manual setup/testing.  
@@ -265,7 +265,7 @@ Both local state files reside under `<ai_work>/.framework/`. `installation.json`
 ```json
 {
   "schema_version": 1,
-  "package_version": "0.1.16",
+  "package_version": "0.1.17",
   "design_version": "1.0",
   "initialization_status": "complete",
   "vscode_workspace_name": "Development",
@@ -411,7 +411,7 @@ The noninteractive refresh command previews discovery plus workspace changes wit
 
 Use the shared maintenance lock and atomic same-directory writes. Recheck configuration, installed state, relevant folder availability and workspace bytes before applying their reviewed phase; refuse concurrent changes. Each approved phase is durable independently. A failure after workspace replacement but before recording its new state hash leaves user-editable workspace content recoverable; validation accepts it and a rerun can continue. No multi-file transaction or automatic rollback deletion is claimed.
 
-Directory names and the VS Code filename remain fixed after initialization. Existing installations are not silently upgraded. New 0.1.16 installations include the independent runtime, JSONC helper, console helper and daily launchers.
+Directory names and the VS Code filename remain fixed after initialization. Existing installations are not silently upgraded. New 0.1.17 installations include the independent runtime, JSONC helper, console helper and daily launchers.
 
 ## 8. Deterministic command-line tools
 

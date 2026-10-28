@@ -80,7 +80,7 @@ def manifest(package=PACKAGE):
         if name == 'settings.json':
             entry['mutable'] = True
         files.append(entry)
-    return {'schema_version': 1, 'package_version': '0.1.16', 'design_version': '1.0',
+    return {'schema_version': 1, 'package_version': '0.1.17', 'design_version': '1.0',
             'minimum_python': '3.9', 'files': files,
             'directories': []}
 
@@ -104,7 +104,7 @@ def build(output=None, package=PACKAGE):
             members = {'WORKSPACE_SETUP/' + name: name for name in INVENTORY + ['package-manifest.json']}
             members.update({'README.md': 'README.md', 'Start macOS.command': 'launchers/Start macOS.command', 'Start Windows.cmd': 'launchers/Start Windows.cmd'})
             for member, name in sorted(members.items()):
-                info = zipfile.ZipInfo(prefix + member, date_time=(2026, 10, 25, 0, 0, 0))
+                info = zipfile.ZipInfo(prefix + member, date_time=(2026, 10, 28, 0, 0, 0))
                 info.compress_type = zipfile.ZIP_DEFLATED
                 info.create_system = 3
                 info.external_attr = (0o100755 if member == 'Start macOS.command' else 0o100644) << 16

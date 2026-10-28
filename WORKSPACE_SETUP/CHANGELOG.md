@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.17 — 28 October 2026
+
+- Clarify first-use instructions for repository labels, refresh choices, local tickets, starting Git commits, Copilot context and terminal commands. Shorten the three generated guides while preserving cancellation, preservation and recovery rules.
+- Clarify contributor instructions in AGENTS.md without changing skill naming or release rules. Runtime behavior and configuration schemas are unchanged.
+- Refresh source hashes and the pilot archive; existing generated workspaces are not automatically rewritten.
+
 ## 0.1.16 — 28 October 2026
 
 - Describe ide_configs as holding saved workspaces and other IDE-specific configuration files in the generated root README. This wording change does not add automatic configuration support for other IDEs.

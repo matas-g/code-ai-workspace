@@ -1,11 +1,11 @@
 # Use Copilot with Code-AI
 
-The [orientation file](.github/copilot-instructions.md) points Copilot to your context and tickets. Check that it loads; otherwise attach relevant files yourself.
+The [orientation file](.github/copilot-instructions.md) gives Copilot directions to your project context and tickets. Check that Copilot receives it; otherwise attach relevant files yourself.
 
 ## Prepare once
 
 1. Open [{{vscode_workspace_name}}.code-workspace](../ide_configs/{{vscode_workspace_name_link}}.code-workspace) in VS Code. If **AI Work**, **Knowledge** or repositories are missing, [refresh the workspace](../README.md#add-hide-or-remove-a-repository).
-2. Sign in to your approved Copilot account and select **Local**. Use **Ask** for questions, **Plan** for planning and **Agent** for authorized execution; available tools vary by mode.
+2. Sign in with your approved Copilot account and select **Local** as the chat's execution environment. Use **Ask** for questions, **Plan** for planning and **Agent** for approved changes. Available modes and tools vary.
 3. Fill in the context files from verified sources:
 
    | File | Add |
@@ -15,38 +15,38 @@ The [orientation file](.github/copilot-instructions.md) points Copilot to your c
 
 ## Start a task
 
-[Create or open a ticket](DAILY_WORK.md#work-on-a-ticket), then attach its brief and relevant files. Ask Copilot to read them first. Ticket creation does not fetch Jira requirements.
+[Create or open a ticket](DAILY_WORK.md#work-on-a-ticket), attach its `brief.md` and relevant files in chat, and ask Copilot to read them. Jira details are never fetched.
 
-Consult [Knowledge](../{{knowledge_link}}/README.md) and company documentation as needed. Avoid attaching the whole framework. Check answers and test changes; repository and company instructions still apply.
+Read [Knowledge](../{{knowledge_link}}/README.md) on demand; avoid attaching everything. Check answers, test changes and follow repository/company guidance.
 
 ## Check automatic context loading
 
-Use synthetic context for this check:
+Use made-up project facts for this check:
 
-1. Run **Chat: Open Customizations**, select **Instructions** and find `{{ai_work}}/.github/copilot-instructions.md`. This confirms discovery only.
-2. Start a **fresh chat** with a MAIN repository file active. Ask a question answered by your overview/reference map. Do not attach or name the orientation or tell Copilot where to read.
-3. Inspect **References** or available chat debug details to confirm the orientation was included. Check that Copilot read relevant context and answered correctly. A correct answer or repeated keyword alone is insufficient evidence.
+1. In VS Code's Command Palette, run **Chat: Open Customizations** → **Instructions**. Find `{{ai_work}}/.github/copilot-instructions.md`. Listing proves discovery only.
+2. Open a file from a **MAIN** repository and start a **new chat**. Ask about a fact in your overview or reference map without attaching or naming those files or the orientation.
+3. Expand **References** or inspect chat debug details to confirm orientation inclusion. Check file reads and answer accuracy; a correct answer alone does not prove loading.
 
-Repeat for OTHER/DOCS roots, available modes, custom names and relocation; check repository guidance still applies. Record OS, package, Python and IDE/extension versions, environment, mode and evidence. This full matrix remains unverified; structural validation does not certify loading.
+Repeat with **OTHER** and **DOCS** files, available modes, renamed folders and after moving the development folder. Check repository guidance still applies. Record OS, package, Python, VS Code/Copilot versions, environment, mode and evidence. Full coverage remains unverified; validation only checks files.
 
 ## If context is missing
 
 Attach the [orientation](.github/copilot-instructions.md), relevant project files and current brief. This fallback does not count as an automatic-loading test.
 
-Check `github.copilot.chat.codeGeneration.useInstructionFiles` and applicable policy. Respect restrictions; do not move instructions globally or into company repositories as a workaround. Instructions do not govern inline suggestions.
+Inspect `github.copilot.chat.codeGeneration.useInstructionFiles` in VS Code Settings and respect applicable policy. Do not copy instructions globally or into company repositories as a workaround. Instructions do not affect inline suggestions.
 
 You can edit the orientation; refresh preserves it. Keep its links relative.
 
 ## Check the skills
 
-Look for the [five `ca-` commands](DAILY_WORK.md#copilot-commands) in the slash-command menu. Check skills separately from orientation loading.
+Skills are on-demand workflows. Type `/` in chat to find the [five `ca-` commands](DAILY_WORK.md#copilot-commands); their discovery is separate from orientation loading.
 
-Create a synthetic ticket, then archive and restore it. Check captured details, preserved edits on repeat creation and unchanged attachments. Verify review loads its checklist and audit reports findings. Direct Python success does not prove skill loading.
+Using a made-up ticket, check creation, preserved edits on repeat creation, archive/restore and unchanged attachments. Check review loads its checklist and audit returns findings. Python success does not prove skill loading.
 
-If skills are unavailable, use the [daily Python commands](DAILY_WORK.md#run-commands-without-copilot). Attach the [review procedure](.github/skills/ca-change-review/SKILL.md) and [checklist](.github/skills/ca-change-review/resources/review-checklist.md) for a manual review workflow.
+For unavailable skills, use [Python commands](DAILY_WORK.md#run-commands-without-copilot). For reviews, attach the [procedure](.github/skills/ca-change-review/SKILL.md) and [checklist](.github/skills/ca-change-review/resources/review-checklist.md).
 
 ## Further help
 
 [VS Code instructions](https://code.visualstudio.com/docs/agent-customization/custom-instructions) · [Verification](https://code.visualstudio.com/docs/agent-customization/custom-instructions#verify-your-instructions) · [Skills](https://code.visualstudio.com/docs/agent-customization/agent-skills)
 
-Documentation checked 25 October 2026; UI labels may differ in your installed version.
+References checked 28 October 2026.

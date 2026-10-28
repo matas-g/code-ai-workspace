@@ -1,7 +1,7 @@
 # Manual tests — Code-AI development tracker
 
 **Last updated:** 28 October 2026  
-**Current release:** 0.1.16  
+**Current release:** 0.1.17<br>
 **Purpose:** Keep track of manual checks while developing this solution. Read this file when asked what still needs manual testing. Update results from explicit tester reports or actual observed manual tests; never infer a pass from an automated test or from file presence.
 
 This is a maintainer-only project file. Keep it outside WORKSPACE_SETUP and exclude it from the ZIP and generated development folders. Product instructions belong in the generated COPILOT_GUIDE.md and SETUP_GUIDE.md. Preserve this tracker and its evidence across releases; reopen a passed test only when a relevant change or a new platform/version needs retesting.
@@ -42,7 +42,7 @@ P0 = verify before relying on automatic context. P1 = normal pilot/platform chec
 | PLATFORM-01 | P1 | Approved interpreter discovery/missing-interpreter handling; Windows literal paths, reparse refusal and console input; macOS Finder/Terminal trust and physical closure behavior. | PENDING | PENDING |
 | DAILY-01 | P1 | Small end-to-end project task with selected context, meaningful tests, review from verified per-repo baseline, ticket archive/restore with attachments and reusable knowledge. | REPORTED partial (task/lifecycle) | PENDING |
 | RECOVERY-01 | P1 | Restore an approved backup to another location; check notes/assets, configuration, tools and unpublished work coverage, then validate and repeat key context checks. | PENDING | PENDING |
-| DOC-01 | P1 | 0.1.14+ onboarding (0.1.15 names: root README.md, AI Work/DAILY_WORK.md and COPILOT_GUIDE.md): a new user can follow the three shortened guides to open the workspace, create/review/archive a ticket, refresh repositories, find command help and use the Copilot attachment fallback. Check rendered tables and links with default/custom names. Automated link checks do not certify readability or Copilot discovery. | PENDING | PENDING |
+| DOC-01 | P1 | 0.1.17 onboarding (filenames: root README.md, AI Work/DAILY_WORK.md and COPILOT_GUIDE.md): a new user can follow the three shortened guides to open the workspace, create/review/archive a ticket, refresh repositories, find command help and use the Copilot attachment fallback. Check that repository labels, local ticket folders, starting Git commits, refresh choices and the Python working directory are understood. Check rendered tables and links with default/custom names. Automated link checks do not certify readability or Copilot discovery. | PENDING | PENDING |
 | OTHER-IDE-01 | P2 | If adopting IntelliJ/Eclipse, test manual project import, shared notes/tools and actual Copilot features separately. | PENDING | PENDING |
 
 Since 0.1.11, all current framework skills use the `ca-` prefix. Earlier recorded results below retain their original names and do not certify discovery of the renamed skills. Use the current prefixed names when running SKILL-01 through SKILL-03, and record discovery separately under SKILL-04.
