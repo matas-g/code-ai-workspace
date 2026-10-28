@@ -1,7 +1,7 @@
 # Manual tests — Code-AI development tracker
 
 **Last updated:** 28 October 2026  
-**Current release:** 0.1.17<br>
+**Version tracking:** See `VERSION` in [workspace_manager.py](WORKSPACE_SETUP/scripts/workspace_manager.py) for the current source version; each result below records the release actually tested.<br>
 **Purpose:** Keep track of manual checks while developing this solution. Read this file when asked what still needs manual testing. Update results from explicit tester reports or actual observed manual tests; never infer a pass from an automated test or from file presence.
 
 This is a maintainer-only project file. Keep it outside WORKSPACE_SETUP and exclude it from the ZIP and generated development folders. Product instructions belong in the generated COPILOT_GUIDE.md and SETUP_GUIDE.md. Preserve this tracker and its evidence across releases; reopen a passed test only when a relevant change or a new platform/version needs retesting.

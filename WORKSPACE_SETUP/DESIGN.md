@@ -265,7 +265,7 @@ Both local state files reside under `<ai_work>/.framework/`. `installation.json`
 ```json
 {
   "schema_version": 1,
-  "package_version": "0.1.17",
+  "package_version": "<release version>",
   "design_version": "1.0",
   "initialization_status": "complete",
   "vscode_workspace_name": "Development",
@@ -279,7 +279,7 @@ Both local state files reside under `<ai_work>/.framework/`. `installation.json`
 }
 ```
 
-The example hash is a placeholder in this specification only. Actual state MUST contain real hashes. Record the selected vscode_workspace_name in installed state, alongside directory_names. Refuse edits that change either after initialization; moving/renaming the outer development folder remains supported because its path is derived from the installed tool. Record every created file except the state file itself and transient initialization markers. Record created directories separately if needed for empty-directory validation. Use root-relative `/` paths.
+The example version and hash are placeholders in this specification only. Actual state MUST contain the initialized package version and real hashes. Record the selected vscode_workspace_name in installed state, alongside directory_names. Refuse edits that change either after initialization; moving/renaming the outer development folder remains supported because its path is derived from the installed tool. Record every created file except the state file itself and transient initialization markers. Record created directories separately if needed for empty-directory validation. Use root-relative `/` paths.
 
 Ownership classes:
 
@@ -333,6 +333,8 @@ Code-AI-Setup-<version>/
 Source assets under `launchers/` remain maintainer inputs; the active user entrypoints are beside the README inside the enclosing folder. Maintainers may keep the entire product in a Git repository later; it is not part of a developer's generated tree.
 
 The release builder uses an explicit source inventory; no directory-recursive inclusion. It writes a manifest and deterministic ZIP with normalized timestamps, a 755 macOS entrypoint and a checksum sidecar. Every ZIP member path MUST begin with `Code-AI-Setup-<package_version>/`, derived from the manifest package version rather than the output filename. Keep all manifest source paths relative to `WORKSPACE_SETUP`; the enclosing folder is distribution packaging only. No package member sits outside this folder. Extraction tools may add an additional outer folder; document that users open the folder containing the README and launchers. It never overwrites a release archive. Arbitrary files, source `.git`, caches, credentials, reports, private config and test sandboxes are excluded. The reviewed default `settings.json` is deliberately distributed; users must not redistribute personal edits as an official default.
+
+`scripts/workspace_manager.py` owns the single product `VERSION` constant and independent `DESIGN_VERSION`. The maintainer builder reads those literal strings without executing runtime code. Preparation updates the package README's current version label before hashing sources; `--output-dir` derives the default ZIP filename from the same version. An explicit `--sync-project-docs` also synchronizes existing project-root README/design copies; ordinary builds write only inside the package and the requested archive/checksum paths. General guides avoid repeating the current product version. Changelog entries and validation/manual-test evidence retain their explicitly recorded release versions and are never automatically relabelled. ZIP timestamps are fixed independently of release dates.
 
 Manifest schema 1 declares `package_version`, `design_version`, `minimum_python`, `files` and `directories`. Each file entry contains `source`, `sha256`, `destinations`; each destination has `directory_id`, `relative_path`, `render` (`copy` or `markdown`) and `owner` (`framework`, `generated`, `user`). Source-only files have an empty destinations list. Logical IDs are the five configured directories plus `root` and `ide_configs`; no `setup` output ID exists. The runtime contains an independent expected output/ownership inventory, including the two daily refresh launchers and helper modules, preventing source-only material or unexpected paths from being deployed.
 
@@ -411,7 +413,7 @@ The noninteractive refresh command previews discovery plus workspace changes wit
 
 Use the shared maintenance lock and atomic same-directory writes. Recheck configuration, installed state, relevant folder availability and workspace bytes before applying their reviewed phase; refuse concurrent changes. Each approved phase is durable independently. A failure after workspace replacement but before recording its new state hash leaves user-editable workspace content recoverable; validation accepts it and a rerun can continue. No multi-file transaction or automatic rollback deletion is claimed.
 
-Directory names and the VS Code filename remain fixed after initialization. Existing installations are not silently upgraded. New 0.1.17 installations include the independent runtime, JSONC helper, console helper and daily launchers.
+Directory names and the VS Code filename remain fixed after initialization. Existing installations are not silently upgraded. New installations include the independent runtime, JSONC helper, console helper and daily launchers.
 
 ## 8. Deterministic command-line tools
 

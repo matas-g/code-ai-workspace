@@ -705,6 +705,101 @@ class WorkspaceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             builder.build(output, self.source)
 
+    def test_release_version_propagates_from_runtime_through_installed_cli(self):
+        runtime = self.source / 'scripts/workspace_manager.py'
+        runtime.write_text(runtime.read_text().replace('VERSION = "' + w.VERSION + '"', 'VERSION = "7.8.9"', 1))
+        evidence = {name: (self.source / name).read_bytes() for name in ('CHANGELOG.md', 'VALIDATION_REPORT.md')}
+        proc = subprocess.run([sys.executable, '-I', '-S', '-B', str(self.source / 'scripts/build_release.py'),
+                               '--output-dir', str(self.work)], capture_output=True, text=True)
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        archive = self.work / 'code-ai-workspace-7.8.9-macos-pilot.zip'
+        self.assertTrue(archive.is_file())
+        self.assertIn(str(archive), proc.stdout)
+        manifest = w.load_json(self.source / 'package-manifest.json')
+        self.assertEqual(manifest['package_version'], '7.8.9')
+        self.assertEqual(manifest['design_version'], w.DESIGN_VERSION)
+        for entry in manifest['files']:
+            self.assertEqual(entry['sha256'], w.digest((self.source / entry['source']).read_bytes()), entry['source'])
+        with zipfile.ZipFile(archive) as packaged:
+            self.assertTrue(all(name.startswith('Code-AI-Setup-7.8.9/') for name in packaged.namelist()))
+            self.assertIn(b'**Development status:** 7.8.9 pilot;', packaged.read('Code-AI-Setup-7.8.9/README.md'))
+            self.assertIn(b'**Development status:** 7.8.9 pilot;', packaged.read('Code-AI-Setup-7.8.9/WORKSPACE_SETUP/README.md'))
+        self.assertEqual(Path(str(archive) + '.sha256').read_text().split()[0], w.digest(archive.read_bytes()))
+        for name, content in evidence.items():
+            self.assertEqual((self.source / name).read_bytes(), content)
+        initializer = module_at('changed_version_initializer', self.source / 'scripts/workspace.py')
+        with guard(self.target):
+            initializer.initialize(self.source, self.target, self.config)
+        state = w.load_json(self.target / 'AI_WORK/.framework/installed-state.json')
+        self.assertEqual(state['package_version'], '7.8.9')
+        manager = self.target / 'AI_WORK/tools/workspace_manager.py'
+        for args, expected in ((['--version'], '7.8.9'), (['validate', '--format', 'json'], 'structurally-valid')):
+            result = subprocess.run([sys.executable, '-I', '-S', '-B', str(manager)] + args,
+                                    capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn(expected, result.stdout)
+
+    def test_release_metadata_is_static_and_invalid_versions_do_not_write(self):
+        builder = module_at('static_version_builder', self.source / 'scripts/build_release.py')
+        runtime = self.source / 'scripts/workspace_manager.py'
+        runtime.write_text('VERSION = "7.8.9"\nDESIGN_VERSION = "2.0"\nraise RuntimeError("must not execute")\n')
+        with guard('readonly'):
+            self.assertEqual(builder.release_versions(self.source), ('7.8.9', '2.0'))
+        for text in ('VERSION = "7.8"\nDESIGN_VERSION = "1.0"\n',
+                     'VERSION = str("7.8.9")\nDESIGN_VERSION = "1.0"\n',
+                     'VERSION = "7.8.9"\nVERSION = "8.0.0"\nDESIGN_VERSION = "1.0"\n',
+                     'VERSION = "7.8.9"\n', 'VERSION = [\n'):
+            runtime.write_text(text)
+            before = self.snapshot(self.source)
+            output = self.work / 'invalid.zip'
+            with self.subTest(text=text), guard('readonly'), self.assertRaises(ValueError):
+                builder.build(output, self.source)
+            self.assertEqual(self.snapshot(self.source), before)
+            self.assertFalse(output.exists())
+
+    def test_release_project_document_sync_is_explicit_and_preserves_test_history(self):
+        builder = module_at('sync_docs_builder', self.source / 'scripts/build_release.py')
+        readme, design = self.work / 'README.md', self.work / 'WORKSPACE_DESIGN.md'
+        tracker = self.work / 'MANUAL_TESTS.md'
+        readme.write_bytes(b'Old root README\n')
+        design.write_bytes(b'Old root design\n')
+        tracker.write_bytes(b'Historical test for release 0.1.0: reported.\n')
+        builder.build(package=self.source)
+        self.assertEqual(readme.read_bytes(), b'Old root README\n')
+        self.assertEqual(design.read_bytes(), b'Old root design\n')
+        builder.build(package=self.source, sync_project_docs=True)
+        self.assertEqual(readme.read_bytes(), builder.outer_readme((self.source / 'README.md').read_bytes()))
+        self.assertEqual(design.read_bytes(), (self.source / 'DESIGN.md').read_bytes())
+        self.assertEqual(tracker.read_bytes(), b'Historical test for release 0.1.0: reported.\n')
+        design.unlink()
+        before = self.snapshot(self.source)
+        with guard('readonly'), self.assertRaises(OSError):
+            builder.build(package=self.source, sync_project_docs=True)
+        self.assertEqual(self.snapshot(self.source), before)
+
+    def test_release_preflights_outputs_and_repeated_builds_are_reproducible(self):
+        builder = module_at('reproducible_builder', self.source / 'scripts/build_release.py')
+        runtime = self.source / 'scripts/workspace_manager.py'
+        runtime.write_text(runtime.read_text().replace('VERSION = "' + w.VERSION + '"', 'VERSION = "7.8.9"', 1))
+        first, second = self.work / 'first.zip', self.work / 'second.zip'
+        first.write_bytes(b'Existing release')
+        before = self.snapshot(self.source)
+        with guard('readonly'), self.assertRaises(ValueError):
+            builder.build(first, self.source)
+        self.assertEqual(self.snapshot(self.source), before)
+        self.assertEqual(first.read_bytes(), b'Existing release')
+        first.unlink()
+        sidecar = Path(str(first) + '.sha256')
+        sidecar.write_bytes(b'Existing checksum')
+        with guard('readonly'), self.assertRaises(ValueError):
+            builder.build(first, self.source)
+        self.assertEqual(self.snapshot(self.source), before)
+        self.assertEqual(sidecar.read_bytes(), b'Existing checksum')
+        sidecar.unlink()
+        builder.build(first, self.source)
+        builder.build(second, self.source)
+        self.assertEqual(first.read_bytes(), second.read_bytes())
+
     def starter(self):
         return module_at('interactive_setup_under_test', self.source / 'scripts/start.py')
 

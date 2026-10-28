@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Use workspace_manager.py as the single source for product and design version constants. Release preparation updates the README version before hashing; optionally synchronizes project-root README/design copies and derives the ZIP filename with --output-dir.
+- Remove unnecessary current-version references from general guides. Preserve historical changelog and test evidence; keep release dates separate from the fixed reproducible ZIP timestamp. No new runtime dependency or automatic upgrade is added.
+
 ## 0.1.17 — 28 October 2026
 
 - Clarify first-use instructions for repository labels, refresh choices, local tickets, starting Git commits, Copilot context and terminal commands. Shorten the three generated guides while preserving cancellation, preservation and recovery rules.

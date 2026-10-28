@@ -3,9 +3,11 @@
 import sys
 sys.dont_write_bytecode = True
 import argparse
+import ast
 import hashlib
 import json
 from pathlib import Path
+import re
 import stat
 import zipfile
 
@@ -39,6 +41,48 @@ def mapping(directory_id, path, render='copy', owner='user'):
     return {'directory_id': directory_id, 'relative_path': path, 'render': render, 'owner': owner}
 
 
+def source_file(package, name):
+    p = package / name
+    for candidate in [package] + [package / parent for parent in reversed(p.relative_to(package).parents)] + [p]:
+        info = candidate.lstat()
+        if candidate.is_symlink() or getattr(info, 'st_file_attributes', 0) & 0x400:
+            raise ValueError('Redirected release input: ' + name)
+    if not stat.S_ISREG(p.lstat().st_mode):
+        raise ValueError('Non-ordinary release input: ' + name)
+    return p
+
+
+def release_versions(package=PACKAGE):
+    """Read literal constants without importing or executing runtime code."""
+    path = source_file(package, 'scripts/workspace_manager.py')
+    try:
+        tree = ast.parse(path.read_bytes(), filename=str(path))
+    except SyntaxError as exc:
+        raise ValueError('Invalid runtime source: ' + str(exc)) from exc
+    versions = {}
+    for node in tree.body:
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name) and target.id in ('VERSION', 'DESIGN_VERSION'):
+                    if target.id in versions or not isinstance(node.value, ast.Constant) or not isinstance(node.value.value, str):
+                        raise ValueError('Release versions must be unique literal string constants.')
+                    versions[target.id] = node.value.value
+    if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', versions.get('VERSION', '')):
+        raise ValueError('VERSION must use MAJOR.MINOR.PATCH.')
+    if not re.fullmatch(r'[0-9]+\.[0-9]+', versions.get('DESIGN_VERSION', '')):
+        raise ValueError('DESIGN_VERSION must use MAJOR.MINOR independently of VERSION.')
+    return versions['VERSION'], versions['DESIGN_VERSION']
+
+
+def outer_readme(data):
+    return data.replace(b'(SETUP_GUIDE.md)', b'(WORKSPACE_SETUP/SETUP_GUIDE.md)').replace(b'(settings.json)', b'(WORKSPACE_SETUP/settings.json)').replace(b'(VALIDATION_REPORT.md)', b'(WORKSPACE_SETUP/VALIDATION_REPORT.md)')
+
+
+def default_output(directory, package=PACKAGE):
+    version, _ = release_versions(package)
+    return Path(directory) / ('code-ai-workspace-' + version + '-macos-pilot.zip')
+
+
 def manifest(package=PACKAGE):
     if (package / 'installed-state.json').exists():
         raise ValueError('Build releases from reviewed source, never an installed personal copy.')
@@ -46,13 +90,7 @@ def manifest(package=PACKAGE):
     for name in sorted(INVENTORY):
         if name.startswith("payload/skills/") and not Path(name).parts[2].startswith("ca-"):
             raise ValueError("Framework skill names must use the ca- prefix: " + name)
-        p = package / name
-        for component in [package] + list(reversed(p.relative_to(package).parents)):
-            candidate = component if component == package else package / component
-            if candidate.exists() and (candidate.is_symlink() or getattr(candidate.lstat(), 'st_file_attributes', 0) & 0x400):
-                raise ValueError('Redirected release input parent: ' + name)
-        if p.is_symlink() or getattr(p.lstat(), 'st_file_attributes', 0) & 0x400 or not stat.S_ISREG(p.lstat().st_mode):
-            raise ValueError('Non-ordinary release input: ' + name)
+        p = source_file(package, name)
         destinations = []
         if name == 'payload/root/README.md':
             destinations.append(mapping('root', 'README.md', 'markdown', 'generated'))
@@ -80,14 +118,14 @@ def manifest(package=PACKAGE):
         if name == 'settings.json':
             entry['mutable'] = True
         files.append(entry)
-    return {'schema_version': 1, 'package_version': '0.1.17', 'design_version': '1.0',
+    version, design_version = release_versions(package)
+    return {'schema_version': 1, 'package_version': version, 'design_version': design_version,
             'minimum_python': '3.9', 'files': files,
             'directories': []}
 
 
-def build(output=None, package=PACKAGE):
-    release = manifest(package)
-    data = (json.dumps(release, indent=2) + '\n').encode()
+def build(output=None, package=PACKAGE, sync_project_docs=False):
+    release = manifest(package)  # Validate every allowlisted input before preparing files.
     if output is not None:
         output = Path(output)
         if not output.is_absolute() or not output.parent.is_dir() or output.exists() or output.is_symlink():
@@ -95,6 +133,24 @@ def build(output=None, package=PACKAGE):
         sidecar = Path(str(output) + '.sha256')
         if sidecar.exists() or sidecar.is_symlink():
             raise ValueError('Checksum output already exists.')
+    readme_path = source_file(package, 'README.md')
+    original = readme_path.read_bytes()
+    readme, count = re.subn(rb'(?m)^(\*\*Development status:\*\* )[0-9]+\.[0-9]+\.[0-9]+(?= )',
+                            lambda match: match[1] + release['package_version'].encode('ascii'), original)
+    if count != 1:
+        raise ValueError('README.md must contain exactly one Development status version label.')
+    mirrors = {}
+    if sync_project_docs:
+        # Explicit opt-in: ordinary builds never write outside WORKSPACE_SETUP.
+        mirrors = {source_file(package.parent, 'README.md'): outer_readme(readme),
+                   source_file(package.parent, 'WORKSPACE_DESIGN.md'): source_file(package, 'DESIGN.md').read_bytes()}
+    if readme != original:
+        readme_path.write_bytes(readme)
+    for path, content in mirrors.items():
+        if path.read_bytes() != content:
+            path.write_bytes(content)
+    release = manifest(package)  # Hash prepared content, including the updated README.
+    data = (json.dumps(release, indent=2) + '\n').encode()
     (package / 'package-manifest.json').write_bytes(data)
     if output is not None:
         # One versioned enclosing folder keeps the package together with any extractor.
@@ -104,27 +160,34 @@ def build(output=None, package=PACKAGE):
             members = {'WORKSPACE_SETUP/' + name: name for name in INVENTORY + ['package-manifest.json']}
             members.update({'README.md': 'README.md', 'Start macOS.command': 'launchers/Start macOS.command', 'Start Windows.cmd': 'launchers/Start Windows.cmd'})
             for member, name in sorted(members.items()):
-                info = zipfile.ZipInfo(prefix + member, date_time=(2026, 10, 28, 0, 0, 0))
+                info = zipfile.ZipInfo(prefix + member, date_time=(1980, 1, 1, 0, 0, 0))
                 info.compress_type = zipfile.ZIP_DEFLATED
                 info.create_system = 3
                 info.external_attr = (0o100755 if member == 'Start macOS.command' else 0o100644) << 16
                 content = (package / name).read_bytes()
                 if member == 'README.md':
-                    content = content.replace(b'(SETUP_GUIDE.md)', b'(WORKSPACE_SETUP/SETUP_GUIDE.md)').replace(b'(settings.json)', b'(WORKSPACE_SETUP/settings.json)').replace(b'(VALIDATION_REPORT.md)', b'(WORKSPACE_SETUP/VALIDATION_REPORT.md)')
+                    content = outer_readme(content)
                 archive.writestr(info, content)
         with sidecar.open('x', encoding='utf-8') as stream:
             stream.write(hashlib.sha256(output.read_bytes()).hexdigest() + '  ' + output.name + '\n')
     return len(INVENTORY)
 
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', help='New absolute zip path; omit to refresh only the source manifest')
-    args = parser.parse_args()
+    destination = parser.add_mutually_exclusive_group()
+    destination.add_argument('--output', help='New absolute ZIP path with a custom filename')
+    destination.add_argument('--output-dir', help='Existing absolute directory; use the versioned default ZIP filename')
+    parser.add_argument('--sync-project-docs', action='store_true', help='Also synchronize existing project-root README.md and WORKSPACE_DESIGN.md copies')
+    args = parser.parse_args(argv)
     if sys.version_info < (3, 9):
         parser.error('Python 3.9+ required')
     try:
-        print('Release manifest built for', build(args.output), 'allowlisted input files.')
+        output = default_output(args.output_dir) if args.output_dir is not None else args.output
+        print('Release manifest built for', build(output, sync_project_docs=args.sync_project_docs), 'allowlisted input files.')
+        if output is not None:
+            print('ZIP:', output)
+            print('Checksum:', str(output) + '.sha256')
         return 0
     except (OSError, ValueError) as exc:
         print('Error: ' + str(exc), file=sys.stderr)

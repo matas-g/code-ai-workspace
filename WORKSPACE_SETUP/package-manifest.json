@@ -11,12 +11,12 @@
     },
     {
       "source": "CHANGELOG.md",
-      "sha256": "d8da078dc982c27486c081a2ebc1e1a9425ee522dfa6d135646e636d37095eef",
+      "sha256": "fe332570237b7195cbeaa87d271d48dd95dcfe3b364f998b36f87511b8cfaf37",
       "destinations": []
     },
     {
       "source": "DESIGN.md",
-      "sha256": "1d0dd174cd0735221ef5915507817c8078ed55e3a09f2b91cf974e799bf28b02",
+      "sha256": "26a29786b8abeb2fe8ce8cecdcfc49235eeeb50c5d60d6ef84604a3e04a6b42b",
       "destinations": []
     },
     {
@@ -26,12 +26,12 @@
     },
     {
       "source": "SETUP_GUIDE.md",
-      "sha256": "d199e98f9fab004e56b93ccb65886b2b5d8f4948ce23b065db04fa660383ae0a",
+      "sha256": "9131603019d5e8ef1f8cf6b5d5f595cccd210c6e35711825b9800a87d9dc3a68",
       "destinations": []
     },
     {
       "source": "VALIDATION_REPORT.md",
-      "sha256": "c43cf57481e2961460478231dc8a2fcee59280586875f78f7d25f8f308e56964",
+      "sha256": "fa20f1510b3716e4b35e2bf27f3b568a1394c96328896f2f74bf32dd6df69ddc",
       "destinations": []
     },
     {
@@ -337,7 +337,7 @@
     },
     {
       "source": "scripts/build_release.py",
-      "sha256": "6af79189cd02b5fc363d4c2793438f7aa9e0a6cca7dc4d964f903d260390b33b",
+      "sha256": "05270f771ef2b0b6f74fc3807b143068a7a944a4ceb0456092ce108cb1a2d087",
       "destinations": []
     },
     {
@@ -376,7 +376,7 @@
     },
     {
       "source": "scripts/workspace_manager.py",
-      "sha256": "3c545371d58cdf72af682b6f0fb913908fd37edb468f24196682abb2929f6285",
+      "sha256": "f225e97a65b66ba23e016909aacd9d1dee7749d8c9a516ff66a5b36d7bf88fcc",
       "destinations": [
         {
           "directory_id": "ai_work",
@@ -394,7 +394,7 @@
     },
     {
       "source": "tests/test_workspace.py",
-      "sha256": "63d928b7d40c849ea65fec5005d484e4b6e6ed19dbfdd06fff3fdb96ee382e23",
+      "sha256": "ccff2cea2c8354fefdff443cb3402343ae9be082571877a630d00fbbf4885ba6",
       "destinations": []
     }
   ],

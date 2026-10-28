@@ -1,9 +1,17 @@
-# Validation report — version 0.1.17, design 1.0
+# Validation report — design 1.0
 
 **Date:** 28 October 2026  
 **Status:** macOS pilot. Copilot orientation inclusion across roots/modes, native Windows and physical GUI behavior remain manual checks.
 
-## Verification
+## Unreleased development verification — centralized release versioning
+
+On 28 October 2026, **97 behavioral tests passed** on Python 3.9.6 and Python 3.15.0, run serially against an isolated source copy. Commands: `/usr/bin/python3 -I -S -B _tmp/release-versioning/verification/WORKSPACE_SETUP/tests/test_workspace.py` and `python3 -I -S -B _tmp/release-versioning/verification/WORKSPACE_SETUP/tests/test_workspace.py`. Logs are `_tmp/release-versioning/python39-tests.log` and `_tmp/release-versioning/python315-tests.log`.
+
+Four new tests cover a synthetic version change propagated through the default ZIP filename, enclosing folder, README labels, source hashes, fresh installed state and daily CLI; static version reading without runtime execution; invalid version/output refusal before preparation writes; explicit root-document synchronization; preservation of historical test/changelog content; and byte-identical repeated ZIP builds. Existing custom-name, relocation, launcher and daily workflow coverage also passes.
+
+The product version remains unchanged until a new release is prepared. No new delivery ZIP was created for this development change; the released archive and evidence below remain associated with their original versions. No manual GUI/Copilot result is inferred from these automated checks.
+
+## Verification — released 0.1.17
 
 - macOS 26.6.2, Apple Silicon.
 - Python 3.9.6: **93 behavioral tests passed**.

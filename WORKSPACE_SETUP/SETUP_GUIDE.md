@@ -92,7 +92,7 @@ python3 -I -S -B "<ai_work>/tools/workspace_manager.py" refresh --remove-missing
 python3 -I -S -B "<ai_work>/tools/workspace_manager.py" refresh --apply
 ```
 
-Without flags, refresh previews both phases read-only. `--remove-missing` includes configuration-only cleanup in the preview; combine with `--apply` for explicit noninteractive execution. Interactive mode accepts cleanup only through its preview choice. Direct commands do not retain the terminal. Directory/VS Code filename changes after initialization remain unsupported. Existing generated trees are not automatically upgraded; initialize a fresh 0.1.17 tree and transfer approved personal content manually, or keep using the old tools.
+Without flags, refresh previews both phases read-only. `--remove-missing` includes configuration-only cleanup in the preview; combine with `--apply` for explicit noninteractive execution. Interactive mode accepts cleanup only through its preview choice. Direct commands do not retain the terminal. Directory/VS Code filename changes after initialization remain unsupported. Existing generated trees are not automatically upgraded; initialize a fresh tree from the chosen release and transfer approved personal content manually, or keep using the old tools.
 
 Daily `validate` and `audit` commands present a result summary and counts, then errors, warnings, manual checks and informational notes. Intentional edits to installation configuration, overview and reference map are normal and are listed together as changes since setup. Empty detail sections are omitted. Setup validation uses the same layout. Add `--format json` for machine-readable diagnostics; data and exit codes are unchanged. `audit --save-report NEW_FILENAME.json` saves JSON under the AI root's `.framework/reports/` and confirms the location in text mode. Other direct maintenance commands retain their JSON output; clickable Start and refresh launchers provide interactive presentation.
 
@@ -133,5 +133,22 @@ If initialization fails after creating the target, it retains an incomplete mark
 ## Maintainer commands
 
 Run synthetic tests with the approved interpreter: `python3 -I -S -B WORKSPACE_SETUP/tests/test_workspace.py`.
-Refresh reviewed source hashes with `python3 -I -S -B WORKSPACE_SETUP/scripts/build_release.py`.
-Build a new versioned archive with `--output ABSOLUTE_NEW_ZIP`. Build inputs are explicitly allowlisted; arbitrary local files and personal installed data are excluded. Edit source under `WORKSPACE_SETUP`; the builder places its reviewed launcher assets, README and source package inside the single versioned `Code-AI-Setup-<version>/` folder. This folder name comes from the package version, independently of the ZIP filename. No package files are stored outside it.
+Set the product version only in `scripts/workspace_manager.py` (`VERSION`, using `MAJOR.MINOR.PATCH`). The independent `DESIGN_VERSION` changes only when the design version changes. Write the changelog and record actual verification separately; the builder never rewrites historical versions or test evidence.
+
+Prepare the README version label, reviewed source hashes and project-root README/design copies with:
+
+```sh
+python3 -I -S -B WORKSPACE_SETUP/scripts/build_release.py --sync-project-docs
+```
+
+Without `--sync-project-docs`, preparation writes only inside `WORKSPACE_SETUP`. This flag requires the existing project-root `README.md` and `WORKSPACE_DESIGN.md` copies. Review the prepared files, run the tests above, then record the actual results and prepare again if documentation changed.
+
+Build with an automatically named ZIP and checksum in an existing absolute directory:
+
+```sh
+python3 -I -S -B WORKSPACE_SETUP/scripts/build_release.py --sync-project-docs --output-dir ABSOLUTE_RELEASE_DIRECTORY
+```
+
+The default filename is `code-ai-workspace-<version>-macos-pilot.zip`; `--output ABSOLUTE_NEW_ZIP` still accepts a custom filename. Existing archives/checksums are refused. After verifying a newer ZIP, move the previous ZIP and checksum into the project's `_old zips/` folder without overwriting archived files; the builder does not archive them automatically.
+
+Build inputs are explicitly allowlisted; arbitrary local files and personal installed data are excluded. The builder reads version constants without executing runtime code, updates the README before calculating hashes, and uses a fixed ZIP timestamp for reproducibility. It places reviewed launchers, README and source package inside `Code-AI-Setup-<version>/`, independently of any custom ZIP filename. No package files are stored outside it. Changelog entries, validation report versions/dates and manual-test evidence remain explicit records of the release actually reviewed or tested.

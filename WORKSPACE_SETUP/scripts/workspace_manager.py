@@ -15,6 +15,7 @@ import stat
 from urllib.parse import quote, unquote, urlsplit
 import uuid
 
+# Single source for the product version; the maintainer release builder reads it.
 VERSION = "0.1.17"
 DESIGN_VERSION = "1.0"
 AI_ROOT = Path(__file__).absolute().parent.parent
