@@ -2,7 +2,10 @@
 
 ## Unreleased
 
+## 0.1.19 — 30 October 2026
+
 - Change the default VS Code workspace filename from Development.code-workspace to Code-AI.code-workspace. Keep explicit custom names and existing installations unchanged; align settings, setup text, guides and behavioral checks with the new default.
+- Package the current implementation as a macOS pilot with refreshed release labels, source hashes and project-root document copies. Design and configuration/manifest/state schemas remain unchanged. Known reliability work in the maintainer improvement plan and native Windows/GUI/Copilot verification remain outstanding.
 
 ## 0.1.18 — 29 October 2026
 

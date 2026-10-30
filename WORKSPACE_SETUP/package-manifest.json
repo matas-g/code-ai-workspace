@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package_version": "0.1.18",
+  "package_version": "0.1.19",
   "design_version": "1.0",
   "minimum_python": "3.9",
   "files": [
@@ -11,7 +11,7 @@
     },
     {
       "source": "CHANGELOG.md",
-      "sha256": "9233b21815d523d25b9588e9c36b629527ee218e7fd2bfd07b188350b31d5518",
+      "sha256": "c2993a981afe9e1764eedc7f03b6ae5b127d21a791db29d69580437b4ff3dd70",
       "destinations": []
     },
     {
@@ -21,7 +21,7 @@
     },
     {
       "source": "README.md",
-      "sha256": "80595db416c52d9eaeec50bff37d85fba688c87643cb80661419dbe4b9bbef46",
+      "sha256": "fcd13536872e8ad509da5b6913c3107b60f4f6160132ed8652ed97fde1675840",
       "destinations": []
     },
     {
@@ -31,7 +31,7 @@
     },
     {
       "source": "VALIDATION_REPORT.md",
-      "sha256": "384a0b42825e183463eda2b1d90506c04c84f3985f66f3bc1e8bab613171cd7b",
+      "sha256": "5bd29bef928a2848952f61079da551793ef5d82dffbe5508cf2f0f024d792d20",
       "destinations": []
     },
     {
@@ -388,7 +388,7 @@
     },
     {
       "source": "scripts/workspace_manager.py",
-      "sha256": "6cd0f33fb4de91ee81db766082214d7656e0da7c4f5f39c8704b49edcd0e1680",
+      "sha256": "53db6c1b2764dc1aca29046e34c6a640860a91d7a749da1bc48659c52503b594",
       "destinations": [
         {
           "directory_id": "ai_work",

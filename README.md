@@ -2,7 +2,7 @@
 
 A portable toolkit for AI-assisted development across multiple independent Git repositories in VS Code, with shared project context and reusable GitHub Copilot workflows.
 
-**Development status:** 0.1.18 pilot; native Windows and full Copilot/GUI verification remain pending. See [validation results](WORKSPACE_SETUP/VALIDATION_REPORT.md) and the [changelog](WORKSPACE_SETUP/CHANGELOG.md).
+**Development status:** 0.1.19 pilot; native Windows and full Copilot/GUI verification remain pending. See [validation results](WORKSPACE_SETUP/VALIDATION_REPORT.md) and the [changelog](WORKSPACE_SETUP/CHANGELOG.md).
 
 ## What you get
 

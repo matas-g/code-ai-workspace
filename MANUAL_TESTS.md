@@ -1,6 +1,6 @@
 # Manual tests — Code-AI development tracker
 
-**Last updated:** 29 October 2026<br>
+**Last updated:** 30 October 2026<br>
 **Version tracking:** See `VERSION` in [workspace_manager.py](WORKSPACE_SETUP/scripts/workspace_manager.py) for the current source version; each result below records the release actually tested.<br>
 **Purpose:** Keep track of manual checks while developing this solution. Read this file when asked what still needs manual testing. Update results from explicit tester reports or actual observed manual tests; never infer a pass from an automated test or from file presence.
 
@@ -20,6 +20,8 @@ Use synthetic repositories, ticket IDs and context files for pilot testing. Repe
 Reusable local fixtures are in `_tmp/test_data/`: two small independent Git repositories per default grouping directory, copying instructions and optional overview/reference-map examples. See `_tmp/test_data/README.md` before copying them into a generated workspace. `_tmp/` and `_old zips/` are local development aids excluded from version control and product releases. Future superseded release ZIPs and checksums belong in `_old zips/`. Preparing or running sample code does not close any manual test below.
 
 ## Outstanding checks
+
+Release 0.1.19 preparation on 30 October 2026 added no manual IDE, Copilot, Finder/Terminal GUI or native Windows evidence. All statuses and historical version scopes below remain unchanged. SETUP-01, VSCODE-01, DOC-03 and DOC-05 should include the new default `Code-AI.code-workspace`, explicit/custom names and the actual 0.1.19 package when exercised. Automated release results are recorded in [VALIDATION_REPORT.md](WORKSPACE_SETUP/VALIDATION_REPORT.md); they do not close these checks.
 
 P0 = verify before relying on automatic context. P1 = normal pilot/platform check. P2 = optional editor adoption.
 

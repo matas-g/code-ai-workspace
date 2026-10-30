@@ -3,6 +3,22 @@
 **Date:** 30 October 2026<br>
 **Status:** macOS pilot. Copilot orientation inclusion across roots/modes, native Windows and physical GUI behavior remain manual checks.
 
+## Release verification — 0.1.19
+
+Prepared on 30 October 2026 on macOS 26.6.2, Apple Silicon. This release packages the current implementation with `Code-AI.code-workspace` as the default VS Code filename. Explicit `Development` and custom names remain supported. Existing installations are not renamed or upgraded. Design version remains 1.0; configuration/manifest/state schemas remain 1.
+
+- Python 3.15.0: **98 behavioral tests passed** in 20.066 seconds. Command: `python3 -I -S -B _tmp/release-0.1.19/verification/WORKSPACE_SETUP/tests/test_workspace.py`.
+- Python 3.9.6: **98 behavioral tests passed** in 25.392 seconds. Command: `/usr/bin/python3 -I -S -B _tmp/release-0.1.19/verification/WORKSPACE_SETUP/tests/test_workspace.py`.
+- Both used an isolated source copy and separate synthetic fixture sessions beneath `_tmp/release-0.1.19/verification/`. Logs are `python315-tests.log` and `python39-tests.log` in `_tmp/release-0.1.19/`.
+- Fresh shipped-default, renamed (`Data Platform View`), omitted-setting and explicit `Development` installations each passed **62 local file/section links**, all **six daily Python examples**, sample ticket creation, a scripted folder move to archive followed by command restore, validation/audit and report saving. Each fresh tree contains **30 daily files**, six prefixed skills and installed version 0.1.19. Static project/package documentation passed **40 local file/section links**. Source workflow command: `python3 -I -S -B _tmp/release-0.1.19/check_release.py`; results: `_tmp/release-0.1.19/verification-source.json`.
+
+- The archive has **43 allowlisted source inputs**, their manifest and three enclosing README/launcher copies: **47 files** under `Code-AI-Setup-0.1.19/`. Member bytes, ZIP integrity, executable macOS entrypoint metadata, source hashes, project-root document mirrors and the SHA-256 sidecar match. A second build is byte-identical. AGENTS.md, MANUAL_TESTS.md, the maintainer improvement plan, development fixtures and machine metadata remain excluded.
+- The extracted archive passed the same four-layout workflow checks above; final static project/package documentation passed **41 local file/section links** after the manual-tracker evidence link was added. Commands: `python3 -I -S -B _tmp/release-0.1.19/verify_archive.py` and `python3 -I -S -B _tmp/release-0.1.19/check_release.py _tmp/release-0.1.19/extracted-final/Code-AI-Setup-0.1.19/WORKSPACE_SETUP -packaged`. Final results are `_tmp/release-0.1.19/archive-verification-final.json` and `_tmp/release-0.1.19/verification-packaged.json`.
+
+The superseded 0.1.18 ZIP/checksum are archived without overwriting existing files. No manual result was marked passed. Earlier pre-release entries retain their original dates, version scope and statements about the artifacts available at that time.
+
+Known reliability limitations from the existing implementation review remain unresolved: checkout line-ending sensitivity, interrupted ticket-creation detection, restrictive permission preservation during ticket transfers, binding apply to a prior preview, consistent snapshots of verified source bytes, Markdown/frontmatter parsing limits and test-guard coverage. These were not fixed or re-reproduced for this packaging release; passing the existing suite does not establish their absence. The maintainer improvement plan retains the original evidence and proposed work.
+
 ## Unreleased verification — default VS Code workspace name
 
 On 30 October 2026, the default `vscode_workspace_name` changed from `Development` to `Code-AI` in shipped settings, the default configuration example and the omitted-setting fallback. Setup text, current guides/design and existing behavioral checks use `Code-AI.code-workspace`. Explicit custom names, including `Development`, remain supported; existing installations are not renamed.
