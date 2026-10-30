@@ -11,17 +11,17 @@
     },
     {
       "source": "CHANGELOG.md",
-      "sha256": "c2993a981afe9e1764eedc7f03b6ae5b127d21a791db29d69580437b4ff3dd70",
+      "sha256": "fd0ef95086c00db4148f2bdb083c6b61beb5e8607c18d2e1fd436591fbedf268",
       "destinations": []
     },
     {
       "source": "DESIGN.md",
-      "sha256": "c5b0310319408d68badf43db6cd468496637ea8efd12b6dc2f521f2654f0eab2",
+      "sha256": "5f956386dc3d08421e040fa7bdbefaebfec742d08157bf0621b4f25fb514fc44",
       "destinations": []
     },
     {
       "source": "README.md",
-      "sha256": "fcd13536872e8ad509da5b6913c3107b60f4f6160132ed8652ed97fde1675840",
+      "sha256": "32bf319131ab97c8ad7ef58bd0a3d5268b3fd2eb99ee33bcd8ea8218c22dc294",
       "destinations": []
     },
     {
@@ -31,7 +31,7 @@
     },
     {
       "source": "VALIDATION_REPORT.md",
-      "sha256": "5bd29bef928a2848952f61079da551793ef5d82dffbe5508cf2f0f024d792d20",
+      "sha256": "68a7c9c43aff0d01cc8bc4669b1c07b9b908295b7a6058a7f5a90db3766eabe7",
       "destinations": []
     },
     {

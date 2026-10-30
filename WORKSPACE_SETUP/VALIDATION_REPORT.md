@@ -3,6 +3,14 @@
 **Date:** 30 October 2026<br>
 **Status:** macOS pilot. Copilot orientation inclusion across roots/modes, native Windows and physical GUI behavior remain manual checks.
 
+## Unreleased maintainer-document organization — 31 October 2026
+
+Moved the backlog, technical improvement plan and manual-test tracker into the repository-root `maintenance/` directory. Updated relative links, contributor navigation, the design's tracker-location contract and the project-local onboarding skill references. Historical test results and their dates/version scope are preserved.
+
+Static checks passed 30 local file/section links across the contributor instructions and moved documents. Default and renamed read-only initialization plans each contain 30 daily files and exclude maintainer material. Source manifest hashes, README/design mirrors, release exclusions and onboarding skill metadata were checked; the existing Git index was left unchanged. Evidence is retained under `_tmp/maintenance-reorganization/`. The applied onboarding skill was byte-compared with the validated path-only update.
+
+No behavioral suite or manual IDE test was run for this documentation reorganization. Product/design versions are unchanged. No delivery ZIP was built; the released archive retains its original contents.
+
 ## Release verification — 0.1.19
 
 Prepared on 30 October 2026 on macOS 26.6.2, Apple Silicon. This release packages the current implementation with `Code-AI.code-workspace` as the default VS Code filename. Explicit `Development` and custom names remain supported. Existing installations are not renamed or upgraded. Design version remains 1.0; configuration/manifest/state schemas remain 1.
@@ -192,7 +200,7 @@ Validation/audit require both files, check their local links and inventory owner
 
 ## Manual-test tracking
 
-The development project has a separate MANUAL_TESTS.md tracker, outside WORKSPACE_SETUP. It records stable IDs, priorities, separate macOS/Windows status, evidence requirements and a run template. Historical inspection of a debug export confirms orientation inclusion while a MAIN file is active; the full cross-root/mode discovery matrix remains incomplete. Earlier macOS testing reported successful original three-skill and small task/refresh/direct archive/restore checks. Exact IDE/Python versions and the wider matrix were not supplied, so these reports are scoped separately from the 0.1.10 init-capture/lifecycle checks and 0.1.11 prefixed-command discovery checks, which remain pending. This tracker is excluded from the release archive and generated development folders; it remains a maintainer aid across versions.
+The development project has a separate tracker at `maintenance/MANUAL_TESTS.md`, relative to the project root and outside WORKSPACE_SETUP. It records stable IDs, priorities, separate macOS/Windows status, evidence requirements and a run template. Historical inspection of a debug export confirms orientation inclusion while a MAIN file is active; the full cross-root/mode discovery matrix remains incomplete. Earlier macOS testing reported successful original three-skill and small task/refresh/direct archive/restore checks. Exact IDE/Python versions and the wider matrix were not supplied, so these reports are scoped separately from the 0.1.10 init-capture/lifecycle checks and 0.1.11 prefixed-command discovery checks, which remain pending. This tracker is excluded from the release archive and generated development folders; it remains a maintainer aid across versions.
 
 ## Packaging and compatibility — released 0.1.17
 

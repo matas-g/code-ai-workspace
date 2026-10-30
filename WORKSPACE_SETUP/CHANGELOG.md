@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Group the maintainer backlog, technical improvement plan and manual-test tracker under `maintenance/`. Update source navigation and contributor guidance; keep these files outside consumer releases and generated workspaces. Runtime behavior and historical test results are unchanged.
+
 ## 0.1.19 — 30 October 2026
 
 - Change the default VS Code workspace filename from Development.code-workspace to Code-AI.code-workspace. Keep explicit custom names and existing installations unchanged; align settings, setup text, guides and behavioral checks with the new default.

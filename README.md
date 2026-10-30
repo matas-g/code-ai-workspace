@@ -63,3 +63,5 @@ Use the guides inside your generated folder for daily work. Repository links bel
 When reporting a problem, include your OS, Python version, framework version, steps and error output; include VS Code/Copilot versions for IDE issues. Omit credentials and private project data.
 
 For framework contributions, start with the [design](WORKSPACE_SETUP/DESIGN.md) and [maintainer commands](WORKSPACE_SETUP/SETUP_GUIDE.md#maintainer-commands). Implementation and tests live in `WORKSPACE_SETUP/`; generated user workspaces are separate.
+
+In source checkouts, the repository-root `maintenance/` folder holds the implementation backlog, technical improvement plan and manual-test tracker. It is excluded from release ZIPs.

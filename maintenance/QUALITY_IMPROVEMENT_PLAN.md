@@ -1,8 +1,10 @@
-# Code AI Workspace — implementation review and improvement plan
+# Code AI Workspace — technical review and improvement specifications
 
-**Reviewed:** 29 October 2026  
-**Baseline:** 0.1.18, commit `20e04c7`  
-**Status:** Review and proposed work only. No implementation, configuration, template, version, release, or historical test-record changes were applied.
+**Original review:** 29 October 2026; baseline 0.1.18, commit `20e04c7`<br>
+**Reconciled:** 30 October 2026 against source 0.1.19, commit `02c65f1`, and its recorded manual session<br>
+**Status:** Technical proposals and acceptance criteria. [BACKLOG.md](BACKLOG.md) is the single current implementation order/status; [MANUAL_TESTS.md](MANUAL_TESTS.md) owns manual evidence. This reconciliation changes maintainer planning documents only.
+
+Maintainer documents live in `maintenance/`; `_tmp/` evidence paths and shell commands are relative to the repository root.
 
 ## 1. Assessment and recommendation
 
@@ -10,19 +12,13 @@ The solution has a sound foundation for a small portable developer tool. Standar
 
 The strongest improvement is to close specific reliability gaps and make verification reproducible for contributors. A framework rewrite, package manager, service, database, custom VS Code extension, or mandatory AI integration would add more maintenance than value here.
 
-Recommended order:
+Use the [ordered backlog](BACKLOG.md#ordered-implementation-queue) for what to implement next. It combines the reliability work below with six newly recorded manual defects, advances those defects ahead of broad refactoring/content polish, and links each fix to its native retest. R01–R26 remain stable technical references, not an execution sequence.
 
-1. Fix package line-ending stability, incomplete ticket creation, archive permissions, refresh approval binding, and integrity-check snapshot consistency.
-2. Establish supported Python versions and native-platform CI, strengthen the test boundary checker, and finish the release verification workflow.
-3. Make small architectural improvements around explicit imports, typed contracts, diagnostics, and failure recovery.
-4. Improve skills, context templates, and documentation using reproducible synthetic examples and actual IDE evidence.
-5. Add the small amount of repository metadata needed for public collaboration and intentional reuse.
-
-The existing pilot label is appropriate. Passing the current suite does not establish native Windows compatibility, complete Copilot discovery, or freedom from the defects reproduced below.
+The existing pilot label is appropriate. The 0.1.19 macOS session now establishes the recorded discovery/loading and workflow scopes, but also demonstrates behavior and navigation failures. Passing the existing suite does not establish native Windows compatibility or the absence of either the original reliability defects or these manual failures.
 
 ## 2. Scope, method, and actual evidence
 
-### Material reviewed
+### Original review material — 29 October 2026
 
 - All current tracked source, configuration, launchers, instructions, skills, templates, examples, tests, and maintainer/product documents. The tracked inventory contains 53 files, including the current ZIP and checksum.
 - Every Python file: six installer/runtime/release modules, the ticket helper, and the behavioral test suite.
@@ -32,7 +28,7 @@ The existing pilot label is appropriate. Passing the current suite does not esta
 
 Historical archives in `_old zips/`, existing scratch work in `_tmp/`, and the full Git history were not treated as current implementation inputs. This was not a separate complete Git-history secret audit. The two design copies contain identical bytes, so the substantive design was reviewed once.
 
-### Verification performed for this review
+### Verification performed for the original review
 
 All execution used synthetic fixtures in an isolated copy beneath `_tmp/quality-review-20261029-ycyr5e48/`. Existing project files and the published artifact were not rewritten.
 
@@ -72,11 +68,19 @@ Local evidence files are `python315-tests.log`, `python39-tests.log`, `reproduct
 
 Fault injection makes these failure windows deterministic; it does not establish their real-world frequency. The snapshot issues are consistency defects in a trusted local workflow, not evidence of a remote exploit or an OS sandbox failure.
 
-## 3. Priorities and retained design choices
+### Reconciliation scope and evidence — 30 October 2026
 
-- **P1:** Address before the next wider external pilot or stronger reliability claim.
-- **P2:** Valuable quality work after the immediate fixes; complete before calling the implementation broadly mature.
-- **P3:** Optional polish, driven by actual user feedback.
+Read the current project files excluding `_old zips/`, `_tmp/` and ZIP archives: 53 text files, including source, tests, configuration, launchers, skills/resources, manifest/checksum and documents. Three Finder metadata files were identified as non-product metadata; Git internals are outside the source review. The design copies are byte-identical and were read as one specification; root launcher copies also match their canonical sources. No archive or ignored raw evidence was opened for this reconciliation.
+
+The current source version is 0.1.19. The earlier R01–R26 reproductions and test timings above retain their original 0.1.18 scope; they were not rerun for this planning update. The 0.1.19 validation report explicitly carries the reliability gaps forward. Current source inspection still shows the relevant mechanisms, including repeated source reads, unbound noninteractive refresh apply and direct ticket-file writes. A successful 0.1.19 approval/reapproval interaction does not close R04's runtime race.
+
+The [recorded 0.1.19 session](MANUAL_TESTS.md#observed-macos-session--30-october-2026-release-0119) is the durable source for the six manual defects specified under [BUG-01–BUG-06](#manual-defects-from-release-0119). They are integrated with the related R items in the backlog rather than becoming a competing bug-fix schedule. The same session provides scoped macOS passes that should be preserved, and pending/blocked native Terminal, Windows, novice, sign-in and policy branches that remain verification gaps.
+
+No automated product suite, new IDE/manual run or release build was performed for this documentation reconciliation. Planning cross-references, coverage and package-source preservation are checked separately; they do not certify a product fix.
+
+## 3. Evidence classes and retained design choices
+
+- Current priorities, dependencies, status and release gates belong only to [BACKLOG.md](BACKLOG.md). The technical sections below define scope/evidence/acceptance; they are not another queue.
 - **Confirmed:** Reproduced during this review.
 - **Inspection:** Supported directly by source structure or missing repository configuration.
 - **Verification gap:** Needs the specified environment or experiment; not a claim that the feature fails.
@@ -96,7 +100,7 @@ The runtime's independent expected-layout check is useful defense against accide
 
 ### R01 — Make checkout and release line endings deterministic
 
-**Priority/evidence:** P1; confirmed failure plus inspection.  
+**Evidence:** confirmed failure plus inspection.<br>
 **Locations:** missing root `.gitattributes`; `workspace.py:52–83`; package hashes; all launchers and Markdown/Python inputs.
 
 The README supports both source clones/downloads and release extraction. Exact-byte hashes currently depend on a contributor's Git checkout behavior. A source checkout with line-ending conversion can fail before setup starts creating files. Git's `text` and `eol` attributes provide repository-level control over checkout endings. [Git attributes documentation](https://git-scm.com/docs/gitattributes).
@@ -113,7 +117,7 @@ The README supports both source clones/downloads and release extraction. Exact-b
 
 ### R02 — Detect interrupted ticket creation
 
-**Priority/evidence:** P1; confirmed.  
+**Evidence:** confirmed.<br>
 **Locations:** `ticket.py:48–50`, `152–246`.
 
 Exclusive creation prevents overwriting another file, but does not make the file's contents complete. A failed write can leave a normal-looking partial brief that subsequent invocations deliberately preserve.
@@ -130,7 +134,7 @@ Exclusive creation prevents overwriting another file, but does not make the file
 
 ### R03 — Preserve restrictive permissions during ticket transfers
 
-**Priority/evidence:** P1; confirmed on macOS.  
+**Evidence:** confirmed on macOS.<br>
 **Locations:** `ticket.py:82–129`.
 
 The byte-preserving transfer recreates files and directories using default permissions. This can broaden access when archiving or restoring manually restricted material. Content preservation and filesystem metadata preservation need separate contracts.
@@ -147,7 +151,7 @@ The byte-preserving transfer recreates files and directories using default permi
 
 ### R04 — Bind noninteractive apply to the approved refresh plan
 
-**Priority/evidence:** P1; confirmed.  
+**Evidence:** confirmed.<br>
 **Locations:** `workspace_manager.py:588–675`; `ca-workspace-refresh/SKILL.md`, procedure steps 1–3.
 
 The interactive path rechecks its in-memory phase plans. The chat skill, however, previews in separate processes and then applies a freshly computed plan. Repeating preview reduces the race window but does not enforce the skill's promise that changed proposals require renewed approval. Apply also discards its original workspace preflight and computes another plan after saving registration.
@@ -164,7 +168,7 @@ The interactive path rechecks its in-memory phase plans. The chat skill, however
 
 ### R05 — Hash and use one immutable source snapshot
 
-**Priority/evidence:** P1; confirmed by deterministic injected edits.  
+**Evidence:** confirmed by deterministic injected edits.<br>
 **Locations:** `workspace.py:52–123`; `start.py:129–147`; `build_release.py:90–176`.
 
 The installer hashes source bytes, then rereads those files for rendering. The builder hashes sources into a manifest, then rereads them for the archive. Both can use bytes different from the bytes they verified. The current release is consistent; this finding concerns subsequent operations while files change.
@@ -181,7 +185,7 @@ The installer hashes source bytes, then rereads those files for rendering. The b
 
 ### R06 — Define a maintained Python support policy
 
-**Priority/evidence:** P1; current support-policy gap.  
+**Evidence:** current support-policy gap.<br>
 **Locations:** runtime version guards, launchers, manifest `minimum_python`, documentation, release tests.
 
 Python 3.9 reached end of life on 31 October 2025; Python 3.10 reached it on 1 October 2026. Both dates precede this review. Python 3.12 remains supported through October 2028. [Python version status](https://devguide.python.org/versions/).
@@ -199,7 +203,7 @@ Python 3.9 reached end of life on 31 October 2025; Python 3.10 reached it on 1 O
 
 ### R07 — Add contributor-reproducible native-platform CI
 
-**Priority/evidence:** P1; missing `.github/workflows/` and native Windows evidence.  
+**Evidence:** missing `.github/workflows/` and native Windows evidence.<br>
 **Locations:** repository configuration, `tests/test_workspace.py`, validation and manual tracking.
 
 The 98 tests cover useful behavior, including real macOS shell launchers. They currently depend on local execution and do not establish native Windows paths, reparse handling, PowerShell discovery, console encoding, or `.cmd` behavior.
@@ -218,7 +222,7 @@ The 98 tests cover useful behavior, including real macOS shell launchers. They c
 
 ### R08 — Make removal of optional examples work cleanly
 
-**Priority/evidence:** P2; confirmed.  
+**Evidence:** confirmed.<br>
 **Locations:** `payload/knowledge/README.md`; `workspace_manager.py:373–399`.
 
 Missing example files are informational, but the required knowledge README's link makes removal an error. The advertised optional lifecycle is inconsistent.
@@ -229,7 +233,7 @@ Missing example files are informational, but the required knowledge README's lin
 
 ### R09 — Make link inspection accurate within its declared scope
 
-**Priority/evidence:** P2; two confirmed failures.  
+**Evidence:** two confirmed failures.<br>
 **Locations:** `workspace_manager.py:312–333`, `423–480`; `build_release.py:78–82`.
 
 The regex does not implement Markdown. It handles the controlled payload's simple links but can misclassify ordinary user content. A malformed URL in an audited instruction file can also abort the whole audit because parsing is outside the relevant error boundary.
@@ -247,7 +251,7 @@ The regex does not implement Markdown. It handles the controlled payload's simpl
 
 ### R10 — Normalize metadata text and bound parser inputs
 
-**Priority/evidence:** P2; CRLF failure confirmed; resource-limit gaps from inspection.  
+**Evidence:** CRLF failure confirmed; resource-limit gaps from inspection.<br>
 **Locations:** `skill_metadata`, `load_json`, `markdown_links`, `vscode_workspace_updater.document`, audit traversal.
 
 **Proposed work:**
@@ -265,7 +269,7 @@ The regex does not implement Markdown. It handles the controlled payload's simpl
 
 ### R11 — Replace hidden module coupling with explicit dependencies
 
-**Priority/evidence:** P2; inspection.  
+**Evidence:** inspection.<br>
 **Locations:** `workspace.py:14–25`; loaders in `start.py`, `workspace_manager.py`, and tests.
 
 The 879-line runtime is still manageable, but it combines configuration, paths, state, validation, audit, discovery, write operations, CLI routing, and interactive presentation. The initializer copies many runtime attributes into `globals()`. Some functions then execute with runtime globals while adjacent functions use copied initializer globals, making dependencies and test patches difficult to follow.
@@ -283,7 +287,7 @@ The 879-line runtime is still manageable, but it combines configuration, paths, 
 
 ### R12 — Introduce explicit data contracts and actionable schema errors
 
-**Priority/evidence:** P2; inspection.  
+**Evidence:** inspection.<br>
 **Locations:** `validate_config`, `installed`, `registration_plan`, `workspace_plan`, findings and result dictionaries.
 
 **Proposed work:**
@@ -299,7 +303,7 @@ The 879-line runtime is still manageable, but it combines configuration, paths, 
 
 ### R13 — Clarify failure states, locks, and durability guarantees
 
-**Priority/evidence:** P2; inspection, supported by existing fault-injection coverage.  
+**Evidence:** inspection, supported by existing fault-injection coverage.<br>
 **Locations:** `atomic_update`, `maintenance`, initialization markers, ticket locks and transfer markers.
 
 **Proposed work:**
@@ -315,7 +319,7 @@ The 879-line runtime is still manageable, but it combines configuration, paths, 
 
 ### R14 — Make launchers maintainable and their contracts consistent
 
-**Priority/evidence:** P2; inspection; native Windows behavior remains a verification gap.  
+**Evidence:** inspection; native Windows behavior remains a verification gap.<br>
 **Locations:** root Start copies and all `launchers/` files.
 
 The Windows discovery logic is repeated as a long embedded PowerShell command, while setup root launchers are tracked copies of package templates. Current copies match, but there is no comprehensive mirror check. macOS forwards CLI arguments while Windows launchers do not; wrapper session exit codes also intentionally differ from operation codes.
@@ -334,7 +338,7 @@ The Windows discovery logic is repeated as a long embedded PowerShell command, w
 
 ### R15 — Correct the test boundary instrumentation
 
-**Priority/evidence:** P1 for verification integrity; confirmed guard gaps.  
+**Evidence:** confirmed guard gaps.<br>
 **Locations:** `tests/test_workspace.py:26–70`.
 
 The guard is useful defense in depth, but its lexical `Path.absolute().is_relative_to(...)` test does not remove `..`, and the `os.symlink` event checks argument zero rather than the new link path. Its global state also makes future threaded use easy to misunderstand. These are weaknesses in test evidence, not proof that production path checks allow the same operations.
@@ -351,7 +355,7 @@ The guard is useful defense in depth, but its lexical `Path.absolute().is_relati
 
 ### R16 — Organize tests around behavior and preserve reusable verification
 
-**Priority/evidence:** P2; inspection.  
+**Evidence:** inspection.<br>
 **Locations:** 1,870-line `tests/test_workspace.py`; `_tmp`-only scripts cited throughout `VALIDATION_REPORT.md`; `MANUAL_TESTS.md` fixture pointers.
 
 **Proposed work:**
@@ -369,7 +373,7 @@ The guard is useful defense in depth, but its lexical `Path.absolute().is_relati
 
 ### R17 — Separate release preparation, verification, and publication
 
-**Priority/evidence:** P1 for release confidence; inspection and R05 reproduction.  
+**Evidence:** inspection and R05 reproduction.<br>
 **Locations:** `build_release.py`; source manifest; release README/checksum; maintainer commands.
 
 The allowlisted, timestamp-normalized archive is a good fit. The main gaps are a missing read-only check mode, repeated source reads, and interruption handling while writing the archive/checksum pair.
@@ -389,7 +393,7 @@ The allowlisted, timestamp-normalized archive is a good fit. The main gaps are a
 
 ### R18 — Give current specifications and historical evidence clear ownership
 
-**Priority/evidence:** P2; specific contradictory/stale wording found.  
+**Evidence:** specific contradictory/stale wording found.<br>
 **Locations:** `DESIGN.md` sections 1.4, 7.3, 8.4, 18–21; root design mirror; `VALIDATION_REPORT.md`; maintainer guides.
 
 Design sections 1.4 and 8.4 still say blank settings input exits, while section 7.3, code, tests, and current guides correctly use Enter to continue to the read-only preview. The validation report's final remaining-checks section calls the refresh skill unreleased although the current release includes it. Build/test narratives are also mixed into a large current implementation specification.
@@ -408,10 +412,12 @@ Design sections 1.4 and 8.4 still say blank settings input exits, while section 
 
 ### R19 — Establish an actual compatibility baseline for AI workflows
 
-**Priority/evidence:** P1 before stronger AI compatibility claims; verification gap.  
+**Evidence:** Scoped macOS 0.1.19 baseline now recorded; native Windows and remaining manual scopes are verification gaps.<br>
 **Locations:** `COPILOT_GUIDE.md`, `MANUAL_TESTS.md`, six skills, multi-root generated workspace.
 
 The existing guide correctly distinguishes discovery, instruction inclusion, resource reads, and correct task behavior. Preserve that distinction. Current VS Code documentation still makes instruction behavior harness-dependent and documents separate Local discovery settings; references alone cannot establish this non-Git multi-root layout's behavior. [VS Code instructions](https://code.visualstudio.com/docs/agent-customization/custom-instructions).
+
+The 30 October session now records VS Code 1.144.0 / Copilot Chat 0.72.0 in Local, including the default and relocated custom macOS loading matrices, all six skill discoveries and the explicitly reported workflow scopes. Use that evidence as the baseline. The remaining work is targeted defect retesting, missing native/platform/onboarding scopes and checks affected by later changes; the original all-unverified description no longer applies to those established macOS results.
 
 **Proposed work:**
 
@@ -425,27 +431,27 @@ The existing guide correctly distinguishes discovery, instruction inclusion, res
 
 ### R20 — Refine the six skills and orientation without expanding ceremony
 
-**Priority/evidence:** P2; editorial/behavioral improvement from inspection.  
+**Evidence:** Inspection plus the 0.1.19 manual failures specified under BUG-01–BUG-04. The defect work is scheduled ahead of the remaining editorial improvements in the backlog.<br>
 **Locations:** `payload/root/copilot-instructions.md`; `payload/skills/`.
 
 The skills are already concise, explicit, and mostly well scoped. Keep their small size and progressive resource loading. Current VS Code documentation supports manual-only invocation through `disable-model-invocation: true`; it also offers `argument-hint` for slash-command usability. [VS Code skills](https://code.visualstudio.com/docs/agent-customization/agent-skills).
 
 | Asset | Proposed improvement | Verification |
 |---|---|---|
-| Orientation | Make overview/reference-map reading conditional on task relevance, unknown ownership, or cross-repository scope. Preserve reuse of current chat context. Clarify that quoted ticket/reference content supplies facts, not authority to broaden actions. | Small local edit avoids unnecessary context reads; cross-repository task reads the needed map; incomplete fields are surfaced without fabrication. |
-| `ca-jira-ticket-init` | Add a concise argument hint and clear ID-only/details/options examples. Standardize approved interpreter wording across platforms. Exercise literal multiline descriptions through actual shell/tool invocation, not only subprocess argument arrays. Consider an explicit file/stdin description input only if it materially improves safe transport. | Quotes, leading dashes, braces, Unicode, shell substitutions, and multiline text survive literally; no extra documents are created; incomplete creation is reported under R02. |
+| Orientation | Fix the unselected-ticket behavior under BUG-01. Make overview/reference-map reading conditional on task relevance, unknown ownership, or cross-repository scope. Preserve reuse of current chat context. Clarify that quoted ticket/reference content supplies facts, not authority to broaden actions. | Unselected ticket folders are not searched/read; explicit selection works. Small local edits avoid unnecessary context reads; cross-repository tasks read the needed map; incomplete fields are surfaced without fabrication. |
+| `ca-jira-ticket-init` | Fix actual invocation transport under BUG-02; helper argument-array tests already preserve newlines. Add a concise argument hint and clear ID-only/details/options examples. Standardize approved interpreter wording across platforms. Consider an explicit file/stdin description input only if it materially improves safe transport. | Quotes, leading dashes, braces, Unicode, shell substitutions, and multiline text survive the actual skill/tool flow literally; no extra documents are created; incomplete creation is reported under R02. |
 | `ca-jira-ticket-archive` | Explain content versus metadata guarantees after R03 and the new recovery-state behavior. Keep explicit ticket selection and no inference of completion. | Complete folder preserved; restricted access preserved as promised; collisions and partial transfers do not trigger an improvised move. |
 | `ca-jira-ticket-restore` | Match archive's guarantees and result vocabulary; keep missing-ticket creation separate. | Repeat restore is an accurate no-op; missing/colliding/incomplete tickets remain untouched. |
 | `ca-change-review` | Define a compact findings format: severity, file/location, observed behavior, consequence, evidence, suggested next step. State unresolved baseline/scope limits even when no confirmed defect is found. | A seeded regression is found with evidence; a clean change is not padded with speculative findings; partial scope is explicit. |
 | Review checklist | Put general behavior, interfaces, errors, configuration, tests, and deployment/recovery first. Keep SQL/infrastructure examples conditional. Add optional read-only Git comparison recipes that disable external diff/textconv and explicitly cover untracked/pre-existing work. | Reviews cover cumulative relevant changes without executing repository-defined diff helpers or modifying Git state. |
 | `ca-config-audit` | Define summary ordering and the distinction between deterministic errors, unsupported syntax, and possible semantic conflict. Show an exact command shape consistent with other skills. | Findings remain useful after malformed/unfamiliar documents; no repairs or unrelated reads occur. |
-| `ca-workspace-refresh` | Use R04's approved-plan precondition; explain no-op and partial-result handling using the actual returned status. | Changed plans require fresh approval; settings survive; interruption fallback works in the IDE. |
+| `ca-workspace-refresh` | Use R04's approved-plan precondition; fix custom-path prose under BUG-03 and pre-apply recovery wording under BUG-04. Explain no-op and partial-result handling using the actual returned status. | Changed plans require fresh approval enforced by the tool; summaries use actual paths; settings survive; the user receives the launcher fallback before possible interruption. |
 
 Do not add model names, forked agents, experimental tool grants, mandatory plan files, or automatic skill selection to improve apparent sophistication. Keep every framework/maintenance skill under the required `ca-` namespace.
 
 ### R21 — Make overview and reference-map templates more useful to fill
 
-**Priority/evidence:** P2; inspection.  
+**Evidence:** inspection.<br>
 **Locations:** `payload/project/overview.md`, `reference-map.md`.
 
 The blank templates are honest and compact. Their weakness is that they tell a new user what headings exist but provide little help producing verifiable, maintainable content.
@@ -464,7 +470,7 @@ The blank templates are honest and compact. Their weakness is that they tell a n
 
 ### R22 — Improve ticket templates for the brief-only workflow
 
-**Priority/evidence:** P2; inspection.  
+**Evidence:** inspection.<br>
 **Locations:** `ca-jira-ticket-init/templates/{brief,plan,review,notes}.md`.
 
 **Proposed work:**
@@ -481,7 +487,7 @@ The blank templates are honest and compact. Their weakness is that they tell a n
 
 ### R23 — Strengthen repository-instruction and knowledge examples
 
-**Priority/evidence:** P2; inspection.  
+**Evidence:** inspection.<br>
 **Locations:** `payload/examples/copilot-instructions.md`; knowledge README, synthetic guide and SVG.
 
 **Proposed work:**
@@ -494,11 +500,87 @@ The blank templates are honest and compact. Their weakness is that they tell a n
 
 **Acceptance:** A tester can distinguish template instructions, fictional example data, verified project facts, and authoritative external policy. Examples remain useful without implying executed work or current company guidance.
 
+## Manual defects from release 0.1.19
+
+These six issues come from the recorded 30 October native macOS session, not new experiments during this reconciliation. Each has one backlog owner alongside its related improvement work. The environment is macOS 26.6.2, Python 3.15.0, VS Code 1.144.0, Copilot Chat 0.72.0, Local; see the tracker for full restrictions and evidence. Do not treat a wording change alone as proof that Copilot behavior is fixed.
+
+### BUG-01
+
+**Unselected ticket read — COP-04; backlog B02; related R19/R20.**
+
+**Observed:** OTHER/Plan read `tickets/active/BACKUP-1/brief.md` without a selected ticket, while its system instructions already contained the no-inference rule. Repository-guidance coexistence and stale/unknown-field handling passed. This is an instruction-compliance defect, not evidence of an OS access-control failure.
+
+**Locations:** `payload/root/copilot-instructions.md`; task/context guidance in `COPILOT_GUIDE.md`; tracked synthetic compatibility fixtures/checklists proposed under R16/R19.
+
+**Fix:** Make the no-selected-ticket branch explicit: answer from relevant project sources without listing/searching tickets to choose one. Review navigation links and general search guidance so a project question does not encourage exploring ticket containers. Keep explicit user-requested ticket inventory/selection usable. Do not broaden audit scope, introduce global settings or claim that Markdown can enforce confidentiality.
+
+**Acceptance:** Fresh OTHER/Plan chats with an unrelated, tempting active brief must complete a project question without enumerating/reading that ticket; test both an implicit absence of selection and an explicit no-ticket request. A selected-ticket control must read the intended brief without unrelated tickets. Inspect actual file-read/debug evidence, not only the final answer, and extend the checks to the maintained root/mode/custom-name/relocation scope affected by the orientation change. Preserve the existing coexistence/stale-field evidence and record the new COP-04 result.
+
+### BUG-02
+
+**Multiline description flattened — SKILL-02 and SKILL-04; backlog B06; related R20/R22.**
+
+**Observed:** The original MAN-102 request contained a newline; the proposed tool command and resulting brief contained a space. Current helper and subprocess-argument tests already preserve multiline strings, so those tests do not reproduce the observed skill-to-tool transport failure. SKILL-04's discovery successes remain valid even though its aggregate row failed on formatting.
+
+**Locations:** `ca-jira-ticket-init/SKILL.md`; `scripts/ticket.py`; wrapper CLI if an additive input method is needed; relevant examples/tests and daily help.
+
+**Fix:** Reproduce the actual slash-command-to-shell/tool path and preserve the supplied description as literal text through extraction, quoting and invocation. Remove only the ticket ID/defined separator, without flattening description lines. Add a safe file/stdin description input only if the real transport needs it; keep standard-library operation, declared input scope, no-overwrite behavior and the direct-command interface aligned. Coordinate helper edits with R02 instead of creating a second ticket writer.
+
+**Acceptance:** In an actual skill invocation, line breaks, Unicode, quotes, leading dashes, braces and shell-looking text reach the new brief literally without execution or invented criteria. Cover ID-only and default/custom/relocated paths. Reinitialization must keep an edited brief byte-identical and explain `preserved-existing-brief`; no automatic append. Record SKILL-02 and SKILL-04 retests separately from automated helper/transport checks.
+
+### BUG-03
+
+**Default names used in custom-path refresh prose — SKILL-05; backlog B04; related R04/R20.**
+
+**Observed:** Registration prose named `MAIN_PROJECT`/`OTHER_PROJECTS` in a custom layout whose actual paths were `Data Platform`/`Other Projects`. The tool's proposed workspace paths were correct; the tester corrected the misleading prose before approval. This is a summary defect, not evidence of a wrong folder write.
+
+**Locations:** `ca-workspace-refresh/SKILL.md`; refresh preview/result metadata in `workspace_manager.py` if it needs to expose the effective path mapping.
+
+**Fix:** Derive registration, missing-entry, removal and workspace summaries from the actual preview/effective configuration. Distinguish fixed MAIN/OTHER/DOCS labels from configurable physical directory names. If the current JSON omits a needed path mapping, expose concise read-only plan metadata through R04; never guess a default from a logical group ID. The wording correction can land before the full plan-token implementation, but B04 remains open until both are verified.
+
+**Acceptance:** Default and fully custom layouts, including after relocation, show the correct actual paths in initial preview, changed-plan reapproval and final result. Explicit cleanup names exactly the approved missing registrations. Tests inspect the chat prose as well as JSON; repository bytes and workspace settings/comments remain preserved.
+
+### BUG-04
+
+**Launcher-recovery reminder omitted before refresh apply — SKILL-05; backlog B04; related R04/R14/R20.**
+
+**Observed:** First-root additions/replacement triggered extension-restart prompts; the chat/result survived, but the pre-apply warning omitted the skill's existing launcher-recovery instruction on two cases. The later addition completed without a restart prompt. No lost-chat recovery was observed, and native Terminal launcher recovery was blocked.
+
+**Locations:** `ca-workspace-refresh/SKILL.md`; generated root/daily recovery guidance; R04 plan/result contract.
+
+**Fix:** Make the pre-apply message a short explicit step: state the approved changes, possible extension restart/chat interruption, final tool action, and the generated root launcher to inspect/finish the result. Use the actual custom root/path. Give this information before the final write, when the user can still see it; retain stop-on-refusal/partial-completion behavior and do not add an automatic retry or editor restart.
+
+**Acceptance:** First MAIN addition, first-root removal/replacement and a later addition receive the reminder before apply. Keep changed-plan reapproval and explicit cleanup checks. Exercise the manual launcher inspection/recovery path independently even when chat survives; a Terminal restriction leaves that portion blocked, not passed. Preserve the existing successful restart/chat-survival observations without claiming interruption is impossible.
+
+### BUG-05
+
+**Optional Python disclosure fails in the default Markdown Editor — DOC-02; backlog B07; related R18/R19.**
+
+**Observed:** Default and custom DAILY_WORK.md show literal `<details>`/`<summary>` and expanded commands in VS Code's default Markdown Editor. Classic Preview renders a working disclosure, and direct optional-reference anchors reach the correct section.
+
+**Locations:** `payload/root/DAILY_WORK.md`; incoming optional-reference links; corresponding current design/help wording.
+
+**Fix:** Prefer a normal, clearly labelled optional Markdown reference at the bottom with stable links. If a disclosure remains, it must not be necessary to discover/read commands in the default editor. Keep the main workflow skill/launcher-first, preserve baseline and transfer/interruption recovery guidance, and require no renderer setting/extension change.
+
+**Acceptance:** Default Markdown Editor and classic Preview both provide readable, reachable optional commands with default/custom names and after relocation. Check incoming anchors and the direct-command fallback, and record an actual DOC-02 retest; structural link checks alone are insufficient.
+
+### BUG-06
+
+**Broken packaged-template backlink during onboarding — DOC-05; backlog B08; related R09/R18.**
+
+**Observed:** Extracted README → setup checklist → Verify your setup reaches the packaged Copilot template. Its “root guide's setup steps” backlink then attempts nonexistent `WORKSPACE_SETUP/payload/README.md`; the source root template is at `payload/root/README.md`. The exercised generated custom guide links were correct.
+
+**Locations:** `SETUP_GUIDE.md` onboarding links; `payload/root/COPILOT_GUIDE.md` and related daily/root backlinks; Markdown rendering/mapping and tracked release navigation checks as needed.
+
+**Fix:** Handle source-template and installed-guide navigation explicitly. Choose a small context-aware rendering or source-navigation adjustment that keeps both intended destinations valid; blindly changing `../README.md` in the shared template would break the generated guide. Audit related backlinks along the onboarding path, distinguish generated-only links from usable source links, and provide valid source counterparts where the user is directed to click. Extend controlled release link checks to this multi-step navigation.
+
+**Acceptance:** Follow the failing path from a source checkout/download and an extracted candidate release to the correct root-template section. Separately follow generated root/daily/Copilot links with default/custom names and after relocation/installer removal. Record the link retest under DOC-05, leaving fresh sign-in and managed-policy branches pending until actually exercised. The previously passed static checks did not certify this path.
+
 ## 8. Contributor experience and public sharing
 
 ### R24 — Add lightweight development tooling and code conventions
 
-**Priority/evidence:** P2; inspection.  
+**Evidence:** inspection.<br>
 **Locations:** missing developer tool configuration; Python modules and tests.
 
 **Proposed work:**
@@ -514,7 +596,7 @@ The blank templates are honest and compact. Their weakness is that they tell a n
 
 ### R25 — Add intentional reuse and contribution metadata
 
-**Priority/evidence:** P1 for an intended open-source release decision; P2 for surrounding polish. Missing files observed.
+**Evidence:** Inspection; missing files observed. Owner decisions and public-release conditions are tracked under B15.
 
 **Proposed work:**
 
@@ -529,7 +611,7 @@ The blank templates are honest and compact. Their weakness is that they tell a n
 
 ### R26 — Make CLI diagnostics and terminal behavior predictable
 
-**Priority/evidence:** P2; inspection and native Windows verification gap.  
+**Evidence:** inspection and native Windows verification gap.<br>
 **Locations:** CLI `main` functions; `Console`; `printable`; JSON reports.
 
 **Proposed work:**
@@ -543,26 +625,13 @@ The blank templates are honest and compact. Their weakness is that they tell a n
 
 **Acceptance:** Scripts can reliably distinguish success, no-op, cancellation, invalid input, incomplete work, and operational failure. Human output remains readable in narrow/plain/redirected terminals without hiding the actual result.
 
-## 9. Recommended implementation sequence
+## 9. Implementation tracking
 
-Use small reviewed changes. Relative sizes below are planning estimates, not calendar commitments: **S** = localized; **M** = several coordinated files/tests; **L** = platform or lifecycle work with substantial verification.
+[BACKLOG.md](BACKLOG.md#ordered-implementation-queue) replaces the original eight-package sequence. It is the only current ordered plan and status list. It covers every R01–R26 proposal, the six manual defects, outstanding native/novice checks and conditional public-release work. Current priorities belong there; do not maintain a parallel schedule in this document.
 
-| Work package | Scope and dependencies | Size | Completion gate | Progress and decisions |
-|---|---|---|---|---|
-| 1. Reproducible baseline | R01, R15; add failing regressions for confirmed cases; retain current behavior otherwise | M | Deterministic checkout bytes and trustworthy guard tests; existing suite remains green | Not started |
-| 2. Ticket integrity | R02, R03, relevant R13/R22 recovery contracts | L | Interrupted creation and restricted transfers behave safely on native platforms | Not started |
-| 3. Approved plans and package snapshots | R04, R05 | L | Stale refresh plans cannot broaden writes; verified bytes are the bytes installed/archived | Not started |
-| 4. Small validation fixes | R08, R09, R10; selected R12 diagnostics | M | Optional removal, CRLF metadata, malformed links and parser limits have regression coverage | Not started |
-| 5. Platform/release automation | R06, R07, R14, R17; reusable checks from R16 | L | Clean-checkout CI plus extracted-artifact workflows on macOS/Windows; supported Python policy agreed | Not started |
-| 6. Maintainability | R11, remaining R12/R13, R24, R26; do after behavior is protected | M–L | Explicit dependencies/contracts; stable CLI and relocation behavior; separate formatting diff | Not started |
-| 7. AI content and onboarding | R18–R23; plan-binding and recovery updates depend on packages 2–3 | M plus manual testing | Useful synthetic templates and actual skill/context evidence; historical results preserved | Not started |
-| 8. Public release preparation | R25; final checks from R17 | M | Owner's licensing choice, contribution/reporting docs, exact-artifact verification, honest compatibility statement | Not started |
+For each owning backlog item, confirm the behavioral regression, implement a narrow change, update affected contracts/guides, run focused checks and the required suite, and record relevant actual manual evidence. Use small reviewed changes. Temporary fixtures/output stay under `_tmp/`; reusable verification logic belongs in tracked maintainer tools/tests. A prose edit does not justify reopening unrelated passed checks or rerunning every product test.
 
-Update **Progress and decisions** as work proceeds: status (`Not started`, `In progress`, `Blocked`, `Complete`, or `Deferred`), update date, key decisions and reasons, remaining work, and links to evidence or PRs. Keep entries brief; link longer notes. Mark a package complete only when its completion gate is met. Record actual manual test results in `MANUAL_TESTS.md` and link them here.
-
-Within each package: add/confirm the relevant behavioral regression, implement the narrow change, update affected contracts/guides, run focused checks, then the required suite. Broaden testing when a changed boundary or failure warrants it; do not repeatedly rerun everything for unrelated prose polish.
-
-Do not start with the architecture refactor. The current structure is sufficient to fix the confirmed defects, and those tests will make later restructuring safer.
+Do not start with the architecture refactor. The current structure is sufficient to fix the confirmed defects, and their regression coverage will make later restructuring safer. Preserve all historical versioned evidence. Mark work complete only when the backlog gate and the relevant acceptance criteria below are met.
 
 ## 10. Final acceptance matrix for the improved release
 
@@ -570,15 +639,15 @@ Do not start with the architecture refactor. The current structure is sufficient
 |---|---|
 | Acquisition | Source clone with supported line-ending configurations, source archive, and release extraction all produce usable reviewed inputs |
 | Setup boundary | Preview is read-only; explicit creation is new-root-only; existing targets/redirections/collisions fail; source/package bytes are unchanged |
-| Ticket creation | ID-only/details/options, repeats, interrupted writes and recovery; no fabricated requirements or silent acceptance of partial creation |
+| Ticket creation | ID-only/details/options and literal multiline transport through the actual skill/tool path, repeats, interrupted writes and recovery; no fabricated requirements or silent acceptance of partial creation |
 | Transfer | Bytes, empty directories, promised permissions, collisions, copy/prune failures, stale markers and repeated archive/restore outcomes |
-| Refresh | Approved-plan binding, literal options, changed files/folders/state, missing-entry cleanup, settings preservation, partial completion and no-op behavior |
+| Refresh | Approved-plan binding, literal options, actual custom paths in chat summaries, pre-apply launcher-recovery reminder, changed files/folders/state, missing-entry cleanup, settings preservation, partial completion and no-op behavior |
 | Validation/audit | Accurate controlled links, uncertain unsupported syntax, LF/CRLF metadata, bounded malformed inputs, continued findings after per-file errors |
 | Runtime independence | Default/custom names, unrelated working directory, moved/renamed complete tree, installer removed, all daily commands usable |
 | Release | Read-only consistency check; immutable source snapshot; normalized member metadata; self-consistent manifest/checksum; extracted final artifact tested |
 | Platforms | Supported minimum/latest Python on native macOS and Windows; unsupported capabilities explicitly recorded; native launchers and redirected output tested |
-| Copilot | Actual Local discovery/inclusion/resource-use evidence for claimed workflows; synthetic tasks, refusal cases and fallback; manual tracker updated honestly |
-| Documentation | Current code/help/spec/guides agree; first-use tester can complete the common workflow; no historical test result is relabelled |
+| Copilot | Actual Local discovery/inclusion/resource-use and selected-ticket scope evidence for claimed workflows; synthetic negative/selected controls, refusal cases and fallback; manual tracker updated honestly |
+| Documentation | Current code/help/spec/guides agree; optional commands work in the default Markdown Editor and Preview; source/extracted-template and generated-guide onboarding paths work; first-use tester completes the common workflow; no historical result is relabelled |
 | Publication | Chosen license, reporting/contribution guidance, reviewed publication set, no scratch/private artifacts, version/archive rules followed |
 
 Product version changes remain restricted to `VERSION` in `WORKSPACE_SETUP/scripts/workspace_manager.py`. Preparation and root document synchronization use `build_release.py --sync-project-docs`; versioned archives use `--output-dir`. Update changelog and actual validation evidence explicitly. Move the superseded ZIP and checksum to `_old zips/` without overwriting prior archives.

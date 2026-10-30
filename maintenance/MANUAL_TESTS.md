@@ -1,10 +1,14 @@
 # Manual tests — Code-AI development tracker
 
 **Last updated:** 30 October 2026<br>
-**Version tracking:** See `VERSION` in [workspace_manager.py](WORKSPACE_SETUP/scripts/workspace_manager.py) for the current source version; each result below records the release actually tested.<br>
+**Version tracking:** See `VERSION` in [workspace_manager.py](../WORKSPACE_SETUP/scripts/workspace_manager.py) for the current source version; each result below records the release actually tested.<br>
 **Purpose:** Keep track of manual checks while developing this solution. Read this file when asked what still needs manual testing. Update results from explicit tester reports or actual observed manual tests; never infer a pass from an automated test or from file presence.
 
-This is a maintainer-only project file. Keep it outside WORKSPACE_SETUP and exclude it from the ZIP and generated development folders. Product instructions belong in SETUP_GUIDE.md and the generated user guides. Preserve this tracker and its evidence across releases; reopen a passed test only when a relevant change or a new platform/version needs retesting.
+This is a maintainer-only project file at `maintenance/MANUAL_TESTS.md`. Keep it outside WORKSPACE_SETUP and exclude it from the ZIP and generated development folders. Product instructions belong in `WORKSPACE_SETUP/SETUP_GUIDE.md` and the generated user guides. Preserve this tracker and its evidence across releases; reopen a passed test only when a relevant change or a new platform/version needs retesting.
+
+**Implementation follow-up:** [BACKLOG.md](BACKLOG.md) owns the combined prioritized fixes/improvements and maps every manual row to its follow-up. [BUG-01–BUG-06](QUALITY_IMPROVEMENT_PLAN.md#manual-defects-from-release-0119) define the six distinct observed defects and retest criteria. This planning link does not change any result or close pending/blocked scope.
+
+Maintainer documents live in `maintenance/`; `_tmp/` evidence paths and shell commands are relative to the repository root.
 
 ## Status and evidence
 
@@ -21,7 +25,7 @@ Reusable local fixtures are in `_tmp/test_data/`: two small independent Git repo
 
 ## Outstanding checks
 
-Release 0.1.19 preparation initially added no manual evidence. The subsequent native macOS session below updates the macOS statuses for the actual 0.1.19 package, including default/custom workspace names. Historical results and Windows scopes are preserved. A PASS is limited to the explicitly recorded environment and scope; PENDING/BLOCKED rows may contain successful partial checks. Automated release results are recorded in [VALIDATION_REPORT.md](WORKSPACE_SETUP/VALIDATION_REPORT.md); they do not close manual checks.
+Release 0.1.19 preparation initially added no manual evidence. The subsequent native macOS session below updates the macOS statuses for the actual 0.1.19 package, including default/custom workspace names. Historical results and Windows scopes are preserved. A PASS is limited to the explicitly recorded environment and scope; PENDING/BLOCKED rows may contain successful partial checks. Automated release results are recorded in [VALIDATION_REPORT.md](../WORKSPACE_SETUP/VALIDATION_REPORT.md); they do not close manual checks.
 
 P0 = verify before relying on automatic context. P1 = normal pilot/platform check. P2 = optional editor adoption.
 

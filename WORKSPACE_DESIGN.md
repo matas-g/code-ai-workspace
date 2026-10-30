@@ -835,7 +835,7 @@ The validation report must list actual platforms/versions tested, commands/tests
 
 ### 17.4 Maintainer manual-test tracker
 
-Keep MANUAL_TESTS.md at the development-project root, outside WORKSPACE_SETUP. It is a development aid, excluded from the release inventory and generated workspaces. Track stable test IDs, priority, macOS/Windows status and explicit evidence with version/environment/mode. Record informal user reports separately from verified passes; automated tests do not close manual GUI/Copilot checks. Include orientation discovery across roots/modes and relocation, skill loading, native launchers, refresh behavior, actual VS Code use and recovery. Preserve evidence across releases and consult the tracker when the user asks what remains to test.
+Keep the tracker at `maintenance/MANUAL_TESTS.md`, relative to the development-project root and outside WORKSPACE_SETUP. The same maintainer-only directory holds `BACKLOG.md` for current implementation priorities/status and `QUALITY_IMPROVEMENT_PLAN.md` for detailed proposals. Exclude the directory from the release inventory and generated workspaces. Track stable test IDs, priority, macOS/Windows status and explicit evidence with version/environment/mode. Record informal user reports separately from verified passes; automated tests do not close manual GUI/Copilot checks. Include orientation discovery across roots/modes and relocation, skill loading, native launchers, refresh behavior, actual VS Code use and recovery. Preserve evidence across releases and consult the tracker when the user asks what remains to test.
 
 ## 18. Acceptance tests and release gates
 
