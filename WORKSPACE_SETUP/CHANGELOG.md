@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-No changes yet.
+- Change the default VS Code workspace filename from Development.code-workspace to Code-AI.code-workspace. Keep explicit custom names and existing installations unchanged; align settings, setup text, guides and behavioral checks with the new default.
 
 ## 0.1.18 — 29 October 2026
 

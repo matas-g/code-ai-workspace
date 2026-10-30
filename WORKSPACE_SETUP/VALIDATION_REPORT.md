@@ -1,7 +1,17 @@
 # Validation report — design 1.0
 
-**Date:** 29 October 2026<br>
+**Date:** 30 October 2026<br>
 **Status:** macOS pilot. Copilot orientation inclusion across roots/modes, native Windows and physical GUI behavior remain manual checks.
+
+## Unreleased verification — default VS Code workspace name
+
+On 30 October 2026, the default `vscode_workspace_name` changed from `Development` to `Code-AI` in shipped settings, the default configuration example and the omitted-setting fallback. Setup text, current guides/design and existing behavioral checks use `Code-AI.code-workspace`. Explicit custom names, including `Development`, remain supported; existing installations are not renamed.
+
+- Python 3.15.0 and Python 3.9.6: **98 behavioral tests passed on each interpreter**, run serially on macOS against an isolated source copy. Commands: `python3 -I -S -B WORKSPACE_SETUP/tests/test_workspace.py` and `/usr/bin/python3 -I -S -B WORKSPACE_SETUP/tests/test_workspace.py` from that copy.
+- Fresh omitted-setting, shipped-default, explicitly named `Development` and custom `Data Platform View` installations each passed validation, audit and generated README workspace-link checks.
+- Source hashes and prepared root README/design mirrors were checked after documentation preparation. Logs and smoke results are retained under `_tmp/default-vscode-name-20261030/` in the maintainer project.
+
+No native Windows or actual IDE/Copilot test was performed. Product/design versions and the existing 0.1.18 release ZIP/checksum remain unchanged; this is an unreleased source change. Earlier evidence below retains its original scope.
 
 ## Release verification — 0.1.18
 

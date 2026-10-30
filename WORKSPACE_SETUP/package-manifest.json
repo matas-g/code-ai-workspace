@@ -11,32 +11,32 @@
     },
     {
       "source": "CHANGELOG.md",
-      "sha256": "c2bacd49f39a123d804d12193f53c6f05d2dc944ebcf42655787d90175c47260",
+      "sha256": "9233b21815d523d25b9588e9c36b629527ee218e7fd2bfd07b188350b31d5518",
       "destinations": []
     },
     {
       "source": "DESIGN.md",
-      "sha256": "800b9f59086994f4a650ce086377e5808f6b3dbbf9855c54dfb3f7e172bd345e",
+      "sha256": "c5b0310319408d68badf43db6cd468496637ea8efd12b6dc2f521f2654f0eab2",
       "destinations": []
     },
     {
       "source": "README.md",
-      "sha256": "8419db2fabc131cef01ed5b3e513ceb4d92214a80727b56c596b67cdf52e18c1",
+      "sha256": "80595db416c52d9eaeec50bff37d85fba688c87643cb80661419dbe4b9bbef46",
       "destinations": []
     },
     {
       "source": "SETUP_GUIDE.md",
-      "sha256": "35d1fc493362919b22b2da315c8f6705d39494db21a471b7ebff8345729112a9",
+      "sha256": "96f3b06db0d388d05ebf49bc3568aaf2c664d5a95b10dcc528eafffe9d60dc79",
       "destinations": []
     },
     {
       "source": "VALIDATION_REPORT.md",
-      "sha256": "669d73a1995abab477dc1fd6ece54ca6afc4261722fd798e01b74fc826d82d4f",
+      "sha256": "384a0b42825e183463eda2b1d90506c04c84f3985f66f3bc1e8bab613171cd7b",
       "destinations": []
     },
     {
       "source": "configuration-examples/default.json",
-      "sha256": "afe4217cbb67872ddb153b08d36e133f8b04cecce8cee3ec9a53b341ba42bf12",
+      "sha256": "e73f4411251de38a71ad0fea0712170c97de0ea5184aaf496fd594ad0288369a",
       "destinations": []
     },
     {
@@ -354,7 +354,7 @@
     },
     {
       "source": "scripts/start.py",
-      "sha256": "89093a443af3c70abb57d12ad0e3d9464a77c8c50078976deaa08cb7186945da",
+      "sha256": "d4e7c2123fe0ad840f15c5ee8b3ed718227b69c65708d5758db44211b73edeef",
       "destinations": []
     },
     {
@@ -388,7 +388,7 @@
     },
     {
       "source": "scripts/workspace_manager.py",
-      "sha256": "d239170daeb00b110b32e8e666630970b48c5ee303b7150322f9ba2fae429841",
+      "sha256": "6cd0f33fb4de91ee81db766082214d7656e0da7c4f5f39c8704b49edcd0e1680",
       "destinations": [
         {
           "directory_id": "ai_work",
@@ -400,13 +400,13 @@
     },
     {
       "source": "settings.json",
-      "sha256": "afe4217cbb67872ddb153b08d36e133f8b04cecce8cee3ec9a53b341ba42bf12",
+      "sha256": "e73f4411251de38a71ad0fea0712170c97de0ea5184aaf496fd594ad0288369a",
       "destinations": [],
       "mutable": true
     },
     {
       "source": "tests/test_workspace.py",
-      "sha256": "12ded3098c1b8e8ddfae7122e4c227de23ffa088bce621f254aaae556dd9d149",
+      "sha256": "aa903fc1f568bd16969c1fa5b980f5e01c373fd713a24fe51ecbef4c1b87a17f",
       "destinations": []
     }
   ],

@@ -184,7 +184,7 @@ def validate_config(raw):
     parent_directory = raw.get("parent_directory", ".")
     if not isinstance(parent_directory, str) or not parent_directory.strip() or any(ord(c) < 32 or ord(c) == 127 for c in parent_directory):
         raise WorkspaceError("parent_directory must be a nonempty directory path without control characters.", 2)
-    vscode_workspace_name = component(raw.get("vscode_workspace_name", "Development"))
+    vscode_workspace_name = component(raw.get("vscode_workspace_name", "Code-AI"))
     supplied = raw.get("directories", {})
     keys(supplied, DEFAULTS)
     directories = dict(DEFAULTS, **supplied)

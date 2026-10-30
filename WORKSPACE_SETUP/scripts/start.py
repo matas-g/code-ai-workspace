@@ -56,7 +56,7 @@ def show_settings(config, path, target, console):
     c.field("parent_directory", config["parent_directory"], "Existing parent directory for the new folder. A dot (.) means the launch directory; relative paths start there too. --target overrides both settings.")
     c.text("The new development folder will be created here:")
     c.path(target)
-    c.field("vscode_workspace_name", config["vscode_workspace_name"], "Optional VS Code configuration filename, without .code-workspace. Default: Development. Other IDE users may leave this unchanged.")
+    c.field("vscode_workspace_name", config["vscode_workspace_name"], "Optional VS Code configuration filename, without .code-workspace. Default: Code-AI. Other IDE users may leave this unchanged.")
     c.heading("Folder names inside the development folder")
     descriptions = {
         "primary_repositories": "Repositories for the main project. This folder name does not set the VS Code filename.",

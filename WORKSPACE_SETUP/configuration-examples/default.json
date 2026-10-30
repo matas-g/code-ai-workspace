@@ -2,7 +2,7 @@
   "schema_version": 1,
   "root_folder_name": "Code-AI",
   "parent_directory": ".",
-  "vscode_workspace_name": "Development",
+  "vscode_workspace_name": "Code-AI",
   "directories": {
     "primary_repositories": "MAIN_PROJECT",
     "other_repositories": "OTHER_PROJECTS",

@@ -1288,7 +1288,7 @@ class WorkspaceTests(unittest.TestCase):
     def test_diagnostic_errors_and_warnings_precede_notes_with_same_exit_code(self):
         self.init()
         (self.target / 'README.md').unlink()
-        workspace = self.target / 'ide_configs/Development.code-workspace'
+        workspace = self.target / 'ide_configs/Code-AI.code-workspace'
         workspace.write_bytes(w.json_bytes({'folders': [], 'settings': {}}))
         path = self.target / 'AI_WORK/project/overview.md'
         path.write_bytes(path.read_bytes() + b'\nLocal note.\n')
@@ -1353,7 +1353,7 @@ class WorkspaceTests(unittest.TestCase):
             for dest in re.findall(r'!?\[[^\]]*\]\(([^)]+)\)', path.read_text()):
                 if not urlsplit(dest).scheme and not dest.startswith('#'):
                     self.assertFalse(Path(dest).is_absolute(), (path, dest))
-        workspace = json.loads((original / 'ide_configs/Development.code-workspace').read_bytes())
+        workspace = json.loads((original / 'ide_configs/Code-AI.code-workspace').read_bytes())
         self.assertTrue(all(folder['path'].startswith('../') for folder in workspace['folders']))
         new_parent = self.work / 'New location with spaces'
         new_parent.mkdir()
@@ -1375,8 +1375,8 @@ class WorkspaceTests(unittest.TestCase):
         root = self.init(config=config)
         self.assertTrue((root / 'Custom Repositories').is_dir())
         self.assertTrue((root / 'AI_WORK').is_dir())
-        self.assertEqual({p.name for p in (root / 'ide_configs').iterdir()}, {'Development.code-workspace'})
-        self.assertIn('ide_configs/Development.code-workspace', (root / 'README.md').read_text())
+        self.assertEqual({p.name for p in (root / 'ide_configs').iterdir()}, {'Code-AI.code-workspace'})
+        self.assertIn('ide_configs/Code-AI.code-workspace', (root / 'README.md').read_text())
 
     def test_vscode_name_is_independent_in_menu_links_and_refresh(self):
         raw = w.load_json(self.source / 'configuration-examples/renamed.json')
@@ -1470,7 +1470,7 @@ class WorkspaceTests(unittest.TestCase):
         self.assertTrue(all(x['include_in_workspace'] for x in plan['registration_additions']))
         with guard(root):
             w.refresh(root, config, state, True)
-        roots = w.load_json(root / 'ide_configs/Development.code-workspace')['folders']
+        roots = w.load_json(root / 'ide_configs/Code-AI.code-workspace')['folders']
         self.assertEqual([x['name'] for x in roots], ['MAIN · customer.data-pipelines', 'AI Work', 'Knowledge', 'OTHER · Žinių library', 'DOCS · Standards'])
         self.assertEqual(w.load_json(root / 'AI_WORK/.framework/installation.json')['repositories'][-1]['access'], 'reference')
         root, config, state = self.live()
@@ -1511,7 +1511,7 @@ class WorkspaceTests(unittest.TestCase):
     def test_refresh_two_approvals_and_partial_cancel(self):
         self.init()
         (self.target / 'MAIN_PROJECT/sql-repo').mkdir()
-        workspace = self.target / 'ide_configs/Development.code-workspace'
+        workspace = self.target / 'ide_configs/Code-AI.code-workspace'
         original = workspace.read_bytes()
         code, logs, prompts = self.refresh_run(['yes', ''])
         self.assertEqual(code, 0)
@@ -1595,12 +1595,12 @@ class WorkspaceTests(unittest.TestCase):
         self.assertEqual(repos[0]['display_name'], 'renamed')
         self.assertTrue(repos[0]['include_in_workspace'])
         self.assertTrue((self.target / 'OTHER_PROJECTS/renamed').is_dir())
-        self.assertIn('OTHER · renamed', (self.target / 'ide_configs/Development.code-workspace').read_text())
+        self.assertIn('OTHER · renamed', (self.target / 'ide_configs/Code-AI.code-workspace').read_text())
 
     def test_refresh_jsonc_preserves_all_bytes_outside_folder_list(self):
         self.init()
         (self.target / 'MAIN_PROJECT/new-repo').mkdir()
-        path = self.target / 'ide_configs/Development.code-workspace'
+        path = self.target / 'ide_configs/Code-AI.code-workspace'
         prefix = b'\xef\xbb\xbf// { keep a leading comment\r\n{\r\n\t"folders" : '
         suffix = b', // retain this comment\r\n\t"settings": {"url": "https://example.invalid/*x*/", "pattern": "{{value}}",},\r\n\t"tasks": {"version":"2.0.0","tasks":[]},\r\n\t"extensions": {"recommendations":[]},\r\n\t"launch": {"configurations": []},\r\n}\r\n'
         path.write_bytes(prefix + b'[]' + suffix)
@@ -1619,7 +1619,7 @@ class WorkspaceTests(unittest.TestCase):
 
     def test_refresh_manual_roots_are_previewed_and_replaced(self):
         self.init()
-        path = self.target / 'ide_configs/Development.code-workspace'
+        path = self.target / 'ide_configs/Code-AI.code-workspace'
         data = w.load_json(path)
         data['folders'] = [{'path': '/manually-added/external', 'name': 'Custom root'}]
         data['settings'] = {'editor.tabSize': 4}
@@ -1633,7 +1633,7 @@ class WorkspaceTests(unittest.TestCase):
 
     def test_refresh_absent_folders_property_is_added_without_rewriting_settings(self):
         self.init()
-        path = self.target / 'ide_configs/Development.code-workspace'
+        path = self.target / 'ide_configs/Code-AI.code-workspace'
         for data in (b'// { comment\n{"settings":{"x":1}}\n', b'{/*comment*/}\n'):
             path.write_bytes(data)
             self.assertEqual(self.refresh_run(['yes'])[0], 0)
@@ -1642,7 +1642,7 @@ class WorkspaceTests(unittest.TestCase):
 
     def test_refresh_malformed_or_duplicate_jsonc_is_not_overwritten(self):
         self.init()
-        path = self.target / 'ide_configs/Development.code-workspace'
+        path = self.target / 'ide_configs/Code-AI.code-workspace'
         for data in (b'{"folders": [], "folders": []}', b'{"folders":[] /* open', b'{"folders": true}', b'{"folders":[{"uri":"remote://x"}]}', b'{"folders":[], "settings": [1 2]}'):
             path.write_bytes(data)
             before = self.snapshot(self.target)
@@ -1680,7 +1680,7 @@ class WorkspaceTests(unittest.TestCase):
 
     def test_refresh_concurrent_workspace_and_config_edits_are_retained(self):
         self.init()
-        workspace = self.target / 'ide_configs/Development.code-workspace'
+        workspace = self.target / 'ide_configs/Code-AI.code-workspace'
         original = workspace.read_bytes()
         for kind in ('workspace', 'config', 'folder'):
             workspace.write_bytes(w.json_bytes({'folders': [], 'settings': {}}))
@@ -1821,7 +1821,7 @@ class WorkspaceTests(unittest.TestCase):
     def test_refresh_workspace_state_write_failure_preserves_settings_and_is_recoverable(self):
         self.init()
         (self.target / 'MAIN_PROJECT/new').mkdir()
-        workspace = self.target / 'ide_configs/Development.code-workspace'
+        workspace = self.target / 'ide_configs/Code-AI.code-workspace'
         data = w.load_json(workspace)
         data['settings'] = {'editor.tabSize': 7}
         workspace.write_bytes(w.json_bytes(data))
@@ -1843,7 +1843,7 @@ class WorkspaceTests(unittest.TestCase):
 
     def test_refresh_workspace_reorder_preview_and_noop_readonly(self):
         self.init()
-        workspace = self.target / 'ide_configs/Development.code-workspace'
+        workspace = self.target / 'ide_configs/Code-AI.code-workspace'
         data = w.load_json(workspace)
         data['folders'].reverse()
         workspace.write_bytes(w.json_bytes(data))

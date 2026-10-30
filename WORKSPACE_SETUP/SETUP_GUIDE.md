@@ -35,7 +35,7 @@ Edit [settings.json](settings.json) before creation. It is deliberately editable
 | `directories.ai_work` | Context, tickets, skills, tools and local setup records |
 | `directories.knowledge` | Reusable guides and assets |
 | `repositories` | Optional planned inventory; default `[]`. Setup neither clones repositories nor creates their child folders |
-| `vscode_workspace_name` | Saved VS Code filename stem; default `Development`, independent of repository groups. Omit `.code-workspace` |
+| `vscode_workspace_name` | Saved VS Code filename stem; default `Code-AI`, independent of repository groups. Omit `.code-workspace` |
 | `schema_version` | Configuration format; leave at `1` |
 
 Use letters, digits, spaces, `_` and `-` for major names, starting with a letter/digit (1–64 characters). Names must be distinct within their scope and cannot be reserved Windows names. Repository child names also allow dots and Unicode, up to 255 characters; separators, controls, surrounding whitespace and trailing dots are refused. Unknown/duplicate JSON keys and invalid types are errors.

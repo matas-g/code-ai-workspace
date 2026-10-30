@@ -2,7 +2,7 @@
 
 **Design version:** 1.0  
 **Prepared:** 20 October 2026  
-**Updated:** 29 October 2026<br>
+**Updated:** 30 October 2026<br>
 **Status:** Current implementation specification; platform validation results and remaining checks are recorded in VALIDATION_REPORT.md.  
 **Audience:** Developers, maintainers, security reviewers, and an AI agent implementing the solution.  
 **Supported initial environments:** Native Windows 11 and macOS; shared files/Python tools usable with any editor. Generated IDE integration is VS Code only; other IDE project import and Copilot discovery require manual setup/testing.  
@@ -75,7 +75,7 @@ The concrete names, JSON schema, command interface, Python implementation, and m
 
 ### 1.5 Naming and editor scope
 
-Use development folder for the outer generated tree and VS Code workspace for the saved .code-workspace view. Configuration schema 1 uses root_folder_name, parent_directory and directories.primary_repositories. Default AI working files go under AI_WORK. ide_configs is a fixed generic helper container; only the VS Code helper is generated. Optional vscode_workspace_name defaults to Development; never derive its filename from a repository group. Project names/folders and IDE filenames are separate concepts.
+Use development folder for the outer generated tree and VS Code workspace for the saved .code-workspace view. Configuration schema 1 uses root_folder_name, parent_directory and directories.primary_repositories. Default AI working files go under AI_WORK. ide_configs is a fixed generic helper container; only the VS Code helper is generated. Optional vscode_workspace_name defaults to Code-AI; never derive its filename from a repository group. Project names/folders and IDE filenames are separate concepts.
 
 Shared files and Python tools are usable with any editor, including manual IntelliJ/Eclipse workflows. Do not claim automatic integration or equivalent Copilot behavior. Keep VS Code-specific settings explicit, and require its helper to remain for current validation. No IDE selector, plugin installation, native project generation or project import is automatic.
 
@@ -199,7 +199,7 @@ This illustrative configuration uses the shipped default directory names and two
   "schema_version": 1,
   "root_folder_name": "Code-AI",
   "parent_directory": ".",
-  "vscode_workspace_name": "Development",
+  "vscode_workspace_name": "Code-AI",
   "directories": {
     "primary_repositories": "MAIN_PROJECT",
     "other_repositories": "OTHER_PROJECTS",
@@ -269,7 +269,7 @@ Both local state files reside under `<ai_work>/.framework/`. `installation.json`
   "package_version": "<release version>",
   "design_version": "1.0",
   "initialization_status": "complete",
-  "vscode_workspace_name": "Development",
+  "vscode_workspace_name": "Code-AI",
   "managed_files": [
     {
       "path": "ide_configs/<vscode_workspace_name>.code-workspace",
@@ -305,7 +305,7 @@ Static distribution READMEs and guides cannot assume a particular user's configu
 | `<company_documentation>` | `directories.company_documentation` |
 | `<ai_work>` | `directories.ai_work` |
 | `<knowledge>` | `directories.knowledge` |
-| `<vscode_workspace_name>` | `vscode_workspace_name`, default `Development`; filename stem only |
+| `<vscode_workspace_name>` | `vscode_workspace_name`, default `Code-AI`; filename stem only |
 
 `parent_directory` is an existing setup parent, not a name embedded in generated links. Repository group/directory/display/access/selection values must be read from configuration; literal sample repository names are permitted only in clearly labelled examples. Defaults in schema examples, default configuration files, central fallback constants and synthetic test fixtures are intentional values, not user-facing assumptions.
 
@@ -385,7 +385,7 @@ Opening a workspace is a manual action and may cause normal VS Code indexing or 
 
 ### 7.1a Other IDEs and the scope of IDE helpers
 
-Use `ide_configs/` as a neutral container for generated IDE helper files. The first implementation generates only `<vscode_workspace_name>.code-workspace`; the `vscode_workspace_name` setting defaults to Development and is independent of `directories.primary_repositories`. Do not add an IDE selector or native IntelliJ/Eclipse metadata generation. Shared repository groups, ticket/context/knowledge files and deterministic Python tools remain usable from any editor. Other IDE users manually open/import their projects and retain the unused VS Code file because current validation requires it.
+Use `ide_configs/` as a neutral container for generated IDE helper files. The first implementation generates only `<vscode_workspace_name>.code-workspace`; the `vscode_workspace_name` setting defaults to Code-AI and is independent of `directories.primary_repositories`. Do not add an IDE selector or native IntelliJ/Eclipse metadata generation. Shared repository groups, ticket/context/knowledge files and deterministic Python tools remain usable from any editor. Other IDE users manually open/import their projects and retain the unused VS Code file because current validation requires it.
 
 Refresh, repository display_name and include_in_workspace apply only to the generated VS Code file. Documentation and terminal prompts must say so. IntelliJ/Eclipse project configuration, feature parity and automatic Copilot skill discovery need independent tests; direct Python commands and Markdown procedures remain the fallback. Do not change global settings or install IDE/plugins automatically.
 
@@ -956,7 +956,7 @@ Test default `.`, absolute and relative locations, --target precedence, missing/
 
 ### 19.9 Naming schema and independence acceptance checks
 
-Use configuration schema 1 with root_folder_name, parent_directory, directories.primary_repositories and the AI_WORK default. Confirm ide_configs/Development.code-workspace exists when vscode_workspace_name is omitted. Independently customize the root, primary repository group and vscode_workspace_name, including spaces; verify menus, README links, refresh and expected file inventory follow the correct setting without cross-coupling. Reject invalid filename stems and post-initialization filename changes before writes. Reject unsupported schema versions, unknown keys and invalid repository groups before writes. Confirm all current new-target, path/drift, launcher, relocation and no-installer-runtime tests still pass.
+Use configuration schema 1 with root_folder_name, parent_directory, directories.primary_repositories and the AI_WORK default. Confirm ide_configs/Code-AI.code-workspace exists when vscode_workspace_name is omitted. Independently customize the root, primary repository group and vscode_workspace_name, including spaces; verify menus, README links, refresh and expected file inventory follow the correct setting without cross-coupling. Reject invalid filename stems and post-initialization filename changes before writes. Reject unsupported schema versions, unknown keys and invalid repository groups before writes. Confirm all current new-target, path/drift, launcher, relocation and no-installer-runtime tests still pass.
 
 ## 20. Decision log and remaining verification
 
