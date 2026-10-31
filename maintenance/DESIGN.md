@@ -2,13 +2,13 @@
 
 **Design version:** 1.0  
 **Prepared:** 20 October 2026  
-**Updated:** 30 October 2026<br>
+**Updated:** 31 October 2026<br>
 **Status:** Current implementation specification; platform validation results and remaining checks are recorded in VALIDATION_REPORT.md.  
 **Audience:** Developers, maintainers, security reviewers, and an AI agent implementing the solution.  
 **Supported initial environments:** Native Windows 11 and macOS; shared files/Python tools usable with any editor. Generated IDE integration is VS Code only; other IDE project import and Copilot discovery require manual setup/testing.  
 **Use case:** Multi-repository development with shared project context, ticket notes, and reusable workflows.
 
-This document is self-contained and defines the complete deliverables and behavior. Platform support claims require the validation evidence recorded separately in VALIDATION_REPORT.md.
+This repository-only document defines the complete implementation deliverables and behavior. Platform support claims require the [validation evidence](VALIDATION_REPORT.md). User installation instructions belong in WORKSPACE_SETUP/README.md, SETUP_GUIDE.md and RELEASE_NOTES.md; development/release commands belong in [DEVELOPMENT.md](DEVELOPMENT.md). This is the single canonical design; no package or root mirror is maintained.
 
 ## 1. Outcome and operating principles
 
@@ -67,7 +67,7 @@ The concrete names, JSON schema, command interface, Python implementation, and m
 - Separate the disposable initializer distribution from the generated daily framework. Never copy `WORKSPACE_SETUP`, source tests/design/payloads, setup launchers or a maintenance workspace into the generated root.
 - The ZIP contains one enclosing `Code-AI-Setup-<version>/` folder. Its immediate contents are `README.md`, `Start macOS.command`, `Start Windows.cmd`, and `WORKSPACE_SETUP/`. Users need not enter the source folder unless customizing settings.
 - Default to `<launcher directory>/Code-AI`, configurable through `WORKSPACE_SETUP/settings.json` (`root_folder_name`, `parent_directory`); direct CLI anchors relative locations to the current directory. `--target` overrides the default.
-- Before the file preview, show effective settings, short descriptions, usage locations and the exact editable configuration path. Ask `y`/`yes` to continue. Blank/no/EOF exits immediately without preview or writes; invalid answers reprompt. Declining requires editing settings and relaunching.
+- Before the file preview, show effective settings, short descriptions, usage locations and the exact editable configuration path. Ask `[Y/n]` to continue: Enter opens the read-only preview; `n`/`no` or EOF exits immediately without preview or writes; invalid answers reprompt. Declining requires editing settings and relaunching.
 - After accepting settings, show the actual file/directory preview and ask separately for creation approval. Freeze the validated settings before either prompt; never reread different values during creation.
 - After creation, validate automatically. Print success only after validation succeeds; retain the console on success, preview cancellation and error until `q`/`quit` or manual closure. Initial settings rejection exits without a keep-open shell. Physical macOS Terminal closure depends on the user's profile; never change that profile or automate unrelated windows.
 - Use an already installed approved Python 3.9+ and standard library. Never download/install Python, use an automatic-install manager, change quarantine/execution policy, authenticate, clone or configure backups.
@@ -319,25 +319,22 @@ Code-AI-Setup-<version>/
   Start macOS.command
   Start Windows.cmd
   WORKSPACE_SETUP/
-    README.md, SETUP_GUIDE.md, DESIGN.md, CHANGELOG.md, VALIDATION_REPORT.md
+    SETUP_GUIDE.md, RELEASE_NOTES.md
     settings.json
-    .gitignore
     package-manifest.json
-    scripts/{workspace,start,workspace_manager,terminal_output_formatter,vscode_workspace_updater,build_release}.py
-    launchers/{Start macOS.command,Start Windows.cmd}  # disposable setup entrypoints
+    scripts/{workspace,start,workspace_manager,terminal_output_formatter,vscode_workspace_updater}.py
     launchers/{refresh_vscode_workspace macOS.command,refresh_vscode_workspace Windows.cmd}  # templates deployed into new development roots
-    tests/test_workspace.py
     configuration-examples/{default,renamed}.json
     payload/{root,project,knowledge,examples,skills}/...
 ```
 
-Source assets under `launchers/` remain maintainer inputs; the active user entrypoints are beside the README inside the enclosing folder. Maintainers may keep the entire product in a Git repository later; it is not part of a developer's generated tree.
+The repository contains development sources beyond this installation inventory. Keep maintenance documents, the full changelog/validation history, tests and build tooling out of the ZIP. The canonical user README and Start launcher sources are emitted once at the enclosing root, with no duplicate inner copies. Daily refresh-launcher templates remain inside the package because the initializer deploys them. The generated development tree remains a third, daily-use boundary with its existing tools and guides.
 
-The release builder uses an explicit source inventory; no directory-recursive inclusion. It writes a manifest and deterministic ZIP with normalized timestamps, a 755 macOS entrypoint and a checksum sidecar. Every ZIP member path MUST begin with `Code-AI-Setup-<package_version>/`, derived from the manifest package version rather than the output filename. Keep all manifest source paths relative to `WORKSPACE_SETUP`; the enclosing folder is distribution packaging only. No package member sits outside this folder. Extraction tools may add an additional outer folder; document that users open the folder containing the README and launchers. It never overwrites a release archive. Arbitrary files, source `.git`, caches, credentials, reports, private config and test sandboxes are excluded. The reviewed default `settings.json` is deliberately distributed; users must not redistribute personal edits as an official default.
+The release builder uses an explicit user-package `INVENTORY` plus three enclosing `ENTRYPOINTS`; no directory-recursive inclusion. It writes a manifest and deterministic ZIP with normalized timestamps, a 755 macOS entrypoint and a checksum sidecar. Every ZIP member path MUST begin with `Code-AI-Setup-<package_version>/`, derived from the manifest package version rather than the output filename. Keep all manifest source paths relative to `WORKSPACE_SETUP`; the enclosing folder is distribution packaging only. No package member sits outside this folder. Extraction tools may add an additional outer folder; document that users open the folder containing the README and launchers. It never overwrites a release archive. Arbitrary files, source `.git`, caches, credentials, reports, private config and test sandboxes are excluded. The reviewed default `settings.json` is deliberately distributed; users must not redistribute personal edits as an official default.
 
-`scripts/workspace_manager.py` owns the single product `VERSION` constant and independent `DESIGN_VERSION`. The maintainer builder reads those literal strings without executing runtime code. Preparation updates the package README's current version label before hashing sources; `--output-dir` derives the default ZIP filename from the same version. An explicit `--sync-project-docs` also synchronizes existing project-root README/design copies; ordinary builds write only inside the package and the requested archive/checksum paths. General guides avoid repeating the current product version. Changelog entries and validation/manual-test evidence retain their explicitly recorded release versions and are never automatically relabelled. ZIP timestamps are fixed independently of release dates.
+`scripts/workspace_manager.py` owns the single product `VERSION` constant and independent `DESIGN_VERSION`. The maintainer builder reads those literal strings without executing runtime code. Preparation updates the canonical user README's package-version label and manifest hashes; `--output-dir` derives the default ZIP filename from the same version. The repository README is independent and this design lives only under maintenance/. Preparation never rewrites repository/maintenance documents; the former `--sync-project-docs` option is removed. Builds write only inside the package and the requested archive/checksum paths. General guides avoid repeating the current product version. Changelog entries and validation/manual-test evidence retain their explicitly recorded release versions and are never automatically relabelled. ZIP timestamps are fixed independently of release dates.
 
-Manifest schema 1 declares `package_version`, `design_version`, `minimum_python`, `files` and `directories`. Each file entry contains `source`, `sha256`, `destinations`; each destination has `directory_id`, `relative_path`, `render` (`copy` or `markdown`) and `owner` (`framework`, `generated`, `user`). Source-only files have an empty destinations list. Logical IDs are the five configured directories plus `root` and `ide_configs`; no `setup` output ID exists. The runtime contains an independent expected output/ownership inventory, including the two daily refresh launchers and helper modules, preventing source-only material or unexpected paths from being deployed.
+Manifest schema 1 declares `package_version`, `design_version`, `minimum_python`, `files` and `directories`. Each file entry contains `source`, `sha256`, `destinations`; each destination has `directory_id`, `relative_path`, `render` (`copy` or `markdown`) and `owner` (`framework`, `generated`, `user`). Installer-only user inputs have an empty destinations list. Repository-only documents/tools/tests are omitted entirely. The enclosing README and Start launchers are outside the initializer input manifest and covered by the whole-ZIP checksum. Logical IDs are the five configured directories plus `root` and `ide_configs`; no `setup` output ID exists. The runtime contains an independent expected output/ownership inventory, including the two daily refresh launchers and helper modules, preventing source-only material or unexpected paths from being deployed.
 
 Only the exact `settings.json` source entry may have `mutable: true`. Its initial byte hash records the shipped default, but initialization permits user edits and validates their schema. Every other listed input must match its hash before creation. Do not require users to rebuild a manifest to customize settings. A supplied `--config` file is parsed/validated separately. Integrity hashes are local baselines, not authenticity signatures or OS security controls.
 
@@ -477,7 +474,7 @@ Fresh initialization is intentionally **not idempotent at the same path**: it al
 
 Two reviewed launchers sit inside the enclosing `Code-AI-Setup-<version>/` folder, beside the README and `WORKSPACE_SETUP`, and run `WORKSPACE_SETUP/scripts/start.py` through an already installed Python 3.9+ with `-I -S -B`. macOS uses the shell/Terminal association; Windows uses Command Prompt and built-in no-profile PowerShell to locate installed executables through PATH/Python registry entries. Skip Store aliases and manager shims; do not trigger downloads or change policy. Probe version before executing the setup script.
 
-The shared orchestrator first parses/fixes the effective config from `WORKSPACE_SETUP/settings.json` (or `--config`) and shows its absolute path. Explain every configurable value, effective target and fixed internal paths. Ask whether these settings are acceptable, then exit with internal code `4` on no/blank/EOF. Wrappers translate this to a clean immediate exit and skip their console retention. On macOS the finished window may remain due to Terminal profile settings; do not change them. Invalid answers reprompt.
+The shared orchestrator first parses/fixes the effective config from `WORKSPACE_SETUP/settings.json` (or `--config`) and shows its absolute path. Explain every configurable value, effective target and fixed internal paths. Ask whether these settings are acceptable, then exit with internal code `4` on `n`/`no` or EOF. Enter continues to the read-only preview. Wrappers translate this to a clean immediate exit and skip their console retention. On macOS the finished window may remain due to Terminal profile settings; do not change them. Invalid answers reprompt.
 
 After settings acceptance, run the same read-only `plan`, display all created directories/files including local state, and ask separately for creation confirmation. Accept only case-insensitive trimmed `y`/`yes`. Declining this second prompt creates nothing and retains the console. With approval, ensure the manifest has not changed since preview, refuse an occupied target, initialize and validate in-process. Read settings once; all output and creation use those frozen values. No unattended `--yes` option exists.
 
@@ -717,9 +714,9 @@ The implementation MUST deliver `SETUP_GUIDE.md` with actual tested commands. It
 
 ### 14.1 Required guide order
 
-Start with a short end-to-end setup checklist: obtain the repository/release files with prerequisites available; run the launcher, accept settings and confirm creation/validation; manually populate the generated repository groups; manually refresh registrations and the VS Code folder list; open the saved workspace; prepare Copilot and verified overview/reference-map context; check instruction loading and a small ticket/audit workflow; continue to daily work. Link to detailed generated-guide procedures through clearly identified packaged templates. Editing the generated orientation is optional. Basic onboarding checks one intended root/mode and verifies a documented fallback where features are unavailable; the full maintainer platform/root/mode matrix remains separate. Settings changes require editing the named JSON and relaunching. Prerequisites, optional follow-up and conditional troubleshooting follow as focused reference sections.
+Start with a short end-to-end setup checklist: obtain the repository/release files with prerequisites available; run the launcher, accept settings and confirm creation/validation; manually populate the generated repository groups; manually refresh registrations and the VS Code folder list; open the saved workspace; prepare Copilot and verified overview/reference-map context; check instruction loading and a small ticket/audit workflow; continue to daily work. Direct users to the actual guides in their generated AI Work folder and name the required sections; do not route setup through unrendered payload templates with installed-relative links. Editing the generated orientation is optional. Basic onboarding checks one intended root/mode and verifies a documented fallback where features are unavailable; the full maintainer platform/root/mode matrix remains separate. Settings changes require editing the named JSON and relaunching. Prerequisites, optional follow-up and conditional troubleshooting follow as focused reference sections.
 
-The repository/release README is a landing page: explain the project's purpose and useful capabilities, prerequisites, the quick start, generated layout, scope/portability, help and contributor entry points. Keep detailed operation in linked guides. Maintain its shared source in WORKSPACE_SETUP/README.md; preparation rewrites package-relative Markdown links for the root/ZIP copy while preserving external URLs and same-document anchors.
+Maintain two intentionally different landing pages. The repository README explains the product and links to user setup plus maintenance/contributor material. The user installation README is canonical at WORKSPACE_SETUP/README.md and covers prerequisites, quick setup, generated layout, portability, help and current known limitations. Emit that user document once at the ZIP root, relocating its package-relative links while preserving external URLs and same-document anchors. It must not link or refer to absent maintenance files. Keep detailed user operations in SETUP_GUIDE.md and generated daily guides; keep maintainer commands and full history in maintenance/.
 
 Provide precise settings fields, approved-package integrity checks, direct-command alternatives, refusal/error handling and manual external actions below the quick start. Generated user guides must be self-contained for daily folder usage, repository inventory/refresh, validation, tickets, local skill discovery/fallback, backup/recovery and safe removal. They must never require an installer guide that users may delete.
 
@@ -829,7 +826,7 @@ Do not implement optional specialist skills, Git automation, global customizatio
 
 ### 17.3 Delivery inventory
 
-The implementation deliverable includes the enclosing setup folder with README and clickable entrypoints alongside the source package, this design as `DESIGN.md`, setup guide, commands, templates, static sample asset, automated tests, synthetic configuration examples (default and renamed), release manifest/checksums, and a validation report.
+The repository deliverable includes source code, tests, this canonical maintenance/DESIGN.md, maintenance/DEVELOPMENT.md, full changelog/validation history and the maintainer trackers. The user installation deliverable includes the enclosing user README and clickable entrypoints, allowlisted essential installer/runtime code, setup/concise release notes, payload/templates/static asset, default/custom configuration examples and manifest/checksum. The ZIP excludes tests, build tooling, design/maintenance documents and redundant enclosing-entrypoint sources. The generated development folder contains only the independently portable daily tools/guides/data structure defined above.
 
 The validation report must list actual platforms/versions tested, commands/tests run, outcomes, manual checks pending, and known limitations. Do not assert Windows or macOS support based solely on tests on the other OS. No organizational approval claim or fabricated smoke-test evidence.
 
@@ -914,13 +911,13 @@ If either OS or the required harness is unavailable, mark that release gate **no
 - [ ] Backup/recovery and manual update/removal procedures are understandable.
 - [ ] Required organizational approvals and internal procedures are identified before deployment in a managed environment.
 
-## 19. Exact prompts supplied with the finished package
+## 19. Maintainer reference prompts
 
-Prompts complement commands; they are not a replacement installer. Include these in the guide with actual local filenames and tested interfaces.
+These prompts are repository-only implementation/reference material, not required content for the user installation guide. Keep user instructions focused on setup and daily use. Prompts complement deterministic commands and never replace actual execution evidence.
 
 ### 19.1 Build the package from this specification
 
-> Implement the self-contained workspace described in DESIGN.md inside the authorized project/test directories. Preserve its new-target-only and no-external-changes contract. Use Python standard library, deterministic commands, synthetic fixtures and no MCP. Build the required first release, documentation and acceptance tests. Do not install into real development folders, clone company repositories, change global configuration, authenticate, download dependencies or enable security settings. Report what was actually tested and any platform/Copilot checks still pending.
+> Implement the self-contained workspace described in maintenance/DESIGN.md inside the authorized project/test directories. Preserve its new-target-only and no-external-changes contract. Use Python standard library, deterministic commands, synthetic fixtures and no MCP. Build the required first release, documentation and acceptance tests. Do not install into real development folders, clone company repositories, change global configuration, authenticate, download dependencies or enable security settings. Report what was actually tested and any platform/Copilot checks still pending.
 
 ### 19.2 Help a developer prepare initialization
 

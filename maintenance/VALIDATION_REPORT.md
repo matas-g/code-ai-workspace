@@ -1,5 +1,40 @@
 # Validation report — design 1.0
 
+**Last updated:** 31 October 2026<br>
+**Current scope:** Unreleased source/package-structure change; product 0.1.19 and design 1.0 are unchanged. The published 0.1.19 ZIP/checksum are preserved. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## Unreleased user-package separation — 31 October 2026
+
+Moved the single canonical design, full validation history and changelog into maintenance/. Removed the root design mirror and release-to-repository README synchronization. The independent repository README links to contributor material; the canonical user README is emitted once at the ZIP root. User setup/release notes contain no maintenance links. Tests and the builder remain repository tools under WORKSPACE_SETUP/ but are excluded from the installation inventory. Daily runtime/payload files and the generated 30-file layout are unchanged. The obsolete --sync-project-docs option is removed.
+
+**Environment:** Native macOS 26.6.2, Apple Silicon (arm64). Synthetic fixtures only; no software installation, authentication, global-setting change or publication.
+
+| Check | Actual result |
+|---|---|
+| Python 3.15.0 behavioral suite | 100 tests passed; 12.895 seconds reported by unittest |
+| Python 3.9.6 behavioral suite | 100 tests passed; 16.340 seconds reported by unittest |
+| New/updated archive regression coverage | Excludes maintainer/leftover files, tests/build tool, development ignore rules and duplicate entrypoint sources; checks missing-entrypoint refusal, independent repository-document preservation and extracted default/custom lifecycle |
+| Exact candidate archive | 35 allowlisted inner inputs plus manifest and three enclosing entrypoints: 39 members; paths, hashes, checksum and executable macOS entrypoint metadata passed |
+| Source and user documentation | Local paths/anchors passed; 13 user-document links in the extracted ZIP; no maintenance references in its README/setup/release notes |
+| Generated documentation | 124 local links/anchors passed across default/custom layouts; each fresh tree has 30 daily files |
+| Final extracted artifact lifecycle | Both layouts initialized, moved/renamed and operated after the extracted installer was deleted; 12 validation/audit/refresh/ticket subprocess commands succeeded from another working directory |
+| Document/source preservation | Build preparation preserved independent repository README/design/tracker; root Start launchers match canonical sources; published ZIP/checksum remain unchanged |
+
+Suite commands ran serially from an isolated source copy:
+
+```sh
+python3 -I -S -B _tmp/distribution-structure-20261031-_yy7lgm7/verification-final/WORKSPACE_SETUP/tests/test_workspace.py
+/usr/bin/python3 -I -S -B _tmp/distribution-structure-20261031-_yy7lgm7/verification-final/WORKSPACE_SETUP/tests/test_workspace.py
+```
+
+Before the suite, the same copy's builder prepared its hashes. Initial focused verification found one obsolete assertion expecting an unanchored setup link; it was corrected to the actual quick-setup section target. Both full suites above passed after that correction. Logs are _tmp/distribution-structure-20261031-_yy7lgm7/final-python315-tests.log and _tmp/distribution-structure-20261031-_yy7lgm7/final-python39-tests.log; machine-readable summaries are final-suite-results.json and final-artifact-verification.json in the same directory. The final candidate ZIP/checksum stay under its candidate-final/ folder. Source manifest hashes were prepared deliberately with the updated builder.
+
+No new GUI, VS Code/Copilot or native Windows session was run. The macOS shell launcher tests in the suite do not establish Finder/Terminal UI behavior. Changed onboarding/rendering paths still need relevant novice/IDE checks. Known runtime/AI/parser defects remain open; this packaging change does not close them. Backlog B21 records this completed structural scope; B12/B19 retain their remaining work.
+
+## Historical reports
+
+The dated material below preserves its original artifact, command, path and verification scope. References to old mirrors, source locations, counts or options describe those earlier versions/stages; use DEVELOPMENT.md for current commands. Earlier manual-status summaries do not replace the current tracker.
+
 **Date:** 30 October 2026<br>
 **Status:** macOS pilot. Copilot orientation inclusion across roots/modes, native Windows and physical GUI behavior remain manual checks.
 

@@ -18,8 +18,8 @@ Use this reading order as navigation, while including any files added since the 
 - Root README and maintainer instructions; package README, setup guide, settings, configuration examples and manifest.
 - Initializer, installed runtime, release builder, presentation/JSONC helpers, root and packaged launchers.
 - Every payload skill, helper, template, instruction file, project/knowledge example and asset.
-- The complete behavioral test suite and canonical design, checking the root design mirror.
-- `maintenance/BACKLOG.md`, `maintenance/QUALITY_IMPROVEMENT_PLAN.md`, `maintenance/MANUAL_TESTS.md`, `WORKSPACE_SETUP/VALIDATION_REPORT.md` and changelog.
+- The complete behavioral test suite and the single canonical `maintenance/DESIGN.md`; there is no root design mirror.
+- `maintenance/DEVELOPMENT.md`, `maintenance/BACKLOG.md`, `maintenance/QUALITY_IMPROVEMENT_PLAN.md`, `maintenance/MANUAL_TESTS.md`, `maintenance/VALIDATION_REPORT.md`, `maintenance/CHANGELOG.md` and the user-facing `WORKSPACE_SETUP/RELEASE_NOTES.md`.
 
 Build a current understanding of the installer/runtime separation, generated layout, configuration and ownership contracts, ticket lifecycle, refresh behavior, validation/audit scope and release process. Determine the version from `VERSION` in `workspace_manager.py`; do not hardcode a release or test count in this skill.
 

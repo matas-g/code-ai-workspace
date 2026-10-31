@@ -12,11 +12,11 @@ import stat
 import zipfile
 
 PACKAGE = Path(__file__).absolute().parent.parent
-# Deliberately explicit. User data or newly added files are never picked up implicitly.
+# Only user-package inputs. Repository tests, build tools and maintainer documents
+# stay out of the manifest and ZIP even when present beside these sources.
 INVENTORY = [
-    'README.md', 'DESIGN.md', 'SETUP_GUIDE.md', 'CHANGELOG.md', 'VALIDATION_REPORT.md', '.gitignore',
-    'scripts/workspace.py', 'scripts/workspace_manager.py', 'scripts/terminal_output_formatter.py', 'scripts/vscode_workspace_updater.py', 'settings.json', 'scripts/start.py', 'scripts/build_release.py', 'tests/test_workspace.py',
-    'launchers/Start macOS.command', 'launchers/Start Windows.cmd',
+    'SETUP_GUIDE.md', 'RELEASE_NOTES.md',
+    'scripts/workspace.py', 'scripts/workspace_manager.py', 'scripts/terminal_output_formatter.py', 'scripts/vscode_workspace_updater.py', 'settings.json', 'scripts/start.py',
     'launchers/refresh_vscode_workspace macOS.command', 'launchers/refresh_vscode_workspace Windows.cmd',
     'configuration-examples/default.json', 'configuration-examples/renamed.json',
     'payload/root/README.md', 'payload/root/gitignore.txt', 'payload/root/DAILY_WORK.md',
@@ -36,6 +36,14 @@ INVENTORY = [
     'payload/skills/ca-config-audit/SKILL.md',
     'payload/skills/ca-workspace-refresh/SKILL.md',
 ]
+
+# Canonical sources for the three enclosing user entrypoints. They are shipped
+# once, at the ZIP root, and are not inputs read by the initializer's manifest.
+ENTRYPOINTS = {
+    'README.md': 'README.md',
+    'Start macOS.command': 'launchers/Start macOS.command',
+    'Start Windows.cmd': 'launchers/Start Windows.cmd',
+}
 
 
 def mapping(directory_id, path, render='copy', owner='user'):
@@ -76,8 +84,8 @@ def release_versions(package=PACKAGE):
 
 
 def outer_readme(data):
-    # The shared README is shown at the repository/ZIP root. Source links in
-    # WORKSPACE_SETUP/README.md remain relative to that package directory.
+    # Relocate the user README to the ZIP root. The repository's independent
+    # README is never read or overwritten by release preparation.
     return re.sub(rb'(\]\()(?![a-zA-Z][a-zA-Z0-9+.-]*:|/|#)([^)]+)(\))',
                   lambda match: match[1] + b'WORKSPACE_SETUP/' + match[2] + match[3], data)
 
@@ -128,8 +136,10 @@ def manifest(package=PACKAGE):
             'directories': []}
 
 
-def build(output=None, package=PACKAGE, sync_project_docs=False):
+def build(output=None, package=PACKAGE):
     release = manifest(package)  # Validate every allowlisted input before preparing files.
+    for name in ENTRYPOINTS.values():
+        source_file(package, name)
     if output is not None:
         output = Path(output)
         if not output.is_absolute() or not output.parent.is_dir() or output.exists() or output.is_symlink():
@@ -139,21 +149,13 @@ def build(output=None, package=PACKAGE, sync_project_docs=False):
             raise ValueError('Checksum output already exists.')
     readme_path = source_file(package, 'README.md')
     original = readme_path.read_bytes()
-    readme, count = re.subn(rb'(?m)^(\*\*Development status:\*\* )[0-9]+\.[0-9]+\.[0-9]+(?= )',
+    readme, count = re.subn(rb'(?m)^(\*\*Package version:\*\* )[0-9]+\.[0-9]+\.[0-9]+(?=\r?$)',
                             lambda match: match[1] + release['package_version'].encode('ascii'), original)
     if count != 1:
-        raise ValueError('README.md must contain exactly one Development status version label.')
-    mirrors = {}
-    if sync_project_docs:
-        # Explicit opt-in: ordinary builds never write outside WORKSPACE_SETUP.
-        mirrors = {source_file(package.parent, 'README.md'): outer_readme(readme),
-                   source_file(package.parent, 'WORKSPACE_DESIGN.md'): source_file(package, 'DESIGN.md').read_bytes()}
+        raise ValueError('README.md must contain exactly one Package version label.')
     if readme != original:
         readme_path.write_bytes(readme)
-    for path, content in mirrors.items():
-        if path.read_bytes() != content:
-            path.write_bytes(content)
-    release = manifest(package)  # Hash prepared content, including the updated README.
+    release = manifest(package)
     data = (json.dumps(release, indent=2) + '\n').encode()
     (package / 'package-manifest.json').write_bytes(data)
     if output is not None:
@@ -162,7 +164,7 @@ def build(output=None, package=PACKAGE, sync_project_docs=False):
         # Exclusive creation. Normalized timestamps make the release content reproducible.
         with output.open('xb') as stream, zipfile.ZipFile(stream, 'w', zipfile.ZIP_DEFLATED) as archive:
             members = {'WORKSPACE_SETUP/' + name: name for name in INVENTORY + ['package-manifest.json']}
-            members.update({'README.md': 'README.md', 'Start macOS.command': 'launchers/Start macOS.command', 'Start Windows.cmd': 'launchers/Start Windows.cmd'})
+            members.update(ENTRYPOINTS)
             for member, name in sorted(members.items()):
                 info = zipfile.ZipInfo(prefix + member, date_time=(1980, 1, 1, 0, 0, 0))
                 info.compress_type = zipfile.ZIP_DEFLATED
@@ -182,13 +184,12 @@ def main(argv=None):
     destination = parser.add_mutually_exclusive_group()
     destination.add_argument('--output', help='New absolute ZIP path with a custom filename')
     destination.add_argument('--output-dir', help='Existing absolute directory; use the versioned default ZIP filename')
-    parser.add_argument('--sync-project-docs', action='store_true', help='Also synchronize existing project-root README.md and WORKSPACE_DESIGN.md copies')
     args = parser.parse_args(argv)
     if sys.version_info < (3, 9):
         parser.error('Python 3.9+ required')
     try:
         output = default_output(args.output_dir) if args.output_dir is not None else args.output
-        print('Release manifest built for', build(output, sync_project_docs=args.sync_project_docs), 'allowlisted input files.')
+        print('Release manifest built for', build(output), 'allowlisted user-package input files.')
         if output is not None:
             print('ZIP:', output)
             print('Checksum:', str(output) + '.sha256')

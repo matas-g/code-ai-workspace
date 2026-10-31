@@ -25,7 +25,7 @@ Reusable local fixtures are in `_tmp/test_data/`: two small independent Git repo
 
 ## Outstanding checks
 
-Release 0.1.19 preparation initially added no manual evidence. The subsequent native macOS session below updates the macOS statuses for the actual 0.1.19 package, including default/custom workspace names. Historical results and Windows scopes are preserved. A PASS is limited to the explicitly recorded environment and scope; PENDING/BLOCKED rows may contain successful partial checks. Automated release results are recorded in [VALIDATION_REPORT.md](../WORKSPACE_SETUP/VALIDATION_REPORT.md); they do not close manual checks.
+Release 0.1.19 preparation initially added no manual evidence. The subsequent native macOS session below updates the macOS statuses for the actual 0.1.19 package, including default/custom workspace names. Historical results and Windows scopes are preserved. A PASS is limited to the explicitly recorded environment and scope; PENDING/BLOCKED rows may contain successful partial checks. Automated release results are recorded in [VALIDATION_REPORT.md](VALIDATION_REPORT.md); they do not close manual checks.
 
 P0 = verify before relying on automatic context. P1 = normal pilot/platform check. P2 = optional editor adoption.
 

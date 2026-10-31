@@ -2,9 +2,11 @@
 
 **Original review:** 29 October 2026; baseline 0.1.18, commit `20e04c7`<br>
 **Reconciled:** 30 October 2026 against source 0.1.19, commit `02c65f1`, and its recorded manual session<br>
-**Status:** Technical proposals and acceptance criteria. [BACKLOG.md](BACKLOG.md) is the single current implementation order/status; [MANUAL_TESTS.md](MANUAL_TESTS.md) owns manual evidence. This reconciliation changes maintainer planning documents only.
+**Status:** Technical proposals and acceptance criteria. [BACKLOG.md](BACKLOG.md) is the single current implementation order/status; [MANUAL_TESTS.md](MANUAL_TESTS.md) owns manual evidence. The 30 October reconciliation changed maintainer planning documents only; later implementation progress is tracked in the backlog.
 
 Maintainer documents live in `maintenance/`; `_tmp/` evidence paths and shell commands are relative to the repository root.
+
+**31 October structure update:** B21 separates the installation ZIP from repository documentation. The canonical design, full validation history and changelog now live here; the root design mirror and README synchronization are removed. Original review/reproduction evidence below retains its original scope. See [DEVELOPMENT.md](DEVELOPMENT.md) for current commands.
 
 ## 1. Assessment and recommendation
 
@@ -380,8 +382,8 @@ The allowlisted, timestamp-normalized archive is a good fit. The main gaps are a
 
 **Proposed work:**
 
-- Add a read-only `--check` or separate verifier for source hashes, README/design/launcher mirrors, version metadata, template coverage, and inventory invariants. It must report drift rather than refresh hashes and hide it.
-- Continue using `build_release.py --sync-project-docs` for deliberate preparation, preserving `VERSION` as the sole product-version edit point.
+- Add a read-only `--check` or separate verifier for source hashes, root/canonical launcher copies, relocated user README links, version metadata, template coverage, and inventory invariants. It must report drift rather than refresh hashes and hide it.
+- Use `build_release.py` for deliberate user README/manifest preparation, preserving `VERSION` as the sole product-version edit point.
 - Stage and validate release output using the immutable snapshot from R05. Publish to absent final names without overwriting existing ZIPs or checksums. Detect and explain partial ZIP/sidecar states after failures.
 - For official releases, check that shipped settings are reviewed distribution defaults; a schema-valid personal `settings.json` should not silently become an official default. Keep intentional private/custom bundles possible through an explicit path.
 - Verify the final extracted archive: member paths/metadata, content hashes, defaults/custom names, installed commands after relocation, and installer independence.
@@ -394,14 +396,14 @@ The allowlisted, timestamp-normalized archive is a good fit. The main gaps are a
 ### R18 — Give current specifications and historical evidence clear ownership
 
 **Evidence:** specific contradictory/stale wording found.<br>
-**Locations:** `DESIGN.md` sections 1.4, 7.3, 8.4, 18–21; root design mirror; `VALIDATION_REPORT.md`; maintainer guides.
+**Locations:** `maintenance/DESIGN.md` sections 1.4, 7.3, 8.4, 18–21; `maintenance/VALIDATION_REPORT.md`; maintainer guides.
 
-Design sections 1.4 and 8.4 still say blank settings input exits, while section 7.3, code, tests, and current guides correctly use Enter to continue to the read-only preview. The validation report's final remaining-checks section calls the refresh skill unreleased although the current release includes it. Build/test narratives are also mixed into a large current implementation specification.
+At the original review, design sections 1.4 and 8.4 said blank settings input exits, while section 7.3, code, tests, and guides used Enter to continue to the read-only preview. B21 corrects those normative statements without changing runtime behavior. The validation report's final remaining-checks section calls the refresh skill unreleased although the current release includes it. Build/test narratives are also mixed into a large current implementation specification.
 
 **Proposed work:**
 
 - Correct current normative statements and clearly mark intentionally historical ones. Do not edit old test outcomes to imply newer-version coverage.
-- Keep one canonical design source and generated root mirror with a check, as already intended. Never hand-maintain divergent copies.
+- Keep one canonical design at maintenance/DESIGN.md with no root/package mirror, as implemented by B21. Maintain separate repository and user installation READMEs; test that release preparation preserves repository documents.
 - Put current CLI/schema/failure contracts and architectural decisions in focused sections; move historical implementation prompts/build narratives to an appendix or history document if that improves navigation.
 - Make the current validation summary short and prominent, with versioned historical evidence beneath or linked from it. Historical local log paths are context, not a reproducible test procedure.
 - Keep installer, generated root, daily, and Copilot guides focused on their existing jobs; avoid undoing the recent simplification by copying this whole plan into user-facing documentation.
@@ -650,6 +652,6 @@ Do not start with the architecture refactor. The current structure is sufficient
 | Documentation | Current code/help/spec/guides agree; optional commands work in the default Markdown Editor and Preview; source/extracted-template and generated-guide onboarding paths work; first-use tester completes the common workflow; no historical result is relabelled |
 | Publication | Chosen license, reporting/contribution guidance, reviewed publication set, no scratch/private artifacts, version/archive rules followed |
 
-Product version changes remain restricted to `VERSION` in `WORKSPACE_SETUP/scripts/workspace_manager.py`. Preparation and root document synchronization use `build_release.py --sync-project-docs`; versioned archives use `--output-dir`. Update changelog and actual validation evidence explicitly. Move the superseded ZIP and checksum to `_old zips/` without overwriting prior archives.
+Product version changes remain restricted to `VERSION` in `WORKSPACE_SETUP/scripts/workspace_manager.py`. User README/manifest preparation uses `build_release.py`; versioned archives use `--output-dir`. Update changelog and actual validation evidence explicitly. Move the superseded ZIP and checksum to `_old zips/` without overwriting prior archives.
 
 No release should be described as fully verified on a platform or in an IDE mode for which the corresponding evidence remains pending. A clearly scoped pilot can still be shared for review while those limits are explicit.

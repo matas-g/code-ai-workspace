@@ -1,67 +1,52 @@
 # Code AI Workspace
 
-A portable toolkit for AI-assisted development across multiple independent Git repositories in VS Code, with shared project context and reusable GitHub Copilot workflows.
+A portable toolkit for working across independent Git repositories in VS Code, with shared project context, local tickets and optional GitHub Copilot workflows.
 
-**Development status:** 0.1.19 pilot; native Windows and full Copilot/GUI verification remain pending. See [validation results](VALIDATION_REPORT.md) and the [changelog](CHANGELOG.md).
+**Package version:** 0.1.19
 
-## What you get
-
-- **One VS Code view** of your main projects, supporting repositories and company documentation.
-- **Shared working files** for project context, ticket briefs, attachments and reusable knowledge.
-- **Copilot skills** for ticket creation, review, archive/restore, framework checks and repository-list refresh. Daily use follows skills and prepared launchers; terminal commands are optional.
-
-Setup and daily tools run offline using Python's standard library. Copilot itself requires its normal service access. Shared files and Python tools also work with other editors; generated IDE configuration is for VS Code.
+**Status:** macOS pilot. Read the [compatibility and known limitations](RELEASE_NOTES.md) before relying on the workflow.
 
 ## Before you start
 
-Have **Python 3.9+** installed. For the intended workflow, also have Git, VS Code, GitHub Copilot and access to your repositories. Use approved software and accounts where required.
+Have **Python 3.9+** installed. For the VS Code/Copilot workflow, also have Git, VS Code, GitHub Copilot and access to your repositories. Use approved software and accounts where required. Setup installs nothing and changes no global settings.
 
 ## Quick start
 
-1. **Get the files.** Clone/download this repository, or extract a release ZIP. On Windows, use **Extract All**. Open the folder containing `Start macOS.command`, `Start Windows.cmd` and `WORKSPACE_SETUP/`.
-2. **Create your development folder.** Double-click the Start file for your OS. Review [settings](settings.json): Enter continues to the read-only preview `[Y/n]`; type `y`/`yes` to create `[y/N]` (Enter cancels). Setup creates and validates the new folder; type `q` to finish. To change settings, decline, edit `WORKSPACE_SETUP/settings.json` and relaunch.
-3. **Add your repositories.** Inside the generated folder, clone/add repositories under `MAIN_PROJECT/`, `OTHER_PROJECTS/` or `COMPANY_DOCS/`. Ordinary documentation folders work too; unused groups can stay empty.
-4. **Refresh before opening VS Code.** In the **generated development folder**, double-click `refresh_vscode_workspace macOS.command` or `refresh_vscode_workspace Windows.cmd`. Approve folder registration, then the VS Code folder-list update. Type `q` to finish. Use this launcher manually for initial setup.
-5. **Open the workspace and complete Copilot setup.** Open `Code-AI/ide_configs/Code-AI.code-workspace` in VS Code. In the generated `AI_WORK/COPILOT_GUIDE.md`, prepare project context and verify instruction loading and a sample skill, using its documented fallback where needed. Then follow `AI_WORK/DAILY_WORK.md`. The [complete setup checklist](SETUP_GUIDE.md#quick-setup) links each remaining step.
+1. **Extract the installation ZIP.** On Windows, use **Extract All**. Open the folder containing this README, `Start macOS.command`, `Start Windows.cmd` and `WORKSPACE_SETUP/`.
+2. **Create your development folder.** Double-click the Start file for your OS. Review [settings](settings.json), press Enter for the read-only preview `[Y/n]`, then type `y` to create `[y/N]` (Enter cancels). Setup validates the result; type `q` to finish. To change settings, decline, edit `WORKSPACE_SETUP/settings.json` and relaunch.
+3. **Add repositories.** In the generated development folder, clone/add your repositories under `MAIN_PROJECT/`, `OTHER_PROJECTS/` or `COMPANY_DOCS/`. Ordinary documentation folders work too; unused groups can stay empty.
+4. **Refresh before opening VS Code.** Double-click the generated folder's `refresh_vscode_workspace macOS.command` or `refresh_vscode_workspace Windows.cmd`. Approve registration, then the folder-list update; type `q` to finish.
+5. **Open and prepare your workspace.** Open the generated `ide_configs/Code-AI.code-workspace`. Follow the generated `AI_WORK/COPILOT_GUIDE.md` for context and Copilot checks, then `AI_WORK/DAILY_WORK.md` for your first task. Direct Python commands remain available without Copilot.
 
-Paths above use the defaults. [Settings](settings.json) can change the development folder's name/location, group names and VS Code filename; setup prints the actual paths. No manual Python commands are needed for these steps.
+Paths above use default names. Settings can change the development folder's location/name, repository groups, AI Work name and VS Code filename. Setup prints the actual paths. Follow the [complete setup guide](SETUP_GUIDE.md#quick-setup) for settings, verification and troubleshooting.
 
-## Generated layout
+## Your generated development folder
 
 ```text
 Code-AI/
-├── MAIN_PROJECT/       # Main project repositories
-├── OTHER_PROJECTS/     # Supporting/reference repositories
-├── COMPANY_DOCS/       # Documentation repositories or folders
-├── AI_WORK/            # Context, tickets, skills and daily guides
+├── MAIN_PROJECT/       # Main repositories
+├── OTHER_PROJECTS/     # Supporting repositories
+├── COMPANY_DOCS/       # Documentation repositories/folders
+├── AI_WORK/            # Context, tickets, skills, tools and guides
 ├── KNOWLEDGE_BASE/     # Reusable guides and assets
 └── ide_configs/        # Saved VS Code workspace
 ```
 
 Each repository keeps its own Git history. Setup creates no outer Git repository and does not clone repositories for you.
 
-## Setup boundaries and portability
+## After setup
 
-Setup writes only inside a **new** development folder and refuses existing destinations. Software installation, sign-in, global settings and backups remain manual.
-
-By default, `Code-AI/` is created beside the Start files, inside the downloaded setup/repository folder. You can move or rename the entire generated folder afterward. **Move it out before deleting its enclosing setup folder.** Keep its internal names, refresh launchers, tools and hidden state files intact.
-
-## Guides and help
-
-Use the guides inside your generated folder for daily work. Repository links below open the source documentation; daily/Copilot guides are templates whose folder names are filled during setup.
+Use these guides inside your generated folder:
 
 | Guide | What it covers |
 |---|---|
-| [Setup guide](SETUP_GUIDE.md) | Complete setup through Copilot verification, settings and troubleshooting |
-| [Development folder guide template](payload/root/README.md) | Folder map, repository registration, backup and removal |
-| [Daily workflow template](payload/root/DAILY_WORK.md) | Copilot skills, ticket workflow and optional Python reference |
-| [Copilot guide template](payload/root/COPILOT_GUIDE.md) | Context preparation, discovery checks and fallback |
-| [Validation results](VALIDATION_REPORT.md) | What was tested and what remains unverified |
-| [Changelog](CHANGELOG.md) | Released and unreleased changes |
-| [Design](DESIGN.md) | Architecture, behavior and constraints |
+| Root `README.md` | Folder management, repository refresh, portability, backup and recovery |
+| `AI_WORK/DAILY_WORK.md` | Tickets, review, audit and optional Python commands |
+| `AI_WORK/COPILOT_GUIDE.md` | Context preparation, instruction/skill discovery and fallback |
+| `KNOWLEDGE_BASE/README.md` | Reusable notes and assets |
 
-When reporting a problem, include your OS, Python version, framework version, steps and error output; include VS Code/Copilot versions for IDE issues. Omit credentials and private project data.
+These names follow your settings. The guides and tools work independently of the installer.
 
-For framework contributions, start with the [design](DESIGN.md) and [maintainer commands](SETUP_GUIDE.md#maintainer-commands). Implementation and tests live in `WORKSPACE_SETUP/`; generated user workspaces are separate.
+By default, the development folder is created inside the extracted setup folder. **Move the complete generated folder out before deleting that enclosing folder.** Keep its internal names, refresh launchers, tools and hidden state intact. Software installation, sign-in and backup configuration remain manual.
 
-In source checkouts, the repository-root `maintenance/` folder holds the implementation backlog, technical improvement plan and manual-test tracker. It is excluded from release ZIPs.
+For setup problems, see [troubleshooting](SETUP_GUIDE.md#troubleshooting-and-verification-limits). Include your package version, OS, Python version, steps and error output when reporting a problem; include VS Code/Copilot versions for IDE issues. Omit credentials and private project data.

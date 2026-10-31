@@ -5,33 +5,13 @@
   "minimum_python": "3.9",
   "files": [
     {
-      "source": ".gitignore",
-      "sha256": "da3827bcf4b742379cfd1d750327842dc1e71d5bdf39d79bb9e17795591d95f3",
-      "destinations": []
-    },
-    {
-      "source": "CHANGELOG.md",
-      "sha256": "fd0ef95086c00db4148f2bdb083c6b61beb5e8607c18d2e1fd436591fbedf268",
-      "destinations": []
-    },
-    {
-      "source": "DESIGN.md",
-      "sha256": "5f956386dc3d08421e040fa7bdbefaebfec742d08157bf0621b4f25fb514fc44",
-      "destinations": []
-    },
-    {
-      "source": "README.md",
-      "sha256": "32bf319131ab97c8ad7ef58bd0a3d5268b3fd2eb99ee33bcd8ea8218c22dc294",
+      "source": "RELEASE_NOTES.md",
+      "sha256": "0050534914fd7a0a06c0c0cefdf61be655c1b6fc3e3265dc39c2a30b2a8a095b",
       "destinations": []
     },
     {
       "source": "SETUP_GUIDE.md",
-      "sha256": "96f3b06db0d388d05ebf49bc3568aaf2c664d5a95b10dcc528eafffe9d60dc79",
-      "destinations": []
-    },
-    {
-      "source": "VALIDATION_REPORT.md",
-      "sha256": "68a7c9c43aff0d01cc8bc4669b1c07b9b908295b7a6058a7f5a90db3766eabe7",
+      "sha256": "f2797334082ff5b2c4d918c039691e62028aa3b8c2b2db961cca1079648678e5",
       "destinations": []
     },
     {
@@ -42,16 +22,6 @@
     {
       "source": "configuration-examples/renamed.json",
       "sha256": "908f3a0b5d3f668595ecd2cc0bb64fa213f2ab7a5b4201f8e6571e8e700558aa",
-      "destinations": []
-    },
-    {
-      "source": "launchers/Start Windows.cmd",
-      "sha256": "9823c6453a8ba525297173f9f0000da396c041f302a090384c65333f7361aca4",
-      "destinations": []
-    },
-    {
-      "source": "launchers/Start macOS.command",
-      "sha256": "6552d8668ddd419fccc13316e6aab463adb1b165841c4e1ab8de053f29a9e566",
       "destinations": []
     },
     {
@@ -348,11 +318,6 @@
       ]
     },
     {
-      "source": "scripts/build_release.py",
-      "sha256": "cbfb0c664bcf2413fd0cd3cd5ce4d2076113244bc5c86002b7215d79dfa6b6da",
-      "destinations": []
-    },
-    {
       "source": "scripts/start.py",
       "sha256": "d4e7c2123fe0ad840f15c5ee8b3ed718227b69c65708d5758db44211b73edeef",
       "destinations": []
@@ -403,11 +368,6 @@
       "sha256": "e73f4411251de38a71ad0fea0712170c97de0ea5184aaf496fd594ad0288369a",
       "destinations": [],
       "mutable": true
-    },
-    {
-      "source": "tests/test_workspace.py",
-      "sha256": "aa903fc1f568bd16969c1fa5b980f5e01c373fd713a24fe51ecbef4c1b87a17f",
-      "destinations": []
     }
   ],
   "directories": []

@@ -1,6 +1,6 @@
 # Setup guide
 
-Follow the quick setup from a **new** development folder through a working Copilot check. Settings and troubleshooting follow below; the [README](README.md) explains the project and default layout.
+Follow the quick setup from a **new** development folder through a working Copilot check. Settings and troubleshooting follow below; the [README](../README.md) explains the project and default layout.
 
 ## Quick setup
 
@@ -9,11 +9,11 @@ Follow the quick setup from a **new** development folder through a working Copil
 3. **Populate.** Manually clone/add repositories or documentation folders under the generated repository groups. Unused groups can stay empty. Use approved URLs/accounts; Git authentication may create state outside this folder.
 4. **Refresh.** In the generated development folder, double-click its refresh_vscode_workspace launcher. Approve registration, then the VS Code folder-list update; type `q` to finish.
 5. **Open.** Open the saved `.code-workspace` file at the printed path and review any trust prompt. Confirm AI Work, Knowledge and your enabled repositories are visible.
-6. **Prepare Copilot and project context.** Follow [Prepare once](payload/root/COPILOT_GUIDE.md#prepare-once): sign in, select Local, populate `project/overview.md` and `project/reference-map.md` from verified sources, and review the generated orientation. Editing the orientation is optional.
-7. **Verify the workflow.** Follow [Verify your setup](payload/root/COPILOT_GUIDE.md#verify-your-setup) to check context loading and run a small sample ticket/audit. Resolve errors or verify the documented fallback for unavailable features before relying on them.
-8. **Start daily work.** Follow the [ticket workflow](payload/root/DAILY_WORK.md#work-on-a-ticket) for your first task, including requirements, starting Git commits, testing and review.
+6. **Prepare Copilot and project context.** In your generated AI Work folder, open `COPILOT_GUIDE.md` → **Prepare once**: sign in, select Local, populate `project/overview.md` and `project/reference-map.md` from verified sources, and review the generated orientation. Editing the orientation is optional.
+7. **Verify the workflow.** In the same generated guide, follow **Verify your setup** to check context loading and run a small sample ticket/audit. Resolve errors or verify the documented fallback for unavailable features before relying on them.
+8. **Start daily work.** Open the generated `DAILY_WORK.md` → **Work on a ticket** for your first task, including requirements, starting Git commits, testing and review.
 
-Steps 6–8 link to packaged guide templates. After creation, use the corresponding sections in your **generated AI Work folder**; its name follows `directories.ai_work`. For use without Copilot, skip 6–7 and use the daily guide's optional Python reference.
+Steps 6–8 use the guides in your **generated AI Work folder**; its name follows `directories.ai_work`. Open those generated files after creation, where links and folder names match your settings. For use without Copilot, skip 6–7 and use the daily guide's optional Python reference.
 
 The release has one enclosing `Code-AI-Setup-<version>/` folder; an extractor may add another outer folder. By default, setup creates `Code-AI/` beside the Start files, **inside the setup folder**. Move the generated folder out before deleting that enclosing folder, or choose another parent below.
 
@@ -81,7 +81,7 @@ No daily command depends on `WORKSPACE_SETUP`. Keep a trusted release separately
 
 ### Optional follow-up
 
-- **Protect your work:** Before keeping irreplaceable notes or unpublished changes, choose permitted storage with recoverable history and test a restore. Follow the generated root guide's [backup guidance](payload/root/README.md#move-back-up-or-remove-this-folder); setup configures no synchronization.
+- **Protect your work:** Before keeping irreplaceable notes or unpublished changes, choose permitted storage with recoverable history and test a restore. Follow **Move, back up or remove this folder** in the generated root `README.md`; setup configures no synchronization.
 - **Share repository instructions:** Adapt the [example](payload/examples/copilot-instructions.md) through the owning repository's normal review if useful to the team.
 
 ### Using another IDE
@@ -132,32 +132,4 @@ The clickable flow validates automatically. Direct commands exit normally and do
 | Missing/damaged framework files | Use the generated daily guide's audit workflow; inspect findings before restoring from a trusted source/backup. No automatic repair or upgrade is provided |
 | Copilot instructions, skills or approved model unavailable | Follow the generated Copilot guide; attach context or use direct commands where permitted. Do not bypass account or organizational restrictions |
 
-Validation checks structure, local links and changes since setup. It does not certify security approval, Copilot loading or IDE behavior. See [validation evidence](VALIDATION_REPORT.md) for automated results and native Windows/GUI/Copilot checks still pending. Existing generated trees retain their original tools and guides; for a new release or changed internal names, initialize a fresh destination and transfer approved content manually.
-
-## Maintainer commands
-
-Run synthetic tests with the approved interpreter:
-
-```sh
-python3 -I -S -B WORKSPACE_SETUP/tests/test_workspace.py
-```
-
-Set the product version only at `VERSION` in `scripts/workspace_manager.py` (`MAJOR.MINOR.PATCH`). Change `DESIGN_VERSION` only for a design version change. Record changelog entries and actual verification explicitly; historical evidence is never automatically relabelled.
-
-Prepare the README version label, source hashes and existing project-root README/design copies:
-
-```sh
-python3 -I -S -B WORKSPACE_SETUP/scripts/build_release.py --sync-project-docs
-```
-
-Without `--sync-project-docs`, preparation writes only inside `WORKSPACE_SETUP`. Review the prepared files, run tests and record results; prepare again if documentation changed.
-
-Build a versioned ZIP/checksum in an existing absolute directory:
-
-```sh
-python3 -I -S -B WORKSPACE_SETUP/scripts/build_release.py --sync-project-docs --output-dir ABSOLUTE_RELEASE_DIRECTORY
-```
-
-The default name is `code-ai-workspace-<version>-macos-pilot.zip`; `--output ABSOLUTE_NEW_ZIP` accepts a custom name. Existing archives/checksums are refused. After verifying a newer ZIP, move the previous ZIP/checksum to `_old zips/` without overwriting archived files; the builder does not do this automatically.
-
-Build inputs are allowlisted, excluding arbitrary local/private files. The builder reads version constants without executing runtime code, prepares the README before hashing and uses fixed ZIP timestamps for reproducibility. All members stay under `Code-AI-Setup-<version>/`. Hashes detect changed bytes; use a trusted source for authenticity.
+Validation checks structure, local links and changes since setup. It does not certify security approval, Copilot loading or IDE behavior. Read [compatibility and known limitations](RELEASE_NOTES.md) for the current user-facing limits, including native Windows/GUI/Copilot checks still pending. Existing generated trees retain their original tools and guides; for a new release or changed internal names, initialize a fresh destination and transfer approved content manually.

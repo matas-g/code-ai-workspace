@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Separate repository and installation documentation: keep one canonical design, the full changelog and validation history in maintenance/. Add a development/release guide and a concise user compatibility/known-limitations page.
+- Give the repository and installation READMEs independent purposes. Emit the user README once at the installation ZIP root; remove document mirroring and the obsolete --sync-project-docs option.
+- Restrict installation ZIPs and their input manifests to user-relevant setup/runtime/configuration/payload files. Exclude development tests/build tooling, maintenance material and duplicate README/Start source copies. Keep the generated daily layout and runtime behavior unchanged.
+- Direct setup users to their generated daily/Copilot guides, and add archive exclusion, document-preservation and extracted default/custom relocation checks. Existing published archives and versioned test history remain unchanged.
+
 - Group the maintainer backlog, technical improvement plan and manual-test tracker under `maintenance/`. Update source navigation and contributor guidance; keep these files outside consumer releases and generated workspaces. Runtime behavior and historical test results are unchanged.
 
 ## 0.1.19 — 30 October 2026

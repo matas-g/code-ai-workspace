@@ -729,6 +729,11 @@ class WorkspaceTests(unittest.TestCase):
         (self.source / 'reports/private.txt').write_text('not for distribution')
         (self.source / 'payload/unexpected-secret.txt').write_text('not for distribution')
         (self.source / 'MANUAL_TESTS.md').write_text('maintainer-only manual test notes')
+        for name in ('DESIGN.md', 'VALIDATION_REPORT.md', 'CHANGELOG.md', 'AGENTS.md',
+                     'maintenance/BACKLOG.md', '.agents/skills/ca-example/SKILL.md'):
+            path = self.source / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text('Repository-only material, including leftovers from an old layout.\n')
         with (self.source / 'README.md').open('ab') as readme:
             readme.write(b'\n## Synthetic navigation check\n\n[Section](#synthetic-navigation-check) '
                          b'[External](https://example.invalid/docs#help)\n')
@@ -746,8 +751,25 @@ class WorkspaceTests(unittest.TestCase):
             self.assertEqual({p.name for p in extracted.iterdir()}, {prefix.rstrip('/')})
             folder = extracted / prefix
             self.assertEqual({p.name for p in folder.iterdir()}, {'README.md', 'Start macOS.command', 'Start Windows.cmd', 'WORKSPACE_SETUP'})
-            self.assertIn('(WORKSPACE_SETUP/SETUP_GUIDE.md)', (folder / 'README.md').read_text())
-            self.assertIn('(WORKSPACE_SETUP/VALIDATION_REPORT.md)', (folder / 'README.md').read_text())
+            self.assertIn('(WORKSPACE_SETUP/SETUP_GUIDE.md#quick-setup)', (folder / 'README.md').read_text())
+            self.assertIn('(WORKSPACE_SETUP/RELEASE_NOTES.md)', (folder / 'README.md').read_text())
+            excluded = {'WORKSPACE_SETUP/.gitignore', 'WORKSPACE_SETUP/README.md', 'WORKSPACE_SETUP/DESIGN.md',
+                        'WORKSPACE_SETUP/VALIDATION_REPORT.md', 'WORKSPACE_SETUP/CHANGELOG.md',
+                        'WORKSPACE_SETUP/scripts/build_release.py',
+                        'WORKSPACE_SETUP/tests/test_workspace.py',
+                        'WORKSPACE_SETUP/launchers/Start macOS.command',
+                        'WORKSPACE_SETUP/launchers/Start Windows.cmd'}
+            self.assertFalse(relative_names & excluded)
+            self.assertFalse(any('/maintenance/' in n or '/.agents/' in n or '/tests/' in n for n in names))
+            packaged_manifest = w.load_json(folder / 'WORKSPACE_SETUP/package-manifest.json')
+            self.assertEqual({e['source'] for e in packaged_manifest['files']}, set(builder.INVENTORY))
+            for entry in packaged_manifest['files']:
+                self.assertEqual(entry['sha256'], w.digest((folder / 'WORKSPACE_SETUP' / entry['source']).read_bytes()))
+            for name in ('README.md', 'WORKSPACE_SETUP/SETUP_GUIDE.md', 'WORKSPACE_SETUP/RELEASE_NOTES.md'):
+                text = (folder / name).read_text()
+                self.assertNotIn('maintenance/', text)
+                self.assertNotIn('VALIDATION_REPORT.md', text)
+                self.assertEqual(w.runtime.markdown_links(folder / name, folder), [])
             self.assertEqual(w.runtime.markdown_links(folder / 'README.md', folder), [])
             # Every package-relative guide link must reach the same bytes after
             # README relocation; external URLs and same-document anchors stay intact.
@@ -769,7 +791,6 @@ class WorkspaceTests(unittest.TestCase):
     def test_release_version_propagates_from_runtime_through_installed_cli(self):
         runtime = self.source / 'scripts/workspace_manager.py'
         runtime.write_text(runtime.read_text().replace('VERSION = "' + w.VERSION + '"', 'VERSION = "7.8.9"', 1))
-        evidence = {name: (self.source / name).read_bytes() for name in ('CHANGELOG.md', 'VALIDATION_REPORT.md')}
         proc = subprocess.run([sys.executable, '-I', '-S', '-B', str(self.source / 'scripts/build_release.py'),
                                '--output-dir', str(self.work)], capture_output=True, text=True)
         self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
@@ -783,11 +804,9 @@ class WorkspaceTests(unittest.TestCase):
             self.assertEqual(entry['sha256'], w.digest((self.source / entry['source']).read_bytes()), entry['source'])
         with zipfile.ZipFile(archive) as packaged:
             self.assertTrue(all(name.startswith('Code-AI-Setup-7.8.9/') for name in packaged.namelist()))
-            self.assertIn(b'**Development status:** 7.8.9 pilot;', packaged.read('Code-AI-Setup-7.8.9/README.md'))
-            self.assertIn(b'**Development status:** 7.8.9 pilot;', packaged.read('Code-AI-Setup-7.8.9/WORKSPACE_SETUP/README.md'))
+            self.assertIn(b'**Package version:** 7.8.9', packaged.read('Code-AI-Setup-7.8.9/README.md'))
+            self.assertNotIn('Code-AI-Setup-7.8.9/WORKSPACE_SETUP/README.md', packaged.namelist())
         self.assertEqual(Path(str(archive) + '.sha256').read_text().split()[0], w.digest(archive.read_bytes()))
-        for name, content in evidence.items():
-            self.assertEqual((self.source / name).read_bytes(), content)
         initializer = module_at('changed_version_initializer', self.source / 'scripts/workspace.py')
         with guard(self.target):
             initializer.initialize(self.source, self.target, self.config)
@@ -818,25 +837,89 @@ class WorkspaceTests(unittest.TestCase):
             self.assertEqual(self.snapshot(self.source), before)
             self.assertFalse(output.exists())
 
-    def test_release_project_document_sync_is_explicit_and_preserves_test_history(self):
-        builder = module_at('sync_docs_builder', self.source / 'scripts/build_release.py')
-        readme, design = self.work / 'README.md', self.work / 'WORKSPACE_DESIGN.md'
-        tracker = self.work / 'MANUAL_TESTS.md'
-        readme.write_bytes(b'Old root README\n')
-        design.write_bytes(b'Old root design\n')
-        tracker.write_bytes(b'Historical test for release 0.1.0: reported.\n')
-        builder.build(package=self.source)
-        self.assertEqual(readme.read_bytes(), b'Old root README\n')
-        self.assertEqual(design.read_bytes(), b'Old root design\n')
-        builder.build(package=self.source, sync_project_docs=True)
-        self.assertEqual(readme.read_bytes(), builder.outer_readme((self.source / 'README.md').read_bytes()))
-        self.assertEqual(design.read_bytes(), (self.source / 'DESIGN.md').read_bytes())
-        self.assertEqual(tracker.read_bytes(), b'Historical test for release 0.1.0: reported.\n')
-        design.unlink()
-        before = self.snapshot(self.source)
-        with guard('readonly'), self.assertRaises(OSError):
-            builder.build(package=self.source, sync_project_docs=True)
-        self.assertEqual(self.snapshot(self.source), before)
+    def test_release_preparation_preserves_independent_repository_documents(self):
+        builder = module_at('independent_docs_builder', self.source / 'scripts/build_release.py')
+        repository_docs = {
+            'README.md': b'Repository contributor entry point.\n',
+            'maintenance/DESIGN.md': b'Canonical design.\n',
+            'maintenance/VALIDATION_REPORT.md': b'Historical automated result for 0.1.0.\n',
+            'maintenance/MANUAL_TESTS.md': b'Historical manual result for 0.1.0.\n',
+            'maintenance/CHANGELOG.md': b'Historical release 0.1.0.\n',
+        }
+        for name, content in repository_docs.items():
+            path = self.work / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(content)
+        readme = self.source / 'README.md'
+        readme.write_bytes(readme.read_bytes().replace(
+            ('**Package version:** ' + w.VERSION).encode(), b'**Package version:** 0.0.0'))
+        with guard(self.source):
+            builder.build(package=self.source)
+        self.assertIn(('**Package version:** ' + w.VERSION).encode(), readme.read_bytes())
+        for name, content in repository_docs.items():
+            self.assertEqual((self.work / name).read_bytes(), content)
+        # A source package also builds without a repository README or maintenance tree.
+        shutil.rmtree(self.work / 'maintenance')
+        (self.work / 'README.md').unlink()
+        with guard(self.source):
+            builder.build(package=self.source)
+        self.assertFalse((self.work / 'README.md').exists())
+
+    def test_release_missing_enclosing_entrypoint_fails_before_preparation(self):
+        builder = module_at('entrypoint_builder', self.source / 'scripts/build_release.py')
+        for name in builder.ENTRYPOINTS.values():
+            path = self.source / name
+            data = path.read_bytes()
+            path.unlink()
+            before = self.snapshot(self.source)
+            output = self.work / 'absent-entrypoint.zip'
+            with self.subTest(source=name), guard('readonly'), self.assertRaises(OSError):
+                builder.build(output, self.source)
+            self.assertEqual(self.snapshot(self.source), before)
+            self.assertFalse(output.exists())
+            self.assertFalse(Path(str(output) + '.sha256').exists())
+            path.write_bytes(data)
+
+    def test_user_archive_initializes_and_daily_commands_survive_installer_removal(self):
+        builder = module_at('user_archive_builder', self.source / 'scripts/build_release.py')
+        archive_path = self.work / 'user-package.zip'
+        builder.build(archive_path, self.source)
+        extracted = self.work / 'Extracted user package'
+        with zipfile.ZipFile(archive_path) as archive:
+            archive.extractall(extracted)
+        package = extracted / ('Code-AI-Setup-' + w.VERSION) / 'WORKSPACE_SETUP'
+        self.assertFalse((package / 'scripts/build_release.py').exists())
+        initializer = module_at('user_archive_initializer', package / 'scripts/workspace.py')
+        moved_trees = []
+        for layout in ('default', 'renamed'):
+            config = w.validate_config(w.load_json(package / 'configuration-examples' / (layout + '.json')))
+            target = self.work / ('Generated ' + layout)
+            with guard(target):
+                initializer.initialize(package, target, config)
+            self.assertFalse((target / 'WORKSPACE_SETUP').exists())
+            self.assertFalse((target / 'maintenance').exists())
+            self.assertEqual(len([p for p in target.rglob('*') if p.is_file()]), 30)
+            moved = self.work / ('Relocated ' + layout)
+            target.rename(moved)
+            repo = moved / config['directories']['primary_repositories'] / 'synthetic-repo'
+            repo.mkdir()
+            (repo / 'keep.txt').write_bytes(b'Independent repository content.\n')
+            moved_trees.append((moved, config, repo))
+        shutil.rmtree(extracted)
+        for moved, config, repo in moved_trees:
+            ai = moved / config['directories']['ai_work']
+            manager = ai / 'tools/workspace_manager.py'
+            commands = (['validate', '--format', 'json'], ['audit', '--format', 'json'],
+                        ['refresh', '--apply'], ['ticket', 'create', 'ZIP-1', '--description', 'Literal details.'],
+                        ['ticket', 'archive', 'ZIP-1'], ['ticket', 'restore', 'ZIP-1'])
+            for args in commands:
+                with self.subTest(layout=moved.name, command=args):
+                    proc = subprocess.run([sys.executable, '-I', '-S', '-B', str(manager)] + args,
+                                          cwd=self.work, capture_output=True, text=True, timeout=20)
+                    self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+                    self.assertIsInstance(json.loads(proc.stdout), dict)
+            self.assertEqual((repo / 'keep.txt').read_bytes(), b'Independent repository content.\n')
+            self.assertIn('Literal details.', (ai / 'tickets/active/ZIP-1/brief.md').read_text())
 
     def test_release_preflights_outputs_and_repeated_builds_are_reproducible(self):
         builder = module_at('reproducible_builder', self.source / 'scripts/build_release.py')
