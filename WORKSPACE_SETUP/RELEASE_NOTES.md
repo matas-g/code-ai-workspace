@@ -2,6 +2,11 @@
 
 Find the package version in the enclosing [README](../README.md) or the setup output. Follow the [setup guide](SETUP_GUIDE.md) for installation and troubleshooting.
 
+## Changes in 0.1.20
+
+- Simplify the installation ZIP to setup files, user guides and daily tools, with one README at its root. Contributor documents and development tooling remain in the source repository.
+- Direct onboarding to the generated Copilot and daily guides. Daily runtime behavior, Python 3.9+ compatibility and the generated folder layout are unchanged.
+
 ## Compatibility
 
 - This is a **macOS pilot**. Native Windows 11 compatibility and some native launcher/terminal behavior remain unverified. Python 3.9+ is the current package minimum; installation is manual.

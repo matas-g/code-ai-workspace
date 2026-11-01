@@ -1,7 +1,33 @@
 # Validation report — design 1.0
 
 **Last updated:** 1 November 2026<br>
-**Current scope:** GitHub backlog migration, maintainer review and the unreleased source/package-structure change below; product 0.1.19 and design 1.0 are unchanged. The published 0.1.19 ZIP/checksum are preserved. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+**Current scope:** Release 0.1.20 of the current source, including the user-package separation previously verified below. Design remains 1.0. The previous 0.1.19 ZIP/checksum are archived with their bytes preserved. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## Release verification — 0.1.20
+
+Prepared on 1 November 2026 on macOS 26.6.2, Apple Silicon (arm64), from clean baseline `1247b00`. The owner chose a current-source release retaining Python 3.9+; the approved Python 3.12+ transition remains pending in issue #11. This release ships the user-only installation inventory and documentation separation. Daily runtime behavior and the generated layout are unchanged apart from the package version. Design version remains 1.0; configuration/manifest/state schemas remain 1. Existing generated workspaces are not automatically upgraded.
+
+| Check | Actual result |
+|---|---|
+| Python 3.15.0 behavioral suite | 100 tests passed; 20.144 seconds reported by unittest |
+| Python 3.9.6 behavioral suite | 100 tests passed; 26.193 seconds reported by unittest |
+| Exact installation ZIP | 35 allowlisted inner inputs, manifest and three enclosing entrypoints: 39 members; CRC, member bytes, manifest hashes, paths, normalized timestamps, executable macOS entrypoint metadata and SHA-256 sidecar passed |
+| Repeat build | Byte-identical ZIP built from the isolated tested package copy; its shipped inputs match the final source |
+| Extracted default/custom-name lifecycle | Both initialized with 30 daily files and six skills; each passed 62 local Markdown links/anchors, relocation and seven daily CLI calls from another working directory after installer removal |
+| Daily CLI calls | Installed version, validation, audit, refresh apply and ticket create/archive/restore all passed; literal multiline details and synthetic repository contents were preserved |
+| Documentation | 13 extracted user-document links and 53 source/contributor links passed; final report links checked again after recording evidence |
+| Preservation | Repository README, canonical design, manual-test tracker and root launchers retain baseline bytes; root launchers match canonical sources. Previous 0.1.19 ZIP/checksum moved to `_old zips/` without overwriting archived files or changing their bytes |
+
+Both suites ran serially against the isolated `_tmp/release-0.1.20/verification/WORKSPACE_SETUP/` copy after preparing its hashes:
+
+```sh
+python3 -I -S -B _tmp/release-0.1.20/verification/WORKSPACE_SETUP/tests/test_workspace.py
+/usr/bin/python3 -I -S -B _tmp/release-0.1.20/verification/WORKSPACE_SETUP/tests/test_workspace.py
+```
+
+Source preparation/build used `python3 -I -S -B WORKSPACE_SETUP/scripts/build_release.py --output-dir '/Users/matt/Codex Projects/code-ai-workspace'`. The final archive is `code-ai-workspace-0.1.20-macos-pilot.zip`, SHA-256 `d429fdc5d8509c882e3fd7c5ce9a646b2bd845a7df7bc47b0edd9f6a76efc148`. Artifact checks used `python3 -I -S -B _tmp/release-0.1.20/verify_release.py`; logs, suite timings and machine-readable artifact results are retained alongside it in the ignored scratch folder.
+
+Synthetic fixtures only. No software installation, authentication, global-setting change, real development-workspace change, Git commit/push or GitHub publication was performed. No issue implementation or manual result is claimed. Native GUI/VS Code/Copilot/Windows and first-use checks remain outstanding, as do the recorded runtime/AI/parser reliability issues. Historical evidence below retains its original dates, versions and scope.
 
 ## Local backlog cleanup — 1 November 2026
 

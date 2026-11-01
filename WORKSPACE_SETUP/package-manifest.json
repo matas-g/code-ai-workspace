@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "package_version": "0.1.19",
+  "package_version": "0.1.20",
   "design_version": "1.0",
   "minimum_python": "3.9",
   "files": [
     {
       "source": "RELEASE_NOTES.md",
-      "sha256": "0050534914fd7a0a06c0c0cefdf61be655c1b6fc3e3265dc39c2a30b2a8a095b",
+      "sha256": "3685c98725d7c9df641c21be1cda6152412d43fd2fe3745b1395150cea511811",
       "destinations": []
     },
     {
@@ -353,7 +353,7 @@
     },
     {
       "source": "scripts/workspace_manager.py",
-      "sha256": "53db6c1b2764dc1aca29046e34c6a640860a91d7a749da1bc48659c52503b594",
+      "sha256": "2eed9a7dc4ee62c9fcd70eddfde7b4921ffba5580088a6f9c713b95be8f12d31",
       "destinations": [
         {
           "directory_id": "ai_work",

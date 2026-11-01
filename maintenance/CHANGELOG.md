@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.20 — 1 November 2026
 
 - Separate repository and installation documentation: keep one canonical design, the full changelog and validation history in maintenance/. Add a development/release guide and a concise user compatibility/known-limitations page.
 - Give the repository and installation READMEs independent purposes. Emit the user README once at the installation ZIP root; remove document mirroring and the obsolete --sync-project-docs option.
@@ -8,6 +8,7 @@
 - Direct setup users to their generated daily/Copilot guides, and add archive exclusion, document-preservation and extracted default/custom relocation checks. Existing published archives and versioned test history remain unchanged.
 
 - Group the maintainer backlog, technical improvement plan and manual-test tracker under `maintenance/`. Update source navigation and contributor guidance; keep these files outside consumer releases and generated workspaces. Runtime behavior and historical test results are unchanged.
+- Package the current source as a macOS pilot. Retain Python 3.9+ for this release by owner choice; the approved Python 3.12+ transition remains pending in GitHub issue #11. Design version and configuration/manifest/state schemas remain unchanged; existing generated workspaces are not automatically upgraded.
 
 ## 0.1.19 — 30 October 2026
 

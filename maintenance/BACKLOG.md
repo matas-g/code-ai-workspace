@@ -2,7 +2,7 @@
 
 [GitHub Issues](https://github.com/matas-g/code-ai-workspace/issues) owns imported status, priority and acceptance checklists. Use the few [issues marked next](https://github.com/matas-g/code-ai-workspace/issues?q=is%3Aissue%20is%3Aopen%20label%3Anext); ordinary Open/Closed issues and `bug`, `improvement`, `verification`, `next` labels are sufficient.
 
-Current scope: **macOS pilot**. Manually installed, approved **Python 3.12+** is agreed for the next pilot but remains unimplemented in #11; current source requires 3.9+. This index retains legacy mappings and deferred scope without duplicating a live queue. Original scope and review are preserved in the [pre-migration backlog](https://github.com/matas-g/code-ai-workspace/blob/f79573520f8f6c71c80947b84fb5d26fb2b06a02/maintenance/BACKLOG.md) and [dated review](https://github.com/matas-g/code-ai-workspace/blob/f79573520f8f6c71c80947b84fb5d26fb2b06a02/maintenance/BACKLOG_REVIEW.md).
+Current scope: **macOS pilot**. Manually installed, approved **Python 3.12+** remains pending in #11. On 1 November 2026 the owner chose to release the current source as 0.1.20 with Python 3.9+, deferring that transition. This index retains legacy mappings and deferred scope without duplicating a live queue. Original scope and review are preserved in the [pre-migration backlog](https://github.com/matas-g/code-ai-workspace/blob/f79573520f8f6c71c80947b84fb5d26fb2b06a02/maintenance/BACKLOG.md) and [dated review](https://github.com/matas-g/code-ai-workspace/blob/f79573520f8f6c71c80947b84fb5d26fb2b06a02/maintenance/BACKLOG_REVIEW.md).
 
 ## Legacy item index
 
