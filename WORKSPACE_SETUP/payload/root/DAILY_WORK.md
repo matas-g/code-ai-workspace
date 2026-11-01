@@ -58,6 +58,29 @@ Intentional context/configuration edits appear as notes; changed tools/generated
 
 **Transfer error:** Inspect **both active/archive copies** and `.ticket-transfer-incomplete.json` before deleting anything. See [backup and relocation](../README.md#move-back-up-or-remove-this-folder) in the root guide.
 
+### Ticket creation recovery
+
+If ticket creation fails or is interrupted, stop ticket commands and inspect that ticket folder.
+The tool refuses further create/archive/restore operations while `.ticket-creation-incomplete/`
+exists. Its `resources.json` lists the resources being added; `.done` receipts record completed
+publications. Missing receipts mean **unconfirmed**, even if the final resource exists. An empty
+or damaged record means the intended resource list is unknown; use the original command too.
+The error reports recorded completion and pending/unconfirmed resources without reading attachments.
+
+1. Confirm no ticket command is running. A hard process termination can also leave
+   `tickets/.ticket-operation.lock`; inspect it and remove it manually only when no operation is active.
+2. Preserve existing user files. Compare final resources with any `.ticket-create-*` staging files;
+   staging bytes can be incomplete and may contain private task details. Reconcile the requested
+   resources manually. Do not infer corruption from differences against a template.
+3. After reconciliation, remove only this ticket's creation record and reconciled staging files.
+   Retry create explicitly for missing resources. Existing files remain unchanged.
+
+New files are fully prepared and verified before publication. Publication requires local hard-link
+support; unsupported filesystems stop with an incomplete record rather than replacing a user file.
+This detects interrupted operations, but does not promise persistence after power loss. Do not edit
+the ticket concurrently with a ticket command. Older unmarked partial tickets require manual inspection;
+the tool cannot distinguish them from completed user-edited files. Existing workspaces are not upgraded automatically.
+
 ## Optional Python reference
 
 For troubleshooting, unavailable skills or users who prefer direct commands.

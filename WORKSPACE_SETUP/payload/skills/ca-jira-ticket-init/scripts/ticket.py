@@ -12,6 +12,9 @@ import re
 import stat
 
 TRANSFER_MARKER = ".ticket-transfer-incomplete.json"
+CREATION_MARKER = ".ticket-creation-incomplete"
+CREATION_RESOURCES = ("brief.md", "plan.md", "review.md", "notes.md", "files/")
+STAGE_PREFIX = ".ticket-create-"
 
 
 class TicketError(Exception):
@@ -50,6 +53,77 @@ def write_new(path, data, root):
         stream.write(data)
 
 
+def creation_error(folder, root):
+    """Read only bounded, known metadata; never inspect private attachments."""
+    marker = safe(folder / CREATION_MARKER, root)
+    intended = None
+    plan = safe(marker / "resources.json", root) if ordinary(marker, "directory") else None
+    if plan is not None and present(plan) and ordinary(plan, "file"):
+        try:
+            with plan.open("rb") as stream:
+                value = json.loads(stream.read(4097))
+            if (isinstance(value, list) and value and len(value) == len(set(value))
+                    and all(isinstance(x, str) and x in CREATION_RESOURCES for x in value)):
+                intended = value
+        except (ValueError, TypeError):
+            pass
+    completed = []
+    for name in intended or []:
+        receipt = safe(marker / (name.rstrip("/") + ".done"), root)
+        dest = safe(folder / name.rstrip("/"), root)
+        if (present(receipt) and ordinary(receipt, "file") and receipt.stat().st_size == 0
+                and present(dest) and ordinary(dest, "directory" if name == "files/" else "file")):
+            completed.append(name)
+    pending = [x for x in intended if x not in completed] if intended else None
+    return TicketError(
+        "Ticket creation incomplete. Completed (recorded): " + (", ".join(completed) or "none") +
+        "; pending or unconfirmed: " + (", ".join(pending) if pending else "none" if intended else "unknown (creation record unavailable)") +
+        ". Stop ticket commands and inspect this ticket's " + CREATION_MARKER +
+        "/resources.json, final resources and " + STAGE_PREFIX +
+        "* staging files. Preserve user work; manually reconcile each requested resource, then remove only the creation record and reconciled staging files. Retry explicitly; no automatic recovery.")
+
+
+def create_resources(folder, data, make_files, root):
+    """Mark before writes, verify staged bytes, then link without replacement.
+
+    Receipts are conservative: an interruption after publication but before its
+    receipt requires manual inspection. No power-loss durability is promised.
+    """
+    resources = list(data) + (["files/"] if make_files else [])
+    if not resources:
+        return
+    # Fixed staging names are reserved for this operation, never overwritten.
+    for name in data:
+        if present(safe(folder / (STAGE_PREFIX + name), root)):
+            raise TicketError("Ticket staging file already exists; inspect it manually.")
+    marker = safe(folder / CREATION_MARKER, root)
+    marker.mkdir()  # atomic incomplete indication, even if writing the plan fails
+    try:
+        plan = json.dumps(resources).encode("utf-8")
+        write_new(marker / "resources.json", plan, root)
+        if safe(marker / "resources.json", root).read_bytes() != plan:
+            raise TicketError("Creation record verification failed.")
+        for name, content in data.items():
+            staged = safe(folder / (STAGE_PREFIX + name), root)
+            write_new(staged, content, root)
+            if staged.read_bytes() != content:
+                raise TicketError("Prepared ticket file verification failed: " + name)
+            # Same-directory hard-link publication fails if the destination exists.
+            # Unsupported filesystems fail closed; never fall back to replacement.
+            os.link(safe(staged, root), safe(folder / name, root))
+            write_new(marker / (name + ".done"), b"", root)
+            safe(staged, root).unlink()
+        if make_files:
+            safe(folder / "files", root).mkdir()
+            write_new(marker / "files.done", b"", root)
+        for name in resources:
+            safe(marker / (name.rstrip("/") + ".done"), root).unlink()
+        safe(marker / "resources.json", root).unlink()
+        safe(marker, root).rmdir()  # last completion boundary
+    except (OSError, TicketError, UnicodeError) as exc:
+        raise creation_error(folder, root) from exc
+
+
 def snapshot(folder, root):
     safe(folder, root)
     files, directories = {}, []
@@ -59,6 +133,8 @@ def snapshot(folder, root):
             rel = child.relative_to(folder).as_posix()
             if child.name == TRANSFER_MARKER:
                 raise TicketError("Incomplete transfer marker found; reconcile the ticket manually.")
+            if child.name == CREATION_MARKER or child.name.startswith(STAGE_PREFIX):
+                raise TicketError("Incomplete creation metadata/staging found; reconcile the ticket manually.")
             if ordinary(child, "directory"):
                 directories.append(rel)
                 walk(child)
@@ -202,6 +278,10 @@ def perform(action, ticket_id, optional="", script=None, description=None):
                     raise TicketError("Ticket location is not an ordinary directory.")
                 if present(path / TRANSFER_MARKER):
                     raise TicketError("Incomplete transfer; reconcile both locations manually.")
+                if present(path / CREATION_MARKER):
+                    raise creation_error(path, root)
+                if any(present(path / (STAGE_PREFIX + name)) for name in CREATION_RESOURCES if name != "files/"):
+                    raise TicketError("Ticket staging file found; inspect incomplete creation manually.")
         if present(active) and present(archive):
             raise TicketError("Ticket exists in both active and archive; no merge performed.")
         if action == "create":
@@ -228,18 +308,18 @@ def perform(action, ticket_id, optional="", script=None, description=None):
             if not present(active):
                 active.mkdir()
                 created.append(ticket_id + "/")
+            make_files = "files" in chosen and not present(active / "files")
+            create_resources(active, data, make_files, root)
             for filename in desired:
                 if filename in data:
-                    write_new(active / filename, data[filename], root)
                     created.append(filename)
                 else:
                     existing.append(filename)
             if "files" in chosen:
-                if present(active / "files"):
-                    existing.append("files/")
-                else:
-                    safe(active / "files", root).mkdir()
+                if make_files:
                     created.append("files/")
+                else:
+                    existing.append("files/")
             result = {"status": "created" if created else "already-present", "ticket": ticket_id, "created": created, "already_present": existing}
             if description:
                 result["description_status"] = "captured" if "brief.md" in data else "preserved-existing-brief"

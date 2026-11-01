@@ -6,7 +6,7 @@
   "files": [
     {
       "source": "RELEASE_NOTES.md",
-      "sha256": "353ab6048b96df62b6f1a9aadd2c5bf1f6b88f2bf15fb66e40a041bfdb15a924",
+      "sha256": "8602ee28f9d4f713a6460ff71fae337d18a01270b3ba5b0fd47bbb8b06e1d2ae",
       "destinations": []
     },
     {
@@ -127,7 +127,7 @@
     },
     {
       "source": "payload/root/DAILY_WORK.md",
-      "sha256": "8f2bfd3fb237974dca4382043cdf2558cb504b01eef414b6cb77d688117ecab3",
+      "sha256": "3ac1d1e1ff88ff74bfa6caf0a6a20d74d4db44730bbe5cdca3e2bff7f9199be1",
       "destinations": [
         {
           "directory_id": "ai_work",
@@ -223,7 +223,7 @@
     },
     {
       "source": "payload/skills/ca-jira-ticket-init/SKILL.md",
-      "sha256": "b2a8cfea78ef8d166b8b10b4eadaf81c0e1ccf5d5d01c0e763ce7bb1ec6ed257",
+      "sha256": "22097fadc787be717e140a43e917739ac1a2f2f3f08dd0ad325046fe0b387cc6",
       "destinations": [
         {
           "directory_id": "ai_work",
@@ -235,7 +235,7 @@
     },
     {
       "source": "payload/skills/ca-jira-ticket-init/scripts/ticket.py",
-      "sha256": "ef7fc09fc6d46f34de18740fca858c1e5ef8f823aa8866cb6216e45b5bd22cc4",
+      "sha256": "3c89c9fe0c7ab6ba8ae858344b48985d8a568fe496a43288b8f55e75c366d78b",
       "destinations": [
         {
           "directory_id": "ai_work",

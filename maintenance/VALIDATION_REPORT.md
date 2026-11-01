@@ -1,7 +1,41 @@
 # Validation report — design 1.0
 
 **Last updated:** 1 November 2026<br>
-**Current scope:** Release 0.1.21 and integrated test-guard fix. Product is 0.1.21 and design remains 1.0; daily behavior and schemas are unchanged. The previous 0.1.20 ZIP/checksum are archived with their bytes preserved. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+**Current scope:** Unreleased ticket-creation recovery for issue #4, on product 0.1.21 and design 1.0. The published 0.1.21 ZIP/checksum and historical release evidence remain unchanged. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## Unreleased ticket creation recovery — issue #4 — 1 November 2026
+
+Implemented [#4](https://github.com/matas-g/code-ai-workspace/issues/4) locally against clean baseline `311b3e3`. A synthetic nine-byte final-brief write followed by an error reproduced the original defect: retry returned `already-present` with brief bytes `# ABC-123`. The isolated baseline package, reproduction and JSON output are under `_tmp/issue-4/baseline/`, `baseline.py` and `baseline.json`; no real ticket data was used.
+
+The authoritative ticket helper now reserves a creation-record directory before resource writes, records only resource names/empty completion receipts, verifies staged bytes, and publishes files through same-directory hard links without replacement. Partial writes, publication collisions, unsupported hard links and interrupted completion/cleanup leave identifiable incomplete state. Repeats and transfers stop for manual reconciliation, reporting completed and pending/unconfirmed resources. User-edited completed files remain byte-identical. The generated daily guide, ticket-init skill and canonical design document recovery and limitations; user release notes distinguish these local changes from the published pilot.
+
+**Environment:** macOS 26.6.2 arm64; Python 3.15.0 (`/opt/homebrew/bin/python3`) and Python 3.9.6 (`/usr/bin/python3`). Python 3.9+ remains the package minimum; #11 is separate work. Product/design versions and configuration/manifest/state schemas are unchanged.
+
+| Check | Actual result |
+|---|---|
+| Focused creation regressions, Python 3.15.0 | Eight passed in 2.269 seconds |
+| Full isolated suite, Python 3.15.0 | 120 passed in 22.423 seconds; no skips |
+| Full isolated suite, Python 3.9.6 | 120 passed in 29.454 seconds; no skips |
+| Partial writes/verification | Partial writes of brief/plan/review/notes staging files never publish a truncated final file; silent short writes fail verification. Partial creation-record writes and optional-directory failures remain incomplete |
+| Interruption boundaries | Injected `KeyboardInterrupt` before and after every traced creation mutation, including record reservation, metadata/staging writes, publication, receipts, optional-directory creation and cleanup. Retry refuses marked results; before reservation no resources were written, and after final record removal all requested resources are complete |
+| Hard process exit/CLI | A child terminated with code 91 during a partial staging write, preserving the record/stage and operation lock. After explicit manual lock removal, both installed CLI entrypoints returned code 1 with incomplete-creation guidance. Exercised custom directory names after relocation and installer removal |
+| Preservation/recovery | Existing edited brief bytes survive optional-resource failure and explicit manual reconciliation. Publication collision preserves the concurrent user file and prepared bytes; unsupported hard links preserve staged data. Retry create/archive/restore changes no incomplete ticket bytes |
+| Metadata/scope | Empty, malformed, nested, out-of-scope and oversized metadata fail conservatively; redirected record/plan/receipt/staging paths are refused. External sentinel bytes/mtime remain unchanged. Metadata does not contain the synthetic private description |
+| Source and generated documents | 43 source/contributor local links/anchors passed; default and renamed generated layouts each contain the same 30 daily files and pass 63 local links/anchors. No new deployed file path or inventory entry is needed |
+| Package preservation | Source hashes refreshed with the builder; final isolated inputs, tests and manifest match source bytes. All 51 tracked files outside the nine-path change scope retain baseline bytes, including version-owning runtime, AGENTS.md, manual tracker, launchers and published ZIP/checksum. Root launchers match canonical sources |
+
+Hash preparation and suites used the disposable `_tmp/issue-4/final/WORKSPACE_SETUP/` copy. Final commands:
+
+```sh
+python3 -I -S -B _tmp/issue-4/final/WORKSPACE_SETUP/scripts/build_release.py
+python3 -I -S -B _tmp/issue-4/run_checks.py
+python3 -I -S -B WORKSPACE_SETUP/scripts/build_release.py
+python3 -I -S -B _tmp/issue-4/verify_change.py
+```
+
+`run_checks.py` invokes the eight tracked focused methods, the full suite with Python 3.15.0, then the full suite with `/usr/bin/python3`, all using `-I -S -B`. Full logs are `focused-python315.log`, `suite-python315.log` and `suite-python39.log` under `_tmp/issue-4/`. `verification.json` records source/generated link and byte-preservation results; static checks and `git diff --check` were repeated after this evidence entry. Scratch scripts/logs supplement the tracked regressions rather than replacing them.
+
+At the local verification checkpoint, no release ZIP, version change, commit or push had been performed; concurrent staging of implementation files was preserved, and issue #4 was open pending integration. The owner subsequently authorized integration; the live issue records the resulting commit and closure status. The published 0.1.21 ZIP remains SHA-256 `8f080e3c8b7a476090908a90cebb2d57a964ceb06d47604a3c8c5288cd098850`; its original evidence follows below. Existing generated workspaces are not automatically upgraded, and older unmarked partial briefs cannot be identified by the new protocol. Hard-link support is required; there is no direct-write fallback, automatic recovery or power-loss durability guarantee. Native Windows filesystem/GUI, VS Code/Copilot invocation and other manual qualifications remain unobserved here; no new manual result is claimed.
 
 ## Release verification — 0.1.21
 

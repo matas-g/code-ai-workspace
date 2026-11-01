@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Detect interrupted ticket creation ([#4](https://github.com/matas-g/code-ai-workspace/issues/4)) with an explicit creation record, verified staging and no-overwrite publication. Refuse normal repeat success or transfers until incomplete creation is manually reconciled; report completed/pending resources without storing descriptions in metadata.
+- Preserve existing user files and failed staging bytes. Add deterministic partial-write, interruption-boundary, collision, unsupported-publication and metadata regressions; document manual recovery, filesystem requirements and legacy/unupgraded-workspace limits. Product version and published release artifacts remain unchanged.
+
 ## 0.1.21 — 1 November 2026
 
 - Separate skill audiences: shipped end-user skills retain `ca-`; repository-only maintenance skills use `caw-`. Rename ca-code-ai-onboarding to caw-chat-onboarding and align current contributor/design references.

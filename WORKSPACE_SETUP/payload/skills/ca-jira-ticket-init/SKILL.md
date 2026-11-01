@@ -29,3 +29,8 @@ Resources belong to this skill: [brief](templates/brief.md), [plan](templates/pl
 [review](templates/review.md), [notes](templates/notes.md). The tool owns creation and repeat behavior.
 Do not fetch Jira, invent requirements/baselines, edit repositories or settings, or emulate writes after a refusal.
 For an archived ticket, suggest `/ca-jira-ticket-restore ID`; do not restore automatically.
+
+If creation is incomplete, stop and report the completed and pending/unconfirmed resources.
+Do not retry writes, remove the creation record, or move the ticket automatically. Follow
+[manual creation recovery](../../../DAILY_WORK.md#ticket-creation-recovery); preserve existing
+files and any staging bytes until the user has reconciled them.

@@ -641,6 +641,264 @@ class WorkspaceTests(unittest.TestCase):
         self.assertFalse((folder / 'plan.md').exists())
         self.assertEqual((folder / 'files').read_bytes(), b'keep')
 
+    def test_ticket_partial_prepared_writes_never_publish_or_repeat_success(self):
+        self.init()
+        mod, script = self.ticket_module()
+        original = mod.write_new
+        for index, name in enumerate(('brief.md', 'plan.md', 'review.md', 'notes.md')):
+            tid = 'PART-' + str(index + 1)
+            folder = self.target / 'AI_WORK/tickets/active' / tid
+            def fail(path, data, root):
+                if path.name == mod.STAGE_PREFIX + name:
+                    original(path, data[:9], root)
+                    raise OSError('synthetic partial write')
+                return original(path, data, root)
+            with self.subTest(resource=name), patch.object(mod, 'write_new', fail), guard(self.target):
+                with self.assertRaises(mod.TicketError) as caught:
+                    mod.perform('create', tid, 'plan,review,notes,files', script=script,
+                                description='PRIVATE synthetic request')
+            self.assertIn('pending or unconfirmed:', str(caught.exception))
+            self.assertFalse((folder / name).exists())
+            self.assertEqual((folder / (mod.STAGE_PREFIX + name)).stat().st_size, 9)
+            metadata = b''.join(p.read_bytes() for p in (folder / mod.CREATION_MARKER).iterdir())
+            self.assertNotIn(b'PRIVATE', metadata)
+            before = self.snapshot(folder)
+            for action in ('create', 'archive', 'restore'):
+                with self.assertRaisesRegex(mod.TicketError, 'Ticket creation incomplete'), guard(self.target):
+                    mod.perform(action, tid, script=script)
+                self.assertEqual(before, self.snapshot(folder))
+
+    def test_ticket_interrupts_at_every_creation_mutation_boundary(self):
+        self.init()
+        mod, script = self.ticket_module()
+        active = self.target / 'AI_WORK/tickets/active'
+        original_write = mod.write_new
+        originals = {name: getattr(Path, name) for name in ('mkdir', 'unlink', 'rmdir')}
+        original_link = os.link
+
+        def attempt(tid, boundary=None, after=False):
+            folder = active / tid
+            events = []
+            def operation(kind, path, call):
+                if Path(path).is_relative_to(folder):
+                    events.append((kind, Path(path).relative_to(folder).as_posix()))
+                    if len(events) == boundary and not after:
+                        raise KeyboardInterrupt('synthetic before mutation')
+                    result = call()
+                    if len(events) == boundary and after:
+                        raise KeyboardInterrupt('synthetic after mutation')
+                    return result
+                return call()
+            def write(path, data, root):
+                return operation('write', path, lambda: original_write(path, data, root))
+            def method(name):
+                def wrapped(path, *args, **kwargs):
+                    return operation(name, path, lambda: originals[name](path, *args, **kwargs))
+                return wrapped
+            def link(src, dst, *args, **kwargs):
+                return operation('publish', dst, lambda: original_link(src, dst, *args, **kwargs))
+            with patch.object(mod, 'write_new', write), patch.object(os, 'link', link), \
+                    patch.object(Path, 'mkdir', method('mkdir')), patch.object(Path, 'unlink', method('unlink')), \
+                    patch.object(Path, 'rmdir', method('rmdir')), guard(self.target):
+                if boundary is None:
+                    mod.perform('create', tid, 'plan,review,notes,files', script=script)
+                else:
+                    with self.assertRaises(KeyboardInterrupt):
+                        mod.perform('create', tid, 'plan,review,notes,files', script=script)
+            return events
+
+        events = attempt('BOUND-1')
+        self.assertEqual(events[-1], ('rmdir', mod.CREATION_MARKER))
+        for index in range(1, len(events) + 1):
+            for after in (False, True):
+                tid = 'BOUND-' + str(2 + index * 2 + after)
+                folder = active / tid
+                with self.subTest(boundary=events[index - 1], after=after):
+                    attempt(tid, index, after)
+                    self.assertFalse((active.parent / '.ticket-operation.lock').exists())
+                    if (folder / mod.CREATION_MARKER).exists():
+                        before = self.snapshot(folder)
+                        with guard(self.target), self.assertRaisesRegex(mod.TicketError, 'Ticket creation incomplete'):
+                            mod.perform('create', tid, 'plan,review,notes,files', script=script)
+                        self.assertEqual(before, self.snapshot(folder))
+                    else:
+                        # Before the marker there are no resource writes; after
+                        # its final removal all resources have completed.
+                        result = self.ticket('create', tid, optional='plan,review,notes,files')
+                        self.assertIn(result['status'], ('created', 'already-present'))
+                        self.assertEqual({p.name for p in folder.iterdir()},
+                                         {'brief.md', 'plan.md', 'review.md', 'notes.md', 'files'})
+
+    def test_ticket_creation_records_completed_resources_and_preserves_user_brief(self):
+        self.init()
+        self.ticket('create')
+        folder = self.target / 'AI_WORK/tickets/active/ABC-1234'
+        brief = folder / 'brief.md'
+        brief.write_bytes(b'User edited brief\r\n{{literal}}\n')
+        before = brief.read_bytes()
+        mod, script = self.ticket_module()
+        original = mod.write_new
+        def fail(path, data, root):
+            if path.name == mod.STAGE_PREFIX + 'notes.md':
+                raise OSError('synthetic optional-resource failure')
+            return original(path, data, root)
+        with patch.object(mod, 'write_new', fail), guard(self.target), self.assertRaises(mod.TicketError) as caught:
+            mod.perform('create', 'ABC-1234', 'plan,notes,files', script=script, description='Unused private details')
+        self.assertIn('Completed (recorded): plan.md', str(caught.exception))
+        self.assertIn('pending or unconfirmed: notes.md, files/', str(caught.exception))
+        self.assertEqual(brief.read_bytes(), before)
+        plan = folder / mod.CREATION_MARKER / 'resources.json'
+        self.assertEqual(json.loads(plan.read_bytes()), ['plan.md', 'notes.md', 'files/'])
+        # Simulate explicit manual reconciliation, preserving completed files.
+        for item in (folder / mod.CREATION_MARKER).iterdir():
+            item.unlink()
+        (folder / mod.CREATION_MARKER).rmdir()
+        result = self.ticket('create', optional='plan,notes,files')
+        self.assertEqual(set(result['created']), {'notes.md', 'files/'})
+        self.assertEqual(brief.read_bytes(), before)
+        self.assertEqual({p.name for p in folder.iterdir()}, {'brief.md', 'plan.md', 'notes.md', 'files'})
+
+    def test_ticket_publication_collision_and_unsupported_filesystem_preserve_bytes(self):
+        self.init()
+        mod, script = self.ticket_module()
+        original_link = os.link
+        for index, collision in enumerate((False, True)):
+            tid = 'LINK-' + str(index + 1)
+            folder = self.target / 'AI_WORK/tickets/active' / tid
+            def fail(src, dst, *args, **kwargs):
+                if collision:
+                    Path(dst).write_bytes(b'Concurrent user file')
+                    return original_link(src, dst, *args, **kwargs)
+                raise OSError('synthetic unsupported hard links')
+            with patch.object(os, 'link', fail), guard(self.target), self.assertRaises(mod.TicketError):
+                mod.perform('create', tid, script=script)
+            self.assertTrue((folder / mod.CREATION_MARKER).is_dir())
+            self.assertTrue((folder / (mod.STAGE_PREFIX + 'brief.md')).is_file())
+            if collision:
+                self.assertEqual((folder / 'brief.md').read_bytes(), b'Concurrent user file')
+            else:
+                self.assertFalse((folder / 'brief.md').exists())
+
+    def test_ticket_short_staging_write_fails_verification(self):
+        self.init()
+        mod, script = self.ticket_module()
+        original = mod.write_new
+        def short(path, data, root):
+            return original(path, data[:9] if path.name.startswith(mod.STAGE_PREFIX) else data, root)
+        with patch.object(mod, 'write_new', short), guard(self.target), self.assertRaises(mod.TicketError):
+            mod.perform('create', 'SHORT-1', script=script)
+        folder = self.target / 'AI_WORK/tickets/active/SHORT-1'
+        self.assertFalse((folder / 'brief.md').exists())
+        self.assertTrue((folder / mod.CREATION_MARKER).exists())
+
+    def test_ticket_hard_exit_and_cli_recovery_after_custom_relocation(self):
+        config = w.validate_config(w.load_json(PACKAGE / 'configuration-examples/renamed.json'))
+        self.init(config=config)
+        moved = self.work / 'Relocated incomplete ticket'
+        self.target.rename(moved)
+        shutil.rmtree(self.source)
+        ai = moved / config['directories']['ai_work']
+        tool = ai / '.github/skills/ca-jira-ticket-init/scripts/ticket.py'
+        runner = '''import importlib.util, os, sys
+spec = importlib.util.spec_from_file_location('ticket', sys.argv[1])
+mod = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(mod)
+original = mod.write_new
+def fail(path, data, root):
+    if path.name == mod.STAGE_PREFIX + 'brief.md':
+        original(path, data[:9], root)
+        os._exit(91)
+    return original(path, data, root)
+mod.write_new = fail
+mod.perform('create', 'EXIT-1', script=sys.argv[1], description='Synthetic private details')
+'''
+        result = subprocess.run([sys.executable, '-I', '-S', '-B', '-c', runner, str(tool)],
+                                cwd=self.work, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 91, result.stderr)
+        folder = ai / 'tickets/active/EXIT-1'
+        self.assertFalse((folder / 'brief.md').exists())
+        self.assertEqual((folder / '.ticket-create-brief.md').stat().st_size, 9)
+        before = self.snapshot(folder)
+        lock = ai / 'tickets/.ticket-operation.lock'
+        self.assertTrue(lock.exists())
+        args = [sys.executable, '-I', '-S', '-B', str(tool), 'create', 'EXIT-1']
+        result = subprocess.run(args, cwd=self.work, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('stale lock', result.stderr)
+        lock.unlink()  # explicit manual inspection after the child has exited
+        for script, prefix in ((tool, []), (ai / 'tools/workspace_manager.py', ['ticket'])):
+            result = subprocess.run([sys.executable, '-I', '-S', '-B', str(script)] + prefix + ['create', 'EXIT-1'],
+                                    cwd=self.work, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 1, result.stdout)
+            self.assertIn('Ticket creation incomplete', result.stderr)
+            self.assertIn('pending or unconfirmed: brief.md', result.stderr)
+            self.assertNotIn('already-present', result.stdout)
+            self.assertEqual(before, self.snapshot(folder))
+
+    def test_ticket_record_and_files_directory_failures_remain_incomplete(self):
+        self.init()
+        mod, script = self.ticket_module()
+        original_write, original_mkdir = mod.write_new, Path.mkdir
+        for index, resource in enumerate(('resources.json', 'files')):
+            tid = 'FAIL-' + str(index + 1)
+            folder = self.target / 'AI_WORK/tickets/active' / tid
+            def write(path, data, root):
+                if path.name == resource:
+                    original_write(path, data[:1], root)
+                    raise OSError('synthetic partial creation record')
+                return original_write(path, data, root)
+            def mkdir(path, *args, **kwargs):
+                if path == folder / resource:
+                    raise OSError('synthetic directory failure')
+                return original_mkdir(path, *args, **kwargs)
+            with patch.object(mod, 'write_new', write), patch.object(Path, 'mkdir', mkdir), \
+                    guard(self.target), self.assertRaises(mod.TicketError) as caught:
+                mod.perform('create', tid, 'files', script=script)
+            if resource == 'resources.json':
+                self.assertIn('unconfirmed: unknown', str(caught.exception))
+                self.assertFalse((folder / 'brief.md').exists())
+            else:
+                self.assertIn('Completed (recorded): brief.md', str(caught.exception))
+                self.assertIn('pending or unconfirmed: files/', str(caught.exception))
+            with guard(self.target), self.assertRaisesRegex(mod.TicketError, 'Ticket creation incomplete'):
+                mod.perform('create', tid, script=script)
+
+    def test_ticket_incomplete_metadata_is_bounded_and_redirects_refused(self):
+        self.init()
+        mod, script = self.ticket_module()
+        sentinel = self.work / 'outside-sentinel'
+        sentinel.write_bytes(b'private external sentinel')
+        before = (sentinel.read_bytes(), sentinel.stat().st_mtime_ns)
+        for index, content in enumerate((b'', b'{', b'[[1]]', b'["../outside"]', b'x' * 5000)):
+            tid = 'META-' + str(index + 1)
+            folder = self.target / 'AI_WORK/tickets/active' / tid
+            marker = folder / mod.CREATION_MARKER
+            marker.mkdir(parents=True)
+            (marker / 'resources.json').write_bytes(content)
+            with guard(self.target), self.assertRaisesRegex(mod.TicketError, 'unconfirmed: unknown'):
+                mod.perform('create', tid, script=script)
+        marker = self.target / 'AI_WORK/tickets/active/META-1' / mod.CREATION_MARKER
+        (marker / 'resources.json').unlink()
+        (marker / 'resources.json').symlink_to(sentinel)
+        with guard(self.target), self.assertRaisesRegex(mod.TicketError, 'Redirected ticket path'):
+            mod.perform('create', 'META-1', script=script)
+        for index, redirect in enumerate(('marker', 'receipt', 'staging')):
+            tid = 'REDIRECT-' + str(index + 1)
+            folder = self.target / 'AI_WORK/tickets/active' / tid
+            folder.mkdir()
+            marker = folder / mod.CREATION_MARKER
+            if redirect == 'marker':
+                marker.symlink_to(self.work, target_is_directory=True)
+            elif redirect == 'receipt':
+                marker.mkdir()
+                (marker / 'resources.json').write_text('["brief.md"]')
+                (marker / 'brief.md.done').symlink_to(sentinel)
+            else:
+                (folder / (mod.STAGE_PREFIX + 'brief.md')).symlink_to(sentinel)
+            with guard(self.target), self.assertRaises(mod.TicketError):
+                mod.perform('create', tid, script=script)
+        self.assertEqual((sentinel.read_bytes(), sentinel.stat().st_mtime_ns), before)
+
     def test_ticket_description_is_captured_as_literal_user_details(self):
         self.init()
         description = 'Implement a hello world application using python.\nKeep "\u017dodis" and {{ticket_id}} / {{initial_description}} literal; $(echo no) `echo no`.'
