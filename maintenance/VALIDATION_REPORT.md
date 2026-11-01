@@ -1,7 +1,37 @@
 # Validation report — design 1.0
 
 **Last updated:** 1 November 2026<br>
-**Current scope:** Unreleased repository-only maintainer skills and release 0.1.20 evidence below. Product remains 0.1.20 and design remains 1.0; shipped inputs and artifacts are unchanged by the skill work. The previous 0.1.19 ZIP/checksum are archived with their bytes preserved. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+**Current scope:** Unreleased repository-only maintainer skills, test-guard fix and release 0.1.20 evidence below. Product remains 0.1.20 and design remains 1.0; shipped inputs and artifacts are unchanged by the maintainer work. The previous 0.1.19 ZIP/checksum are archived with their bytes preserved. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## Unreleased test write guard — issue #1 — 1 November 2026
+
+Implemented [#1](https://github.com/matas-g/code-ai-workspace/issues/1) locally against clean baseline `85dc48f`. Before editing, both original synthetic audit events were accepted: `scope/../outside` as a write path and an outside symlink destination with an in-scope target. These reproductions emitted events only; they did not attempt real outside writes. Baseline evidence: `_tmp/issue-1/baseline.json`.
+
+The guard now resolves ancestors before collapsing traversal, checks event-specific endpoints and rejects ambiguous descriptor mutations. Symlink creation checks its destination; directory-entry operations preserve link semantics. Relative `dir_fd` writes fail closed, including `os.open` calls whose audit event omits the descriptor; absolute paths remain supported. Only the main thread can change the process-wide scope, workers share it, and nested scopes restore state and `os.open` after exceptions. [Development guidance](DEVELOPMENT.md#test-write-guard) records supported behavior and limits.
+
+**Environment:** macOS 26.6.2 arm64; Python 3.15.0 (`/opt/homebrew/bin/python3`) and Python 3.9.6 (`/usr/bin/python3`). Synthetic fixtures only. Product remains 0.1.20, design 1.0; the older interpreter run qualifies this test change against the currently shipped minimum, not the pending policy change in #11.
+
+| Check | Actual result |
+|---|---|
+| Focused `AuditGuardTests`, Python 3.15.0 | 12 passed in 0.042 seconds |
+| Full isolated suite, Python 3.15.0 | 112 passed in 20.341 seconds; no skips |
+| Full isolated suite, Python 3.9.6 | 112 passed in 25.934 seconds; no skips |
+| Guard regressions | Both synthetic reproductions rejected; real traversal, sibling/relative paths, symlink ancestors/leaf/dangling links, rename/replace/link endpoints, metadata and descriptor mutations rejected. External sentinel bytes, modes, mtimes and directory inventory preserved |
+| Descriptor coverage | Both interpreters support all nine exercised `dir_fd` APIs: open, mkdir, unlink, rmdir, chmod, utime, symlink, rename and link. Relative descriptor writes refused; absolute-path operations permitted |
+| Allowed behavior and scope | In-scope writes, metadata, hard links, renames and link-entry cleanup work; readonly reads work; nested exception restoration and worker scope checks pass |
+
+Hash preparation and all tests used the disposable `_tmp/issue-1/verification/WORKSPACE_SETUP/` copy. Commands, run serially:
+
+```sh
+python3 -I -S -B _tmp/issue-1/verification/WORKSPACE_SETUP/scripts/build_release.py
+python3 -I -S -B _tmp/issue-1/verification/WORKSPACE_SETUP/tests/test_workspace.py AuditGuardTests
+python3 -I -S -B _tmp/issue-1/verification/WORKSPACE_SETUP/tests/test_workspace.py
+/usr/bin/python3 -I -S -B _tmp/issue-1/verification/WORKSPACE_SETUP/tests/test_workspace.py
+```
+
+Full logs are `_tmp/issue-1/suite-python315.log` and `_tmp/issue-1/suite-python39.log`. The regressions are tracked in `WORKSPACE_SETUP/tests/test_workspace.py`; scratch logs are supplementary. Relevant document links and `git diff --check` passed. Only the test file, development guide, changelog and this report changed; source package metadata, shipped runtime/payload, root launchers and published ZIP/checksum retain baseline bytes. No source preparation, release build, version change, staging, commit or push was performed. Issue #1 remains open pending integration of these local changes.
+
+The process-wide hook is instrumentation rather than an OS sandbox: native calls, captured API aliases, unaudited existing-handle writes, existing hard-link aliases and filesystem replacement races remain outside its guarantees. Independent production checks/sentinels remain necessary. No native GUI/VS Code/Copilot/Windows result is claimed or needed for this test-only fix; other issues and historical evidence retain their original scope.
 
 ## Unreleased maintainer skills — 1 November 2026
 

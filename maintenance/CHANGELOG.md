@@ -1,9 +1,11 @@
 # Changelog
 
-## Unreleased — maintainer workflows
+## Unreleased — maintainer workflows and test instrumentation
 
 - Separate skill audiences: shipped end-user skills retain `ca-`; repository-only maintenance skills use `caw-`. Rename ca-code-ai-onboarding to caw-chat-onboarding and align current contributor/design references.
 - Add caw-whats-next for a short read-only live issue shortlist, caw-issue-triage for requested queue/label maintenance, and caw-implement-issue for one selected issue through scoped implementation, verification and evidence updates. Preserve the release allowlist, product version, shipped skills and historical test outcomes.
+- Fix the test write guard's parent-traversal and symlink-destination gaps ([#1](https://github.com/matas-g/code-ai-workspace/issues/1)). Resolve ancestors, check rename/link endpoints, and refuse ambiguous descriptor writes; preserve allowed in-scope operations and restore nested scopes after failures.
+- Add tracked synthetic/real guard regressions with external sentinels and document process-wide scope and instrumentation limits. Product runtime, version, installation inputs and published artifacts are unchanged.
 
 ## 0.1.20 — 1 November 2026
 

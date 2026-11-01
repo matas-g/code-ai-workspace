@@ -17,6 +17,7 @@ import subprocess
 import selectors
 import time
 import tempfile
+import threading
 import unittest
 import zipfile
 from unittest.mock import patch
@@ -36,24 +37,50 @@ GATE = None
 WRITE_FLAGS = os.O_WRONLY | os.O_RDWR | os.O_CREAT | os.O_TRUNC | os.O_APPEND
 
 
+def guard_path(path, dir_fd=None, follow_leaf=True):
+    if GATE == 'readonly':
+        raise AssertionError('Program-directed write attempted in readonly scope')
+    if not isinstance(path, (str, bytes, os.PathLike)):
+        raise AssertionError('Cannot establish guarded path from a file descriptor')
+    p = Path(os.fsdecode(path))
+    if not p.is_absolute() and dir_fd not in (None, -1):
+        raise AssertionError('Relative dir_fd writes are unsupported by the test guard')
+    # Resolve ancestors before collapsing '..': a symlink can change its meaning.
+    # Entry operations affect the named link itself, not its final referent.
+    try:
+        p = (p.resolve() if follow_leaf else
+             Path(os.path.normpath(p.parent.resolve() / p.name)))
+    except (OSError, RuntimeError) as exc:
+        raise AssertionError('Cannot resolve guarded path: ' + str(path)) from exc
+    if not p.is_relative_to(GATE):
+        raise AssertionError('Program-directed write escaped permitted scope: ' + str(p))
+
+
 def audit_guard(event, args):
     if GATE is None:
         return
     if event.startswith(('subprocess.', 'socket.')) or event in ('os.system', 'os.exec', 'os.posix_spawn'):
         raise AssertionError('Process/network call attempted: ' + event)
-    paths = []
+    # Argument positions follow https://docs.python.org/3/library/audit_events.html.
     if event == 'open':
         filename, mode, flags = args
-        if isinstance(filename, (str, bytes, os.PathLike)) and ((flags or 0) & WRITE_FLAGS):
-            paths = [filename]
-    elif event in ('os.mkdir', 'os.remove', 'os.rmdir', 'os.chmod', 'os.truncate', 'os.utime', 'os.symlink'):
-        paths = [args[0]]
+        if (flags or 0) & WRITE_FLAGS or any(c in (mode or '') for c in 'wax+'):
+            guard_path(filename)
+    elif event == 'os.mkdir':
+        guard_path(args[0], args[2], follow_leaf=False)
+    elif event in ('os.remove', 'os.rmdir'):
+        guard_path(args[0], args[1], follow_leaf=False)
+    elif event == 'os.symlink':
+        guard_path(args[1], args[2], follow_leaf=False)
     elif event in ('os.rename', 'os.link'):
-        paths = list(args[:2])
-    for path in paths:
-        p = Path(os.fsdecode(path)).absolute()
-        if GATE == 'readonly' or not p.is_relative_to(GATE):
-            raise AssertionError('Program-directed write escaped permitted scope: ' + str(p))
+        guard_path(args[0], args[2], follow_leaf=(event == 'os.link'))
+        guard_path(args[1], args[3], follow_leaf=False)
+    elif event == 'os.chmod':
+        guard_path(args[0], args[2])
+    elif event in ('os.chown', 'os.utime'):
+        guard_path(args[0], args[3])
+    elif event in ('os.truncate', 'os.chflags', 'os.setxattr', 'os.removexattr'):
+        guard_path(args[0])
 
 
 sys.addaudithook(audit_guard)
@@ -61,13 +88,246 @@ sys.addaudithook(audit_guard)
 
 @contextmanager
 def guard(scope):
+    """Serial, main-thread scope; the installed audit hook applies process-wide.
+
+    This is test instrumentation, not an OS sandbox. See DEVELOPMENT.md for limits.
+    """
     global GATE
+    if threading.current_thread() is not threading.main_thread():
+        raise AssertionError('Only the main thread may change the process-wide test guard')
     before = GATE
-    GATE = scope
+    GATE = scope if scope == 'readonly' else Path(scope).resolve()
+    original_open = os.open
+
+    def checked_open(path, flags, mode=0o777, *, dir_fd=None):
+        # The open audit event omits dir_fd. Reject ambiguous relative writes
+        # here, before the OS call; absolute paths ignore dir_fd on supported OSes.
+        if dir_fd is not None and flags & WRITE_FLAGS:
+            if not isinstance(path, (str, bytes, os.PathLike)) or not Path(os.fsdecode(path)).is_absolute():
+                raise AssertionError('Relative dir_fd writes are unsupported by the test guard')
+        return original_open(path, flags, mode, dir_fd=dir_fd)
+
     try:
-        yield
+        with patch.object(os, 'open', checked_open):
+            yield
     finally:
         GATE = before
+
+
+class AuditGuardTests(unittest.TestCase):
+    """Real negative operations must preserve sentinels outside the allowed root."""
+
+    def setUp(self):
+        sandbox = PACKAGE / '.test-sandbox'
+        sandbox.mkdir(exist_ok=True)
+        self.session = tempfile.TemporaryDirectory(prefix='guard-', dir=sandbox)
+        self.addCleanup(self.session.cleanup)
+        self.work = Path(self.session.name).resolve()
+        self.scope = self.work / 'scope'
+        self.outside = self.work / 'scope-sibling'
+        self.scope.mkdir()
+        self.outside.mkdir()
+        (self.outside / 'empty').mkdir()
+        self.sentinel = self.outside / 'sentinel'
+        self.sentinel.write_bytes(b'external sentinel')
+        self.inside = self.scope / 'inside'
+        self.inside.write_bytes(b'inside bytes')
+
+    def external_snapshot(self):
+        return {p.relative_to(self.outside).as_posix():
+                (p.stat().st_mode, p.stat().st_mtime_ns, p.read_bytes() if p.is_file() else None)
+                for p in [self.outside, *self.outside.rglob('*')]}
+
+    def rejected(self, operation):
+        before = self.external_snapshot()
+        with guard(self.scope), self.assertRaises(AssertionError):
+            operation()
+        self.assertEqual(self.external_snapshot(), before)
+
+    def test_original_synthetic_reproducers(self):
+        self.rejected(lambda: sys.audit('open', str(self.scope / '../scope-sibling/sentinel'),
+                                       'w', os.O_WRONLY | os.O_CREAT))
+        self.rejected(lambda: sys.audit('os.symlink', str(self.inside),
+                                       str(self.outside / 'escaped-link'), -1))
+
+    def test_real_traversal_sibling_and_relative_writes(self):
+        for path in (self.scope / '../scope-sibling/sentinel', self.sentinel,
+                     os.fsencode(self.sentinel)):
+            with self.subTest(path=path):
+                self.rejected(lambda: os.close(os.open(path, os.O_WRONLY | os.O_TRUNC)))
+        before = Path.cwd()
+        try:
+            os.chdir(self.scope)
+            self.rejected(lambda: Path('../scope-sibling/sentinel').write_bytes(b'bad'))
+            with guard(self.scope):
+                Path('relative').write_bytes(b'allowed')
+            self.assertEqual((self.scope / 'relative').read_bytes(), b'allowed')
+        finally:
+            os.chdir(before)
+
+    def test_symlink_ancestors_leaf_and_parent_order(self):
+        (self.outside / 'subdir').mkdir()
+        (self.scope / 'redirect').symlink_to(self.outside / 'subdir', target_is_directory=True)
+        (self.scope / 'leaf').symlink_to(self.sentinel)
+        (self.scope / 'dangling').symlink_to(self.outside / 'absent')
+        for path in (self.scope / 'redirect/../sentinel', self.scope / 'leaf', self.scope / 'dangling'):
+            with self.subTest(path=path):
+                self.rejected(lambda: path.write_bytes(b'bad'))
+        self.rejected(lambda: (self.scope / 'redirect/new-dir').mkdir())
+        self.assertFalse((self.outside / 'absent').exists())
+
+    def test_symlink_checks_new_entry_and_allows_external_target(self):
+        self.rejected(lambda: os.symlink(self.inside, self.outside / 'escaped-link'))
+        link = self.scope / 'allowed-link'
+        with guard(self.scope):
+            # Creating, renaming and removing an in-scope link does not write its target.
+            link.symlink_to(self.sentinel)
+            link.rename(self.scope / 'renamed-link')
+            (self.scope / 'renamed-link').unlink()
+        self.assertEqual(self.sentinel.read_bytes(), b'external sentinel')
+
+    def test_rename_replace_and_link_check_both_endpoints(self):
+        for operation in (os.rename, os.replace, os.link):
+            for src, dst in ((self.inside, self.outside / 'destination'),
+                             (self.sentinel, self.scope / 'destination')):
+                with self.subTest(operation=operation.__name__, src=src):
+                    self.rejected(lambda: operation(src, dst))
+                    self.assertEqual(self.inside.read_bytes(), b'inside bytes')
+                    self.assertFalse((self.scope / 'destination').exists())
+
+    def test_path_mutations_preserve_external_sentinels(self):
+        operations = [lambda: self.sentinel.unlink(), lambda: (self.outside / 'empty').rmdir(),
+                      lambda: (self.outside / 'new-dir').mkdir(),
+                      lambda: os.chmod(self.sentinel, 0o600),
+                      lambda: os.truncate(self.sentinel, 0),
+                      lambda: os.utime(self.sentinel, ns=(1, 1))]
+        for i, operation in enumerate(operations):
+            with self.subTest(operation=i):
+                self.rejected(operation)
+
+    def test_descriptor_mutations_are_refused(self):
+        fd = os.open(self.sentinel, os.O_RDWR)
+        try:
+            operations = [lambda: os.fchmod(fd, 0o600), lambda: os.ftruncate(fd, 0),
+                          lambda: open(fd, 'wb', closefd=False)]
+            if os.utime in os.supports_fd:
+                operations.append(lambda: os.utime(fd, ns=(1, 1)))
+            for i, operation in enumerate(operations):
+                with self.subTest(operation=i):
+                    self.rejected(operation)
+        finally:
+            os.close(fd)
+
+    def test_relative_dir_fd_mutations_are_refused(self):
+        if os.open not in os.supports_dir_fd:
+            self.skipTest('dir_fd operations unavailable')
+        outside_fd = os.open(self.outside, os.O_RDONLY)
+        inside_fd = os.open(self.scope, os.O_RDONLY)
+        before = Path.cwd()
+        try:
+            # CWD is allowed, but dir_fd points outside. The open event omits it.
+            os.chdir(self.scope)
+            cases = [
+                (os.open, lambda: os.close(os.open('sentinel', os.O_WRONLY | os.O_TRUNC, dir_fd=outside_fd))),
+                (os.open, lambda: os.close(os.open('new', os.O_WRONLY | os.O_CREAT, dir_fd=inside_fd))),
+                (os.mkdir, lambda: os.mkdir('new-dir', dir_fd=outside_fd)),
+                (os.unlink, lambda: os.unlink('sentinel', dir_fd=outside_fd)),
+                (os.rmdir, lambda: os.rmdir('empty', dir_fd=outside_fd)),
+                (os.chmod, lambda: os.chmod('sentinel', 0o600, dir_fd=outside_fd)),
+                (os.utime, lambda: os.utime('sentinel', ns=(1, 1), dir_fd=outside_fd)),
+                (os.symlink, lambda: os.symlink(self.inside, 'link', dir_fd=outside_fd)),
+            ]
+            for operation in (os.rename, os.link):
+                cases.extend([
+                    (operation, lambda op=operation: op('sentinel', self.scope / 'dest', src_dir_fd=outside_fd)),
+                    (operation, lambda op=operation: op(self.inside, 'dest', dst_dir_fd=outside_fd)),
+                ])
+            for function, operation in cases:
+                if function in os.supports_dir_fd:
+                    with self.subTest(operation=function.__name__):
+                        self.rejected(operation)
+            self.assertFalse((self.scope / 'new').exists())
+        finally:
+            os.chdir(before)
+            os.close(inside_fd)
+            os.close(outside_fd)
+
+    def test_absolute_dir_fd_paths_remain_supported(self):
+        if not {os.open, os.mkdir, os.unlink}.issubset(os.supports_dir_fd):
+            self.skipTest('required dir_fd operations unavailable')
+        fd = os.open(self.outside, os.O_RDONLY)
+        try:
+            with guard(self.scope):
+                os.mkdir(self.scope / 'new-dir', dir_fd=fd)
+                created = os.open(self.scope / 'new-dir/file', os.O_WRONLY | os.O_CREAT, dir_fd=fd)
+                os.close(created)
+                os.unlink(self.scope / 'new-dir/file', dir_fd=fd)
+                os.rmdir(self.scope / 'new-dir')
+        finally:
+            os.close(fd)
+
+    def test_allowed_writes_metadata_and_readonly(self):
+        before = self.external_snapshot()
+        with guard(self.scope):
+            folder = self.scope / 'new-dir'
+            folder.mkdir()
+            path = folder / 'file'
+            path.write_bytes(b'allowed')
+            os.chmod(path, 0o600)
+            os.utime(path, ns=(1, 1))
+            os.truncate(path, 3)
+            os.link(path, folder / 'hard-link')
+            path.rename(folder / 'renamed')
+            os.replace(folder / 'renamed', folder / 'hard-link')
+            # Both names may remain when replace sees the same inode.
+            for entry in folder.iterdir():
+                entry.unlink()
+            folder.rmdir()
+        with guard('readonly'):
+            self.assertEqual(self.sentinel.read_bytes(), b'external sentinel')
+            for operation in (lambda: self.inside.write_bytes(b'bad'),
+                              lambda: self.inside.unlink(),
+                              lambda: os.symlink(self.sentinel, self.scope / 'link')):
+                with self.assertRaises(AssertionError):
+                    operation()
+        self.assertEqual(self.external_snapshot(), before)
+
+    def test_scope_is_frozen_nested_and_restored_after_failure(self):
+        original_open = os.open
+        before = Path.cwd()
+        try:
+            os.chdir(self.work)
+            with guard(Path('scope')):
+                os.chdir(self.outside)
+                with self.assertRaises(AssertionError):
+                    Path('sentinel').write_bytes(b'bad')
+                with self.assertRaisesRegex(RuntimeError, 'synthetic failure'):
+                    with guard('readonly'):
+                        with self.assertRaises(AssertionError):
+                            self.inside.write_bytes(b'bad')
+                        raise RuntimeError('synthetic failure')
+                self.inside.write_bytes(b'allowed after nested failure')
+        finally:
+            os.chdir(before)
+        self.assertIsNone(GATE)
+        self.assertIs(os.open, original_open)
+        self.assertEqual(self.sentinel.read_bytes(), b'external sentinel')
+
+    def test_guard_is_process_wide_and_workers_cannot_change_scope(self):
+        def change_scope():
+            with guard(self.outside):
+                self.fail('Worker changed process-wide scope')
+        with ThreadPoolExecutor(max_workers=1) as pool, guard(self.scope):
+            pool.submit(self.inside.write_bytes, b'allowed worker write').result()
+            with self.assertRaises(AssertionError):
+                pool.submit(self.sentinel.write_bytes, b'bad').result()
+            with self.assertRaisesRegex(AssertionError, 'main thread'):
+                pool.submit(change_scope).result()
+            for event in ('subprocess.Popen', 'socket.connect', 'os.system'):
+                with self.subTest(event=event), self.assertRaises(AssertionError):
+                    sys.audit(event)
+        self.assertIsNone(GATE)
+        self.assertEqual(self.sentinel.read_bytes(), b'external sentinel')
 
 
 class WorkspaceTests(unittest.TestCase):

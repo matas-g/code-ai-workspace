@@ -51,6 +51,16 @@ The suite writes `.test-sandbox/` only inside that copy. Use the approved interp
 
 Record actual results in the validation report, including command, version/environment, outcome and remaining limits. Record native GUI/Copilot observations only in the manual tracker; automated tests do not close those checks. Preserve historical results and update the owning backlog item.
 
+### Test write guard
+
+`tests/test_workspace.py` installs a process-wide CPython audit hook. Only the main thread may enter or change `guard(...)`; nested scopes restore the previous scope, including after exceptions. Worker threads share the active scope. Run guarded cases serially and finish worker operations before leaving the scope. The separate initialization-race test runs without this guard.
+
+The guard resolves ancestors before interpreting `..`, checks containment by path components, and checks write endpoints using the [CPython audit argument contracts](https://docs.python.org/3/library/audit_events.html). Symlink creation checks the new link's location; rename/unlink check directory entries rather than following their final symlink. Metadata operations conservatively follow the final link because their events omit `follow_symlinks`.
+
+Relative `dir_fd` mutations and descriptor-only mutations are refused when their destinations cannot be established portably. Absolute paths with `dir_fd` remain supported. Since the `open` event omits `dir_fd`, each scope also wraps `os.open` to reject relative descriptor-based writes before the call.
+
+This is test instrumentation, not an OS sandbox. It covers the enumerated audit events and current `os.open` attribute, not native calls, previously captured `os.open` aliases, unaudited writes through existing handles, existing hard-link aliases, or concurrent filesystem replacement races. Subprocess tests run separately outside the guard. Keep production path checks and independent external sentinels; passing this guard does not prove absence of all OS-level effects. `AuditGuardTests` retains synthetic reproductions and real negative operations with sentinels outside the permitted scope.
+
 ## Prepare package inputs
 
 Edit the product version only at `VERSION` in `WORKSPACE_SETUP/scripts/workspace_manager.py`. Change `DESIGN_VERSION` only for a design-version change. Record changelog entries and actual verification explicitly; never relabel historical evidence.
