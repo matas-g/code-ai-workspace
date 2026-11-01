@@ -1,7 +1,17 @@
 # Validation report — design 1.0
 
-**Last updated:** 31 October 2026<br>
-**Current scope:** Unreleased source/package-structure change; product 0.1.19 and design 1.0 are unchanged. The published 0.1.19 ZIP/checksum are preserved. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+**Last updated:** 1 November 2026<br>
+**Current scope:** Maintainer backlog review and the unreleased source/package-structure change below; product 0.1.19 and design 1.0 are unchanged. The published 0.1.19 ZIP/checksum are preserved. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## Maintainer backlog review — 1 November 2026
+
+Reviewed B01–B21 against the technical proposals, recorded manual evidence and relevant current source at commit `338334b`. The [lightweight GitHub review](BACKLOG_REVIEW.md) recommends short issues, completion checklists, four labels and one source of truth for imported work. The owner selected macOS pilot improvements first and Python 3.12+ for the next pilot release; B10 records that decision while implementation remains open. Proposed scope changes have not replaced the current queue.
+
+Initial-draft documentation checks on macOS with standard-library Python passed: all 21 B items were assessed once, 22 local paths/anchors across BACKLOG.md and BACKLOG_REVIEW.md resolved, and `git diff --check` reported no whitespace errors. The added report-to-review link also resolved. Results are retained under `_tmp/backlog-review-20261101/document-check.json`. Current official GitHub workflow and Python support references were checked during the review.
+
+Later the same day, the owner clarified that tracking must suit one maintainer working with an AI agent. The review was shortened and revised to avoid mandatory hierarchies, estimates, custom status fields, boards, milestones or automation; related fixes can use checklists. BACKLOG.md records this constraint. The simplified documents passed 16 local link/anchor checks, coverage of all 21 items and `git diff --check`. Evidence: `_tmp/backlog-review-20261101/simplified-document-check.json`.
+
+This is a maintainer-document change only. No product suite, release build or native IDE/Terminal/Windows run was performed; no product source, manifest, artifact or manual-test outcome was changed. The earlier evidence below retains its original scope.
 
 ## Unreleased user-package separation — 31 October 2026
 
