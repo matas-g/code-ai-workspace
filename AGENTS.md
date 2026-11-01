@@ -40,6 +40,8 @@ For issue workflows, confirm the target repository against `origin`; this projec
 
 GitHub owns imported status/priority. Use ordinary Open/Closed issues and `bug`, `improvement`, `verification`, `next` labels; preserve unrelated labels. Prefer one implementation at a time and a few ready `next` candidates. Owner decisions and current evidence take precedence over historical proposals; read only relevant source/docs, without full onboarding for routine issue work. Invoking a skill does not authorize unrelated work, commits, pushes, version changes or releases; follow the user's actual scope and integration instructions.
 
+When making an authorized commit related to a specific GitHub issue, start the commit subject with the issue number followed by a space, for example `#1 Fix test write guard containment checks`. If a commit covers multiple issues, put all relevant issue numbers before the descriptive text. Commits unrelated to a specific issue do not need an issue prefix.
+
 ## Change constraints
 
 - Preserve new-directory-only initialization: refuse existing targets, write only within the new target and retain incomplete results for inspection. Setup must not install software, authenticate, clone repositories or change global settings. Keep Python setup/runtime tools free of network and subprocess requirements.
