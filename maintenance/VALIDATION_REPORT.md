@@ -1,7 +1,28 @@
 # Validation report — design 1.0
 
 **Last updated:** 1 November 2026<br>
-**Current scope:** Repository-only caw-do-release skill and integrated ticket-creation recovery for issue #4, awaiting a future release. Product remains 0.1.21 and design 1.0. The published 0.1.21 ZIP/checksum and historical release evidence remain unchanged. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+**Current scope:** Release 0.1.22 macOS pilot, including integrated ticket-creation recovery for issue #4 and the repository-only release skill. Design remains 1.0. Historical evidence below retains its original scope; current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md).
+
+## Release verification — 0.1.22
+
+Prepared on 1 November 2026 from clean `main` at `ba1d36c`, confirmed equal to live origin/main before preparation. Environment: macOS 26.6.2 (25G83), arm64; Python 3.15.0 (`/opt/homebrew/bin/python3`) and Python 3.9.6 (`/usr/bin/python3`). This release packages integrated [#4](https://github.com/matas-g/code-ai-workspace/issues/4) ticket-creation recovery. Product version is 0.1.22; design 1.0, schemas and Python 3.9+ minimum remain unchanged. Existing generated trees retain their installed tools; adopt this release through fresh setup and manual transfer of permitted content.
+
+| Check | Actual result |
+|---|---|
+| Python 3.15.0 isolated suite | 120 tests passed in 15.217 seconds; no skips |
+| Python 3.9.6 isolated suite | 120 tests passed in 20.080 seconds; no skips |
+| Exact candidate archive | 35 allowlisted inputs, manifest and three enclosing entrypoints; all 39 members passed CRC, exact source bytes, manifest hashes, safe inventory, normalized timestamps, executable macOS entrypoint metadata and checksum checks |
+| Reproducibility | Byte-identical rebuild from isolated tested inputs; all shipped inputs/entrypoints and manifest match final source |
+| Extracted default/custom layouts | Each initialized with 30 daily files and six skills; each passed 63 local links/anchors |
+| Relocation and installer removal | Both complete generated trees moved, extracted installer removed, then seven installed daily CLI calls per layout passed from another directory: version, validate, audit, refresh apply, ticket create/archive/restore. Literal multiline details and synthetic repository bytes preserved |
+| Documentation/preservation | 13 extracted user links and 62 source/contributor links passed before this entry; 61 current source/contributor links passed after updating the scope header. Repository README, canonical design, manual tracker and root launchers retain baseline bytes; root launchers match canonical sources |
+| Previous artifact | 0.1.21 ZIP/checksum moved into ignored `_old zips/` without overwriting or changing bytes |
+
+Commands used `-I -S -B` throughout. Prepared source inputs with `python3 -I -S -B WORKSPACE_SETUP/scripts/build_release.py`, copied them into `_tmp/release-0.1.22/verification/WORKSPACE_SETUP/`, prepared that disposable copy, then ran its `tests/test_workspace.py` serially with both absolute interpreters above. Built the final candidate with `python3 -I -S -B WORKSPACE_SETUP/scripts/build_release.py --output-dir '/Users/matt/Codex Projects/code-ai-workspace'`. Artifact/lifecycle verification used `python3 -I -S -B _tmp/release-0.1.22/verify_release.py`; final document/preservation checks used its `--static-only` mode. Logs and machine-readable results remain under `_tmp/release-0.1.22/`. `git diff --check` passed.
+
+Artifact: `code-ai-workspace-0.1.22-macos-pilot.zip`; SHA-256 `3abfa395b6a0e29d4bb3216cace964163bb1e4edd1bb30730f96dfd03f2ee800`.
+
+Synthetic fixtures only; no software installation, authentication or global-setting changes. The prior source-based macOS ticket recovery/Copilot observations below apply to unchanged helper/skill/guide bytes; this release run adds automated artifact evidence and does not claim another native GUI/Copilot session. Windows, remaining native launcher/first-use checks and unrelated known issues retain their documented scope. Hard-link support is required for ticket publication; old unmarked partial briefs cannot be detected, and there is no automatic repair, upgrade or power-loss durability guarantee.
 
 ## Source-based manual ticket retest — 1 November 2026
 
