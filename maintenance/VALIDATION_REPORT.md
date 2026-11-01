@@ -1,7 +1,19 @@
 # Validation report — design 1.0
 
 **Last updated:** 1 November 2026<br>
-**Current scope:** Release 0.1.20 of the current source, including the user-package separation previously verified below. Design remains 1.0. The previous 0.1.19 ZIP/checksum are archived with their bytes preserved. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+**Current scope:** Unreleased repository-only maintainer skills and release 0.1.20 evidence below. Product remains 0.1.20 and design remains 1.0; shipped inputs and artifacts are unchanged by the skill work. The previous 0.1.19 ZIP/checksum are archived with their bytes preserved. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## Unreleased maintainer skills — 1 November 2026
+
+Renamed ca-code-ai-onboarding to caw-chat-onboarding, preserving its full-read behavior and exclusions. Added caw-whats-next (read-only issue shortlist), caw-issue-triage (requested queue/label maintenance), and caw-implement-issue (one issue through implementation, verification and evidence). All four live in repository `.agents/skills/`; shipped payload skills keep `ca-`. Updated contributor/development/design namespace rules and current technical-plan wording. Historical namespace/manual/release evidence retains its original scope.
+
+Checks on macOS 26.6.2 arm64, Python 3.15.0, against clean baseline `09dac26`:
+
+- All four frontmatter blocks passed standard-library validation of the plain-scalar name/description subset used, matching directory names, naming/length rules and absence of unfinished placeholders. The bundled skill-creator quick_validate.py could not run because PyYAML is absent; no dependency was installed. This fallback is not a claim of general YAML conformance or native skill discovery.
+- Thirteen new/changed local links resolved, including skill-to-root navigation and the contributor section anchor. The renamed onboarding body is byte-identical apart from its frontmatter name; current callers use the new name and no old SKILL.md alias remains.
+- The release builder's 35 allowlisted inputs plus three entrypoint mappings and the package manifest exclude maintainer skill paths. All 46 protected product/package/launcher/artifact files retained baseline hashes. No builder preparation or release rebuild was needed or run.
+- A read-only GitHub workflow walkthrough confirmed the origin repository, retrieved 15 open issues and inspected the three `next` issue bodies; all three had no comments. The current test-guard source still matches the #1 finding, supporting it as a ready recommendation. No issues, labels or state were changed. Read-only/triage/implementation authorization and completion boundaries were reviewed by inspection; live mutation workflows were not executed.
+- `git diff --check` passed and the Git index was preserved. Evidence is `_tmp/maintainer-skills-20261101/verification.json`; native skill-picker discovery/invocation in a fresh chat remains unverified. No product suite, manual IDE/product run, version change, commit or push was performed.
 
 ## Release verification — 0.1.20
 

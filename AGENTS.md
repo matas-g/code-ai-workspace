@@ -23,14 +23,29 @@ Read the files relevant to the requested task; a small edit does not require ful
 | [maintenance/MANUAL_TESTS.md](maintenance/MANUAL_TESTS.md), [validation report](maintenance/VALIDATION_REPORT.md) | Actual manual observations and versioned automated/release evidence respectively |
 | [maintenance/CHANGELOG.md](maintenance/CHANGELOG.md), [user release notes](WORKSPACE_SETUP/RELEASE_NOTES.md) | Full development history and concise shipped compatibility/known limitations respectively |
 
-For a requested full project read, use `$ca-code-ai-onboarding` at [.agents/skills/ca-code-ai-onboarding/SKILL.md](.agents/skills/ca-code-ai-onboarding/SKILL.md). It excludes `_old zips/`, `_tmp/` and ZIP archives. Those locations are historical artifacts or scratch work, not current implementation sources.
+For a requested full project read, use `$caw-chat-onboarding` at [.agents/skills/caw-chat-onboarding/SKILL.md](.agents/skills/caw-chat-onboarding/SKILL.md). It excludes `_old zips/`, `_tmp/` and ZIP archives. Those locations are historical artifacts or scratch work, not current implementation sources.
+
+## Maintainer skills and issue workflows
+
+Repository-only skills live in `.agents/skills/` and use `caw-`; shipped end-user skills live in `WORKSPACE_SETUP/payload/skills/` and use `ca-`.
+
+| Skill | Use |
+|---|---|
+| [caw-chat-onboarding](.agents/skills/caw-chat-onboarding/SKILL.md) | Read the complete current project without changes |
+| [caw-whats-next](.agents/skills/caw-whats-next/SKILL.md) | Brief live summary of open `next` issues and one recommendation; read-only |
+| [caw-issue-triage](.agents/skills/caw-issue-triage/SKILL.md) | Review issue scope/priorities and apply requested issue/label updates |
+| [caw-implement-issue](.agents/skills/caw-implement-issue/SKILL.md) | Implement one selected issue through verification and evidence updates |
+
+For issue workflows, confirm the target repository against `origin`; this project's expected repository is `matas-g/code-ai-workspace`. Resolve local paths from the repository root, not a fixed machine path. Prefer connected GitHub tools and use authenticated CLI only when needed and available. If access or the repository identity is uncertain, report it; never substitute cached status for live information or write to another repository by assumption.
+
+GitHub owns imported status/priority. Use ordinary Open/Closed issues and `bug`, `improvement`, `verification`, `next` labels; preserve unrelated labels. Prefer one implementation at a time and a few ready `next` candidates. Owner decisions and current evidence take precedence over historical proposals; read only relevant source/docs, without full onboarding for routine issue work. Invoking a skill does not authorize unrelated work, commits, pushes, version changes or releases; follow the user's actual scope and integration instructions.
 
 ## Change constraints
 
 - Preserve new-directory-only initialization: refuse existing targets, write only within the new target and retain incomplete results for inspection. Setup must not install software, authenticate, clone repositories or change global settings. Keep Python setup/runtime tools free of network and subprocess requirements.
 - Derive generated names and relative paths from effective configuration. Keep installed tools independent of source-package files and the terminal's working directory.
 - When changing deployed files or skill paths, align payload resources, runtime `LAYOUT`, release `INVENTORY`/mappings, guides and affected tests. Root Start launchers must match their canonical `WORKSPACE_SETUP/launchers/` copies.
-- Use `ca-` for every framework or framework-maintenance skill. Keep folder names, `SKILL.md` names, invocation examples and resource links aligned. Leave unrelated third-party and repository-owned skills unchanged.
+- Use `ca-` for shipped framework skills and `caw-` for this repository's maintainer skills. Keep folder names, `SKILL.md` names, invocation examples and resource links aligned. Location and the release allowlist enforce delivery boundaries; prefixes describe audience. Leave unrelated third-party and repository-owned skills unchanged.
 - Put temporary development files and synthetic test output in `_tmp/`. Preserve existing working/staged changes. Keep this file, project-local maintainer skills, planning documents and manual-test tracker outside release ZIPs and generated workspaces.
 
 ## Verification

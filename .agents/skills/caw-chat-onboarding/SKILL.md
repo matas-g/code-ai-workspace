@@ -1,5 +1,5 @@
 ---
-name: ca-code-ai-onboarding
+name: caw-chat-onboarding
 description: Get familiar with the Code AI Workspace framework at the start of a new project chat by reading its current implementation, excluding _old zips, _tmp and ZIP archives. Use for onboarding to this framework repository, not for onboarding to a generated user workspace or another project.
 ---
 

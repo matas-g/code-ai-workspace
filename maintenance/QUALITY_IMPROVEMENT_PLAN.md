@@ -457,7 +457,7 @@ The skills are already concise, explicit, and mostly well scoped. Keep their sma
 | `ca-config-audit` | Define summary ordering and the distinction between deterministic errors, unsupported syntax, and possible semantic conflict. Show an exact command shape consistent with other skills. | Findings remain useful after malformed/unfamiliar documents; no repairs or unrelated reads occur. |
 | `ca-workspace-refresh` | Use R04's approved-plan precondition; fix custom-path prose under BUG-03 and pre-apply recovery wording under BUG-04. Explain no-op and partial-result handling using the actual returned status. | Changed plans require fresh approval enforced by the tool; summaries use actual paths; settings survive; the user receives the launcher fallback before possible interruption. |
 
-Do not add model names, forked agents, experimental tool grants, mandatory plan files, or automatic skill selection to improve apparent sophistication. Keep every framework/maintenance skill under the required `ca-` namespace.
+Do not add model names, forked agents, experimental tool grants, mandatory plan files, or automatic skill selection to improve apparent sophistication. Shipped framework skills use `ca-`; repository-only maintainer skills use `caw-` under `.agents/skills/`, outside release delivery. Historical namespace evidence retains its original scope.
 
 ### R21 — Make overview and reference-map templates more useful to fill
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased — maintainer workflows
+
+- Separate skill audiences: shipped end-user skills retain `ca-`; repository-only maintenance skills use `caw-`. Rename ca-code-ai-onboarding to caw-chat-onboarding and align current contributor/design references.
+- Add caw-whats-next for a short read-only live issue shortlist, caw-issue-triage for requested queue/label maintenance, and caw-implement-issue for one selected issue through scoped implementation, verification and evidence updates. Preserve the release allowlist, product version, shipped skills and historical test outcomes.
+
 ## 0.1.20 — 1 November 2026
 
 - Separate repository and installation documentation: keep one canonical design, the full changelog and validation history in maintenance/. Add a development/release guide and a concise user compatibility/known-limitations page.
