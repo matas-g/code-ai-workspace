@@ -24,7 +24,7 @@ Keep the two repository-root Start launchers byte-identical to their canonical s
 
 ## Maintainer skills
 
-The four project-local skills in `.agents/skills/` support this repository's development process. They are excluded from installation ZIPs and generated workspaces by the release allowlist; a prefix alone is not an exclusion mechanism. See [AGENTS.md](../AGENTS.md#maintainer-skills-and-issue-workflows) for shared rules and skill links.
+The five project-local skills in `.agents/skills/` support this repository's development process. They are excluded from installation ZIPs and generated workspaces by the release allowlist; a prefix alone is not an exclusion mechanism. See [AGENTS.md](../AGENTS.md#maintainer-skills-and-issue-workflows) for shared rules and skill links.
 
 | Invocation | Outcome |
 |---|---|
@@ -32,8 +32,11 @@ The four project-local skills in `.agents/skills/` support this repository's dev
 | `$caw-whats-next` | Summarize live open `next` issues briefly and recommend one |
 | `$caw-issue-triage` | Review priorities/scope; apply issue and label changes when requested |
 | `$caw-implement-issue` with an issue number/link | Implement one issue, verify it and update actual evidence |
+| `$caw-do-release` with an optional version | Prepare, verify and package a release, archive the previous ZIP/checksum, commit and push |
 
 For example, ask “Use caw-issue-triage to recommend the next few issues” for a read-only review, or explicitly request the label changes to apply. Use caw-implement-issue for the selected issue rather than automatically consuming the entire `next` queue. Required manual checks keep an issue open until observed; local changes awaiting integration are reported as such. Existing end-user `ca-` skills continue to operate on generated workspaces and local ticket files.
+
+Run `$caw-do-release` for the usual release workflow below, including its commit and push to origin. With no version supplied, use the next patch version unless a newer unreleased product version is already prepared. Use the exact commit subject `Release v<version>`; issue references belong in the body. This workflow uses the tracked ZIP/checksum convention; tags and GitHub Release objects are created only when requested. Creating or editing the skill does not execute a release.
 
 ## Verify a change
 

@@ -35,12 +35,13 @@ Repository-only skills live in `.agents/skills/` and use `caw-`; shipped end-use
 | [caw-whats-next](.agents/skills/caw-whats-next/SKILL.md) | Brief live summary of open `next` issues and one recommendation; read-only |
 | [caw-issue-triage](.agents/skills/caw-issue-triage/SKILL.md) | Review issue scope/priorities and apply requested issue/label updates |
 | [caw-implement-issue](.agents/skills/caw-implement-issue/SKILL.md) | Implement one selected issue through verification and evidence updates |
+| [caw-do-release](.agents/skills/caw-do-release/SKILL.md) | Prepare and verify a release, archive previous artifacts, commit and push |
 
 For issue workflows, confirm the target repository against `origin`; this project's expected repository is `matas-g/code-ai-workspace`. Resolve local paths from the repository root, not a fixed machine path. Prefer connected GitHub tools and use authenticated CLI only when needed and available. If access or the repository identity is uncertain, report it; never substitute cached status for live information or write to another repository by assumption.
 
-GitHub owns imported status/priority. Use ordinary Open/Closed issues and `bug`, `improvement`, `verification`, `next` labels; preserve unrelated labels. Prefer one implementation at a time and a few ready `next` candidates. Owner decisions and current evidence take precedence over historical proposals; read only relevant source/docs, without full onboarding for routine issue work. Invoking a skill does not authorize unrelated work, commits, pushes, version changes or releases; follow the user's actual scope and integration instructions.
+GitHub owns imported status/priority. Use ordinary Open/Closed issues and `bug`, `improvement`, `verification`, `next` labels; preserve unrelated labels. Prefer one implementation at a time and a few ready `next` candidates. Owner decisions and current evidence take precedence over historical proposals; read only relevant source/docs, without full onboarding for routine issue work. Issue-workflow skills do not authorize unrelated work, commits, pushes, version changes or releases without the user's integration instructions. A request to execute caw-do-release includes its release commit and push; follow the user's actual scope.
 
-When making an authorized commit related to a specific GitHub issue, start the commit subject with the issue number followed by a space, for example `#1 Fix test write guard containment checks`. If a commit covers multiple issues, put all relevant issue numbers before the descriptive text. Commits unrelated to a specific issue do not need an issue prefix.
+When making an authorized commit related to a specific GitHub issue, start the commit subject with the issue number followed by a space, for example `#1 Fix test write guard containment checks`. If a commit covers multiple issues, put all relevant issue numbers before the descriptive text. Commits unrelated to a specific issue do not need an issue prefix. Release commits use exactly `Release v<version>` as the subject, for example `Release v0.1.22`; put included issue references in the body.
 
 ## Change constraints
 

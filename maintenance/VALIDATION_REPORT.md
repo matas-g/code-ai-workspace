@@ -1,7 +1,19 @@
 # Validation report — design 1.0
 
 **Last updated:** 1 November 2026<br>
-**Current scope:** Unreleased ticket-creation recovery for issue #4, on product 0.1.21 and design 1.0. The published 0.1.21 ZIP/checksum and historical release evidence remain unchanged. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+**Current scope:** Repository-only caw-do-release skill and integrated ticket-creation recovery for issue #4, awaiting a future release. Product remains 0.1.21 and design 1.0. The published 0.1.21 ZIP/checksum and historical release evidence remain unchanged. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## Unreleased release-workflow skill — 1 November 2026
+
+Added [caw-do-release](../.agents/skills/caw-do-release/SKILL.md) against clean baseline `225131b`. It follows the existing release process through preparation, isolated verification, ZIP/checksum checks, previous-artifact archival, an exact `Release v<version>` commit subject and a verified push. With no version supplied, it uses a prepared newer product version or the next patch version. It preserves unrelated changes, records real evidence and limitations, and distinguishes executing a release from creating/editing the skill. Contributor/development discovery tables, release authorization and release-commit conventions are aligned; issue references go in the release commit body. No release was executed while creating this skill.
+
+Checks on macOS 26.6.2 arm64 with Python 3.15.0:
+
+- The bundled skill-creator `quick_validate.py` could not run because PyYAML is unavailable under `-I -S -B`; no dependency was installed. A standard-library fallback checked the simple plain-scalar frontmatter subset used by all five maintainer skills, directory/name agreement, naming/length rules, required description fields and absence of unfinished placeholders. This is not general YAML validation or proof of native skill discovery.
+- Local skill/contributor links and anchors passed. Reviewed the workflow against the builder's actual command options, version ownership, output-collision behavior and the development guide. No release commands or remote mutations were executed as a test of the skill.
+- Static release inventory/entrypoint inspection confirms that maintainer skills and documents remain excluded. All tracked files outside the five maintenance-document changes retain baseline bytes, including package inputs/manifest, behavioral tests, launchers, product/design versions and published ZIP/checksum. `git diff --check` passed. This instruction/documentation change did not require another product-suite run; the preceding 120-test results retain their original scope.
+
+Scratch validation is under `_tmp/caw-do-release/`. The new skill has only `SKILL.md`; no runtime helper, dependency, UI metadata or shipped skill was added. Skill creation changes are local and uncommitted; no release, version change, staging, commit or push was performed. Native invocation and a future end-to-end execution remain unobserved; existing manual qualifications are unchanged.
 
 ## Unreleased ticket creation recovery — issue #4 — 1 November 2026
 
