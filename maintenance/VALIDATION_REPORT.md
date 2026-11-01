@@ -3,6 +3,16 @@
 **Last updated:** 1 November 2026<br>
 **Current scope:** Release 0.1.22 macOS pilot, including integrated ticket-creation recovery for issue #4 and the repository-only release skill. Design remains 1.0. Historical evidence below retains its original scope; current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md).
 
+## Unreleased overview Git naming guidance — 1 November 2026
+
+Added editable branch-name and commit-message defaults, ticket/no-ticket examples and a repository-specific exception table to the overview template. Shared orientation directs agents to these rules and applicable repository guidance; company/repository requirements take precedence over defaults. Copilot preparation guidance and the canonical design are aligned. This is formatting guidance, not a Git-operation implementation or authorization.
+
+Checks with Python 3.15.0 and `-I -S -B`: refreshed source manifest hashes; prepared an isolated package under `_tmp/git-naming.MX7swo/`; all 120 tests passed in 14.369 seconds with no skips. Default and renamed generated layouts each preserved the overview's exact source bytes and passed 65 local Markdown links/anchors. `git diff --check` passed. No native Copilot session was run; automated checks do not establish agents' adherence to the new prose.
+
+Product/design versions and published release artifacts are unchanged. Existing workspaces are not automatically upgraded. Preserved the pre-existing staged development-guide and issue-16 design changes. No staging, commit, push or release was performed.
+
+Follow-up on 1 November 2026: revised the defaults to branch types `feature`/`bugfix` (`feature` when unspecified), an underscore between ticket ID and description, and underscores between description words. Commit subjects now include a 1–4 word change area followed by a period and a short summary. Updated ticket/no-ticket examples and refreshed source hashes. With Python 3.15.0 and `-I -S -B`, an isolated build under `_tmp/git-naming-formats.lkblc8cs/` matched the source manifest; default and renamed initialization both preserved the revised overview bytes and its orientation link/anchor. `git diff --check` passed. The earlier 120-test run covers the preceding revision; this prose-only follow-up did not rerun the full suite or a native Copilot session.
+
 ## Release verification — 0.1.22
 
 Prepared on 1 November 2026 from clean `main` at `ba1d36c`, confirmed equal to live origin/main before preparation. Environment: macOS 26.6.2 (25G83), arm64; Python 3.15.0 (`/opt/homebrew/bin/python3`) and Python 3.9.6 (`/usr/bin/python3`). This release packages integrated [#4](https://github.com/matas-g/code-ai-workspace/issues/4) ticket-creation recovery. Product version is 0.1.22; design 1.0, schemas and Python 3.9+ minimum remain unchanged. Existing generated trees retain their installed tools; adopt this release through fresh setup and manual transfer of permitted content.

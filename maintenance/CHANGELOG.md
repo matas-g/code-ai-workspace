@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Add editable branch-name and commit-message formats to the project overview template, including ticket/no-ticket examples and repository-specific exceptions. Direct agents to these rules through the shared orientation; repository/company requirements take precedence over template defaults. Existing generated workspaces are not automatically updated.
+- Set default branches to `feature/<ticket-id>_<short_description>` or `bugfix/<ticket-id>_<short_description>`, choosing `feature` when unspecified. Use commit subjects `<ticket-id> <Change area>. <Short summary>`, with a 1–4 word affected area or change type.
+
 ## 0.1.22 — 1 November 2026
 
 - Add the repository-only caw-do-release skill for the established release preparation, isolated verification, ZIP/checksum checks, previous-artifact archival and commit/push workflow. Default to the next patch version or a prepared newer version; use the exact `Release v<version>` commit subject and keep issue references in its body. Align maintainer discovery and release authorization guidance; creating the skill does not execute a release.

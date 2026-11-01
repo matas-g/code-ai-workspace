@@ -10,10 +10,12 @@ The [orientation file](.github/copilot-instructions.md) gives Copilot directions
 
    | File | Add |
    |---|---|
-   | [Project overview](project/overview.md) | Repository responsibilities, interfaces and behavior to preserve |
+   | [Project overview](project/overview.md) | Repository responsibilities, interfaces, behavior to preserve and Git branch/commit conventions |
    | [Reference map](project/reference-map.md) | Authoritative source links, owners and dates checked |
 
    Record enough verified context for your first task; leave unknowns explicit. Review the generated [orientation](.github/copilot-instructions.md), which links these files. Editing it is optional.
+
+   Review the overview's [Git naming defaults](project/overview.md#git-naming-conventions). Replace them or record repository-specific exceptions from company/repository guidance, with source links and verification dates.
 
 ## Verify your setup
 

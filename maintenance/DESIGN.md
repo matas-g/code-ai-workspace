@@ -648,6 +648,8 @@ Use representative before/after outputs, application tests, SQL validation, and 
 
 `project/overview.md` begins as a clearly incomplete template with project purpose, repository map, interfaces/data flow, and known dependencies. It MUST NOT fabricate actual architecture. Developers fill it from verified sources when needed.
 
+The overview also supplies editable Git branch and commit naming defaults, examples with and without ticket references, and a repository-specific exception table with sources and verification dates. Agents consult these conventions and applicable repository guidance before generating names or commit messages. Repository/company requirements take precedence over template defaults; contradictory guidance must be surfaced. Formatting guidance does not authorize Git operations.
+
 `project/reference-map.md` is a small index: topic, authoritative source path/link, owning team if known, and last checked date. It is not a copied policy manual. Official company docs stay in their own repositories; cite them and note uncertainty when local clones may be stale.
 
 Knowledge articles are organized by topic. Simple notes are Markdown files; articles with assets use `topic/guide.md` and `topic/assets/`. Suggested fields: purpose, prerequisites, procedure, caveats, source links, last verified date. The sample SVG must be static and synthetic, with no script, remote resources, or confidential data.

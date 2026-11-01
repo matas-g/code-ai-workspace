@@ -91,7 +91,7 @@
     },
     {
       "source": "payload/project/overview.md",
-      "sha256": "ff3b38cf2415bd8f18183c56d4b221ca4d9433ae131b477ecedf6e0e79a22978",
+      "sha256": "e5c7328567ba4eeac7dea237487daa27d11dd7ec7fc386ac09b80af2d56131f5",
       "destinations": [
         {
           "directory_id": "ai_work",
@@ -115,7 +115,7 @@
     },
     {
       "source": "payload/root/COPILOT_GUIDE.md",
-      "sha256": "af372838add37577331e502ae95c9c6ca8f647c9944856cfc6db47cbb4c7c057",
+      "sha256": "d5c0331c1a73947b8e113038c3b45d75120812bb9a57985063a03cdd193876d4",
       "destinations": [
         {
           "directory_id": "ai_work",
@@ -151,7 +151,7 @@
     },
     {
       "source": "payload/root/copilot-instructions.md",
-      "sha256": "1762d2f4e45a524d20f65d60f16e0775bec9657dedff414810a9ba1305163345",
+      "sha256": "bf8274df05e70cd5f335c6a6dc72c8f6e83d1a5eef1a2128428f687d48bec796",
       "destinations": [
         {
           "directory_id": "ai_work",
