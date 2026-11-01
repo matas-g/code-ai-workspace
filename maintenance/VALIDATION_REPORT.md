@@ -1,7 +1,36 @@
 # Validation report — design 1.0
 
 **Last updated:** 1 November 2026<br>
-**Current scope:** Unreleased repository-only maintainer skills, test-guard fix and release 0.1.20 evidence below. Product remains 0.1.20 and design remains 1.0; shipped inputs and artifacts are unchanged by the maintainer work. The previous 0.1.19 ZIP/checksum are archived with their bytes preserved. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+**Current scope:** Release 0.1.21 and integrated test-guard fix. Product is 0.1.21 and design remains 1.0; daily behavior and schemas are unchanged. The previous 0.1.20 ZIP/checksum are archived with their bytes preserved. Current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md); current commands are in [DEVELOPMENT.md](DEVELOPMENT.md).
+
+## Release verification — 0.1.21
+
+Prepared on 1 November 2026 on macOS 26.6.2 arm64, after integrating and pushing [test-guard fix e7c37a0](https://github.com/matas-g/code-ai-workspace/commit/e7c37a0026da6a1aa359879ecfc2d4f1b073b1e3) to main. [Issue #1](https://github.com/matas-g/code-ai-workspace/issues/1) is closed as completed, with the acceptance checklist and published evidence verified. The earlier unreleased entries below preserve the state and evidence at the time of those checks.
+
+This is a maintenance pilot with updated product version, user README, manifest and concise release notes. The test guard and maintainer skills stay outside the installation ZIP. Daily behavior, generated layout, design 1.0 and configuration/manifest/state schema 1 are unchanged; existing workspaces are not automatically upgraded. Python 3.9+ remains the current minimum; the approved Python-policy implementation is separate work in #11.
+
+| Check | Actual result |
+|---|---|
+| Python 3.15.0 isolated suite | 112 tests passed in 20.293 seconds; no skips |
+| Python 3.9.6 isolated suite | 112 tests passed in 26.517 seconds; no skips |
+| Exact installation ZIP | 35 allowlisted inputs, manifest and three enclosing entrypoints: 39 members; CRC, member bytes, manifest hashes, safe paths, normalized timestamps, executable macOS entrypoint metadata and SHA-256 sidecar passed |
+| Repeat build | Byte-identical ZIP from the isolated tested package; shipped inputs match final source |
+| Extracted default/custom-name lifecycle | Each initialized with 30 daily files and six skills, passed 62 local links/anchors, then passed seven daily CLI calls from another directory after relocation and installer removal |
+| Daily CLI calls | Installed version, validation, audit, refresh apply and ticket create/archive/restore passed; literal multiline details and synthetic repository bytes preserved |
+| Documentation | 13 extracted user-document links and 59 source/contributor links passed before recording this section; final static link checks repeated after recording evidence |
+| Preservation/archive | Repository README, canonical design, manual tracker and root launchers retain baseline bytes; root launchers match canonical sources. Previous 0.1.20 ZIP/checksum moved into `_old zips/` without overwriting archived files or changing bytes |
+
+The versioned suites ran serially after preparing hashes only in the disposable package copy:
+
+```sh
+python3 -I -S -B _tmp/release-0.1.21/verification/WORKSPACE_SETUP/scripts/build_release.py
+python3 -I -S -B _tmp/release-0.1.21/verification/WORKSPACE_SETUP/tests/test_workspace.py
+/usr/bin/python3 -I -S -B _tmp/release-0.1.21/verification/WORKSPACE_SETUP/tests/test_workspace.py
+```
+
+Source preparation and the final artifact used `python3 -I -S -B WORKSPACE_SETUP/scripts/build_release.py --output-dir '/Users/matt/Codex Projects/code-ai-workspace'`. The archive is `code-ai-workspace-0.1.21-macos-pilot.zip`, SHA-256 `8f080e3c8b7a476090908a90cebb2d57a964ceb06d47604a3c8c5288cd098850`. Artifact checks used `python3 -I -S -B _tmp/release-0.1.21/verify_release.py`; full suite logs and machine-readable results are in the same scratch directory. `git diff --check` passed.
+
+Synthetic fixtures only. No software installation, authentication or global-setting change was performed. Native GUI/VS Code/Copilot/Windows and first-use checks remain at their previously recorded scope; no new manual result is claimed. Other open runtime/AI/parser issues remain unresolved. Historical versioned evidence below is unchanged.
 
 ## Unreleased test write guard — issue #1 — 1 November 2026
 

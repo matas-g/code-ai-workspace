@@ -1,11 +1,12 @@
 # Changelog
 
-## Unreleased — maintainer workflows and test instrumentation
+## 0.1.21 — 1 November 2026
 
 - Separate skill audiences: shipped end-user skills retain `ca-`; repository-only maintenance skills use `caw-`. Rename ca-code-ai-onboarding to caw-chat-onboarding and align current contributor/design references.
-- Add caw-whats-next for a short read-only live issue shortlist, caw-issue-triage for requested queue/label maintenance, and caw-implement-issue for one selected issue through scoped implementation, verification and evidence updates. Preserve the release allowlist, product version, shipped skills and historical test outcomes.
+- Add caw-whats-next for a short read-only live issue shortlist, caw-issue-triage for requested queue/label maintenance, and caw-implement-issue for one selected issue through scoped implementation, verification and evidence updates. Preserve the release allowlist, shipped skills and historical test outcomes.
 - Fix the test write guard's parent-traversal and symlink-destination gaps ([#1](https://github.com/matas-g/code-ai-workspace/issues/1)). Resolve ancestors, check rename/link endpoints, and refuse ambiguous descriptor writes; preserve allowed in-scope operations and restore nested scopes after failures.
-- Add tracked synthetic/real guard regressions with external sentinels and document process-wide scope and instrumentation limits. Product runtime, version, installation inputs and published artifacts are unchanged.
+- Add tracked synthetic/real guard regressions with external sentinels and document process-wide scope and instrumentation limits. This guard change affects repository tests only.
+- Integrate the guard fix in `e7c37a0` and close #1 after pushing to main. Package a new maintenance pilot with updated version/manifest and concise user release notes; daily behavior, design version and schemas remain unchanged. Test tooling and maintainer skills remain repository-only. Retain Python 3.9+; the approved Python-policy implementation remains separate in #11.
 
 ## 0.1.20 — 1 November 2026
 

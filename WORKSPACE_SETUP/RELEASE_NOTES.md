@@ -2,10 +2,10 @@
 
 Find the package version in the enclosing [README](../README.md) or the setup output. Follow the [setup guide](SETUP_GUIDE.md) for installation and troubleshooting.
 
-## Changes in 0.1.20
+## Changes in 0.1.21
 
-- Simplify the installation ZIP to setup files, user guides and daily tools, with one README at its root. Contributor documents and development tooling remain in the source repository.
-- Direct onboarding to the generated Copilot and daily guides. Daily runtime behavior, Python 3.9+ compatibility and the generated folder layout are unchanged.
+- Maintenance release. Setup and daily runtime behavior, Python 3.9+ compatibility and the generated folder layout are unchanged from 0.1.20.
+- Existing generated folders are not automatically upgraded. The known limitations below remain applicable.
 
 ## Compatibility
 
