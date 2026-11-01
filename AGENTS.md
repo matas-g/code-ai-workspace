@@ -18,7 +18,7 @@ Read the files relevant to the requested task; a small edit does not require ful
 | `WORKSPACE_SETUP/settings.json`, `configuration-examples/`, `launchers/` | Setup inputs, example configurations and canonical launcher sources, all under `WORKSPACE_SETUP/` |
 | `WORKSPACE_SETUP/tests/test_workspace.py` | Synthetic behavioral suite |
 | [maintenance/DESIGN.md](maintenance/DESIGN.md), [development guide](maintenance/DEVELOPMENT.md) | Single canonical design, source map, verification and release commands; no root design mirror |
-| [maintenance/BACKLOG.md](maintenance/BACKLOG.md) | Single current implementation order, dependencies, status and completion gates |
+| [maintenance/BACKLOG.md](maintenance/BACKLOG.md) | Legacy B-ID issue index, reconciled/completed scope and deferred ideas; GitHub Issues owns imported status/priority |
 | [maintenance/QUALITY_IMPROVEMENT_PLAN.md](maintenance/QUALITY_IMPROVEMENT_PLAN.md) | Detailed technical proposals and known-defect criteria; proposals are not implemented behavior |
 | [maintenance/MANUAL_TESTS.md](maintenance/MANUAL_TESTS.md), [validation report](maintenance/VALIDATION_REPORT.md) | Actual manual observations and versioned automated/release evidence respectively |
 | [maintenance/CHANGELOG.md](maintenance/CHANGELOG.md), [user release notes](WORKSPACE_SETUP/RELEASE_NOTES.md) | Full development history and concise shipped compatibility/known limitations respectively |
@@ -49,7 +49,7 @@ python3 -I -S -B "$check_dir/WORKSPACE_SETUP/tests/test_workspace.py"
 
 The builder prepares hashes in the disposable copy; the suite creates `.test-sandbox/` there. For documentation-only changes, check affected links, paths and commands; run broader tests when behavior or packaging is affected. There is currently no configured lint command or CI workflow.
 
-Record actual manual results in `maintenance/MANUAL_TESTS.md` and automated/release evidence in `maintenance/VALIDATION_REPORT.md`, scoped to the tested version and environment. Automated checks cannot prove IDE skill discovery, Copilot behavior or native GUI compatibility. Preserve historical results and report remaining checks explicitly. Update the owning backlog item when implementing planned work; a passing suite alone does not close its manual gates.
+Record actual manual results in `maintenance/MANUAL_TESTS.md` and automated/release evidence in `maintenance/VALIDATION_REPORT.md`, scoped to the tested version and environment. Automated checks cannot prove IDE skill discovery, Copilot behavior or native GUI compatibility. Preserve historical results and report remaining checks explicitly. Update the owning GitHub issue when implementing imported work; use maintenance/BACKLOG.md to find legacy IDs and deferred scope. A passing suite alone does not close manual gates.
 
 ## Release maintenance
 

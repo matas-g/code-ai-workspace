@@ -2,7 +2,7 @@
 
 **Original review:** 29 October 2026; baseline 0.1.18, commit `20e04c7`<br>
 **Reconciled:** 30 October 2026 against source 0.1.19, commit `02c65f1`, and its recorded manual session<br>
-**Status:** Technical proposals and acceptance criteria. [BACKLOG.md](BACKLOG.md) is the single current implementation order/status; [MANUAL_TESTS.md](MANUAL_TESTS.md) owns manual evidence. The 30 October reconciliation changed maintainer planning documents only; later implementation progress is tracked in the backlog.
+**Status:** Technical proposals and acceptance criteria. Since 1 November 2026, [GitHub Issues](https://github.com/matas-g/code-ai-workspace/issues) owns imported status/priority; [BACKLOG.md](BACKLOG.md) is the legacy-ID index and deferred list. [MANUAL_TESTS.md](MANUAL_TESTS.md) owns manual evidence. Proposals and historical reproductions below are not implemented behavior.
 
 Maintainer documents live in `maintenance/`; `_tmp/` evidence paths and shell commands are relative to the repository root.
 
@@ -14,7 +14,7 @@ The solution has a sound foundation for a small portable developer tool. Standar
 
 The strongest improvement is to close specific reliability gaps and make verification reproducible for contributors. A framework rewrite, package manager, service, database, custom VS Code extension, or mandatory AI integration would add more maintenance than value here.
 
-Use the [ordered backlog](BACKLOG.md#ordered-implementation-queue) for what to implement next. It combines the reliability work below with six newly recorded manual defects, advances those defects ahead of broad refactoring/content polish, and links each fix to its native retest. R01–R26 remain stable technical references, not an execution sequence.
+Use the few [GitHub issues marked next](https://github.com/matas-g/code-ai-workspace/issues?q=is%3Aissue%20is%3Aopen%20label%3Anext) to choose work. The [legacy index](BACKLOG.md) accounts for every B item and separates deferred proposals. R01–R26 remain stable technical references, not an execution sequence. The current scope is the macOS pilot; the owner-approved Python 3.12+ requirement is pending implementation in issue #11.
 
 The existing pilot label is appropriate. The 0.1.19 macOS session now establishes the recorded discovery/loading and workflow scopes, but also demonstrates behavior and navigation failures. Passing the existing suite does not establish native Windows compatibility or the absence of either the original reliability defects or these manual failures.
 
@@ -82,7 +82,7 @@ No automated product suite, new IDE/manual run or release build was performed fo
 
 ## 3. Evidence classes and retained design choices
 
-- Current priorities, dependencies, status and release gates belong only to [BACKLOG.md](BACKLOG.md). The technical sections below define scope/evidence/acceptance; they are not another queue.
+- GitHub Issues owns imported status/priority and completion checklists. [BACKLOG.md](BACKLOG.md) retains ID links, deferrals and evidence rules. The technical sections below define scope/evidence/acceptance; they are not another queue.
 - **Confirmed:** Reproduced during this review.
 - **Inspection:** Supported directly by source structure or missing repository configuration.
 - **Verification gap:** Needs the specified environment or experiment; not a claim that the feature fails.
@@ -170,6 +170,8 @@ The interactive path rechecks its in-memory phase plans. The chat skill, however
 
 ### R05 — Hash and use one immutable source snapshot
 
+**Migration ownership (1 November 2026):** Installation snapshot work is [#7](https://github.com/matas-g/code-ai-workspace/issues/7); builder snapshot work is [#13](https://github.com/matas-g/code-ai-workspace/issues/13). Each owns its corresponding between-read regression.
+
 **Evidence:** confirmed by deterministic injected edits.<br>
 **Locations:** `workspace.py:52–123`; `start.py:129–147`; `build_release.py:90–176`.
 
@@ -186,6 +188,8 @@ The installer hashes source bytes, then rereads those files for rendering. The b
 **Acceptance:** The reproduced between-read changes either cause explicit refusal or have no effect on the frozen operation. Every successful archive validates all of its own member hashes, and installed bytes match the verified plan.
 
 ### R06 — Define a maintained Python support policy
+
+**Owner decision (1 November 2026):** Python 3.12+ is approved for the next macOS pilot, with manual approved installation. [#11](https://github.com/matas-g/code-ai-workspace/issues/11) owns implementation; current source still requires 3.9+. The original recommendation below retains its review context.
 
 **Evidence:** current support-policy gap.<br>
 **Locations:** runtime version guards, launchers, manifest `minimum_python`, documentation, release tests.
@@ -204,6 +208,8 @@ Python 3.9 reached end of life on 31 October 2025; Python 3.10 reached it on 1 O
 **Acceptance:** Requirement messages, probes, package metadata, CLI behavior, and tested-version table agree. An unsupported interpreter fails clearly before mutation.
 
 ### R07 — Add contributor-reproducible native-platform CI
+
+**Migration scope:** [#12](https://github.com/matas-g/code-ai-workspace/issues/12) covers useful repeatable macOS checks. Windows qualification and broader CI rollout remain deferred in the backlog index; the original full-platform proposal below is not an immediate prerequisite.
 
 **Evidence:** missing `.github/workflows/` and native Windows evidence.<br>
 **Locations:** repository configuration, `tests/test_workspace.py`, validation and manual tracking.
@@ -395,6 +401,8 @@ The allowlisted, timestamp-normalized archive is a good fit. The main gaps are a
 
 ### R18 — Give current specifications and historical evidence clear ownership
 
+**Reconciled 1 November 2026 (B19):** B21 delivered the identified document/default/summary changes. The refresh-unreleased wording is in explicitly historical material. No additional named current mismatch was identified for an issue; optional navigation/history restructuring remains deferred. Historical findings below are preserved.
+
 **Evidence:** specific contradictory/stale wording found.<br>
 **Locations:** `maintenance/DESIGN.md` sections 1.4, 7.3, 8.4, 18–21; `maintenance/VALIDATION_REPORT.md`; maintainer guides.
 
@@ -568,6 +576,8 @@ These six issues come from the recorded 30 October native macOS session, not new
 
 ### BUG-06
 
+**Reconciled 1 November 2026 (B08):** B21 removed this failing template entry path from current source onboarding and supplied automated link evidence. [#15](https://github.com/matas-g/code-ai-workspace/issues/15) owns remaining current-flow native/novice verification. The published 0.1.19 package and historical DOC-05 FAIL are not relabelled as fixed; identify a verified candidate and shipment before claiming consumer resolution. The original observed failure and proposed remedy below retain their historical context.
+
 **Broken packaged-template backlink during onboarding — DOC-05; backlog B08; related R09/R18.**
 
 **Observed:** Extracted README → setup checklist → Verify your setup reaches the packaged Copilot template. Its “root guide's setup steps” backlink then attempts nonexistent `WORKSPACE_SETUP/payload/README.md`; the source root template is at `payload/root/README.md`. The exercised generated custom guide links were correct.
@@ -629,11 +639,11 @@ These six issues come from the recorded 30 October native macOS session, not new
 
 ## 9. Implementation tracking
 
-[BACKLOG.md](BACKLOG.md#ordered-implementation-queue) replaces the original eight-package sequence. It is the only current ordered plan and status list. It covers every R01–R26 proposal, the six manual defects, outstanding native/novice checks and conditional public-release work. Current priorities belong there; do not maintain a parallel schedule in this document.
+[GitHub Issues](https://github.com/matas-g/code-ai-workspace/issues) is authoritative for imported work’s status and priority. [BACKLOG.md](BACKLOG.md) accounts for B01–B21 through issue links, completed/reconciled records and explicit deferrals. Optional maintenance, broader proposals, Windows/other IDE qualification and public-release work remain deferred until useful; do not maintain a parallel schedule here. The acceptance matrix below spans both current and deferred scope and must be applied to the claims of the actual candidate.
 
-For each owning backlog item, confirm the behavioral regression, implement a narrow change, update affected contracts/guides, run focused checks and the required suite, and record relevant actual manual evidence. Use small reviewed changes. Temporary fixtures/output stay under `_tmp/`; reusable verification logic belongs in tracked maintainer tools/tests. A prose edit does not justify reopening unrelated passed checks or rerunning every product test.
+For each owning issue, confirm the behavioral regression, implement a narrow change, update affected contracts/guides, run focused checks and the required suite, and record relevant actual manual evidence. Use small reviewed changes. Temporary fixtures/output stay under `_tmp/`; reusable verification logic belongs in tracked maintainer tools/tests. A prose edit does not justify reopening unrelated passed checks or rerunning every product test.
 
-Do not start with the architecture refactor. The current structure is sufficient to fix the confirmed defects, and their regression coverage will make later restructuring safer. Preserve all historical versioned evidence. Mark work complete only when the backlog gate and the relevant acceptance criteria below are met.
+Do not start with the architecture refactor. The current structure is sufficient to fix the confirmed defects, and their regression coverage will make later restructuring safer. Preserve all historical versioned evidence. Close imported work only when its issue checklist and relevant acceptance criteria are met; a scoped macOS pilot does not inherit deferred platform/publication requirements.
 
 ## 10. Final acceptance matrix for the improved release
 

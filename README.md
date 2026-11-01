@@ -31,7 +31,7 @@ Each repository retains its own Git history. Setup creates a separate new develo
 | [Contributor instructions](AGENTS.md) | Change constraints and verification rules |
 | [Development and release guide](maintenance/DEVELOPMENT.md) | Source map, tests, package preparation and release commands |
 | [Design](maintenance/DESIGN.md) | Canonical architecture and current contracts |
-| [Backlog](maintenance/BACKLOG.md) | Single prioritized implementation order and completion gates |
+| [GitHub Issues](https://github.com/matas-g/code-ai-workspace/issues), [legacy backlog index](maintenance/BACKLOG.md) | Current work status/priority; B-ID links and deferred ideas |
 | [Technical review](maintenance/QUALITY_IMPROVEMENT_PLAN.md) | Detailed proposals and known-defect criteria |
 | [Manual tests](maintenance/MANUAL_TESTS.md) | Actual environment-specific observations and remaining checks |
 | [Validation report](maintenance/VALIDATION_REPORT.md) | Versioned automated/release evidence |

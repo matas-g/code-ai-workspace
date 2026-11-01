@@ -14,7 +14,7 @@ Run the commands below from the repository root using an installed approved Pyth
 | `WORKSPACE_SETUP/README.md` | Canonical user installation README; emitted once at the ZIP root with relocated links |
 | `WORKSPACE_SETUP/SETUP_GUIDE.md`, `RELEASE_NOTES.md` | User setup/reference and concise compatibility/known-issue information |
 | [DESIGN.md](DESIGN.md) | Single canonical architecture/current-contract document; no generated root copy |
-| [BACKLOG.md](BACKLOG.md), [technical review](QUALITY_IMPROVEMENT_PLAN.md) | Current work order and detailed proposed changes |
+| [BACKLOG.md](BACKLOG.md), [technical review](QUALITY_IMPROVEMENT_PLAN.md) | Legacy issue index/deferred ideas and detailed proposals; GitHub Issues owns imported status/priority |
 | [MANUAL_TESTS.md](MANUAL_TESTS.md), [VALIDATION_REPORT.md](VALIDATION_REPORT.md) | Actual manual observations and automated/release evidence |
 | [CHANGELOG.md](CHANGELOG.md) | Complete released/unreleased development history |
 

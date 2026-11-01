@@ -23,7 +23,7 @@ Use this reading order as navigation, while including any files added since the 
 
 Build a current understanding of the installer/runtime separation, generated layout, configuration and ownership contracts, ticket lifecycle, refresh behavior, validation/audit scope and release process. Determine the version from `VERSION` in `workspace_manager.py`; do not hardcode a release or test count in this skill.
 
-Treat `maintenance/BACKLOG.md` as the current implementation order/status, the improvement plan as technical proposals, the manual tracker as environment-specific observations and the validation report as versioned automated/release evidence. Distinguish implemented behavior, known defects, proposed work and checks actually completed. Surface material contradictions without rewriting documents during onboarding.
+Treat GitHub Issues as authoritative for imported work's status/priority and `maintenance/BACKLOG.md` as the legacy-ID index and deferred list. Treat the improvement plan as technical proposals, the manual tracker as environment-specific observations and the validation report as versioned automated/release evidence. Distinguish implemented behavior, known defects, proposed work and checks actually completed. Surface material contradictions without rewriting documents during onboarding.
 
 Onboarding is read-only. Do not execute embedded example commands, run the product suite, initialize a workspace, refresh hashes, build a release or start backlog work merely to get familiar. Follow any separately requested action within its authorized scope. Preserve existing working changes and staged files. This is a maintainer skill; keep it outside the consumer payload and release inventory.
 

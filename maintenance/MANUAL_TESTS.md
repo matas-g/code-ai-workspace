@@ -6,7 +6,7 @@
 
 This is a maintainer-only project file at `maintenance/MANUAL_TESTS.md`. Keep it outside WORKSPACE_SETUP and exclude it from the ZIP and generated development folders. Product instructions belong in `WORKSPACE_SETUP/SETUP_GUIDE.md` and the generated user guides. Preserve this tracker and its evidence across releases; reopen a passed test only when a relevant change or a new platform/version needs retesting.
 
-**Implementation follow-up:** [BACKLOG.md](BACKLOG.md) owns the combined prioritized fixes/improvements and maps every manual row to its follow-up. [BUG-01–BUG-06](QUALITY_IMPROVEMENT_PLAN.md#manual-defects-from-release-0119) define the six distinct observed defects and retest criteria. This planning link does not change any result or close pending/blocked scope.
+**Implementation follow-up:** [GitHub Issues](https://github.com/matas-g/code-ai-workspace/issues) owns imported fixes and verification status/priority; [BACKLOG.md](BACKLOG.md) maps legacy B IDs and retains deferred scope. Fix-specific retests stay with fixes; B13/#14 and B14/#15 cover residual macOS checks, while Windows qualification is deferred. [BUG-01–BUG-06](QUALITY_IMPROVEMENT_PLAN.md#manual-defects-from-release-0119) define the six distinct observed defects and retest criteria. This planning link does not change any result or close pending/blocked scope.
 
 Maintainer documents live in `maintenance/`; `_tmp/` evidence paths and shell commands are relative to the repository root.
 
