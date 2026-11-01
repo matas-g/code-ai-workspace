@@ -21,7 +21,7 @@ For each run, record: date; test ID; release; native OS; Python; VS Code and Cop
 
 Use synthetic repositories, ticket IDs and context files for pilot testing. Repeat relevant checks on Windows 11 and under any applicable managed configuration. A macOS result does not close a Windows test. Automated shell/PTY tests do not prove GUI click behavior or Copilot loading.
 
-Reusable local fixtures are in `_tmp/test_data/`: two small independent Git repositories per default grouping directory, copying instructions and optional overview/reference-map examples. See `_tmp/test_data/README.md` before copying them into a generated workspace. `_tmp/` and `_old zips/` are local development aids excluded from version control and product releases. Future superseded release ZIPs and checksums belong in `_old zips/`. Preparing or running sample code does not close any manual test below.
+Reusable test data is in [`maintenance/test_data.zip`](test_data.zip). Extract it, then copy the contents of the extracted data folder into a fresh workspace with default internal names, merging folders and replacing matching files. Retain the generated tools, skills and guides, run refresh, and open the saved workspace. The ZIP includes six independent sample Git repositories, populated context and a short `TEST_PROJECT.md` guide. It stays outside product releases. `_tmp/` and `_old zips/` remain ignored development aids. Preparing or running sample code does not close any manual test below.
 
 ## Outstanding checks
 

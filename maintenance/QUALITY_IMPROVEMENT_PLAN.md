@@ -374,7 +374,7 @@ The guard is useful defense in depth, but its lexical `Path.absolute().is_relati
 - Add the regression cases in this plan before fixing their corresponding behavior. Prefer externally observable invariants over assertions that mirror a particular implementation.
 - Add explicit subprocess timeouts and diagnostics. Exercise real two-process locking/concurrency for key cases alongside deterministic fault injection.
 - Move reusable release/link/example verification logic out of ignored scratch directories into reviewed maintainer scripts/tests. Keep generated output and transient fixtures under `_tmp/`.
-- Provide small tracked, sanitized fixture sources or a reproducible fixture recipe for manual Copilot checks. The current `_tmp/test_data/` instructions are unavailable to a new contributor.
+- Maintain sanitized fixtures for manual Copilot checks across fresh contributor clones. The complete sample data and Git histories are in [test_data.zip](test_data.zip); extract it and follow its short guide.
 - Measure branch coverage of critical failure paths using an optional development-only tool if helpful. Do not substitute an arbitrary global percentage for the no-loss/no-overwrite invariants.
 
 **Acceptance:** A contributor can reproduce every current release gate without private scratch scripts. Tests run independently and under the documented runner, with explicit skipped capabilities and useful failure output.

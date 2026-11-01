@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Add a maintainer-only `maintenance/test_data.zip` containing sample repositories with Git histories, populated project context and short copy/refresh instructions. No product or release inputs change.
 - Add editable branch-name and commit-message formats to the project overview template, including ticket/no-ticket examples and repository-specific exceptions. Direct agents to these rules through the shared orientation; repository/company requirements take precedence over template defaults. Existing generated workspaces are not automatically updated.
 - Set default branches to `feature/<ticket-id>_<short_description>` or `bugfix/<ticket-id>_<short_description>`, choosing `feature` when unspecified. Use commit subjects `<ticket-id> <Change area>. <Short summary>`, with a 1–4 word affected area or change type.
 

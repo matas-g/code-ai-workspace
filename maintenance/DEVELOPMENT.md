@@ -18,6 +18,7 @@ Run the commands below from the repository root using an installed approved Pyth
 | [BACKLOG.md](BACKLOG.md), [technical review](QUALITY_IMPROVEMENT_PLAN.md) | Legacy issue index/deferred ideas and detailed proposals; GitHub Issues owns imported status/priority |
 | [MANUAL_TESTS.md](MANUAL_TESTS.md), [VALIDATION_REPORT.md](VALIDATION_REPORT.md) | Actual manual observations and automated/release evidence |
 | [CHANGELOG.md](CHANGELOG.md) | Complete released/unreleased development history |
+| [Test data ZIP](test_data.zip) | Complete sample repositories, Git histories and project context for manual testing; excluded from product releases |
 
 `WORKSPACE_SETUP/` is the source location, not an instruction to ship every file beneath it. The builder's explicit `INVENTORY` includes only required user-package inputs. `ENTRYPOINTS` adds the enclosing README and two Start launchers; their canonical source copies are omitted from the packaged inner folder. The package manifest covers initializer inputs, while the ZIP checksum covers the entire archive. Maintainer files remain in this repository.
 

@@ -3,6 +3,14 @@
 **Last updated:** 1 November 2026<br>
 **Current scope:** Release 0.1.22 macOS pilot, including integrated ticket-creation recovery for issue #4 and the repository-only release skill. Design remains 1.0. Historical evidence below retains its original scope; current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md).
 
+## Test-data ZIP — 1 November 2026
+
+Added [test_data.zip](test_data.zip) with six independent sample Git repositories, populated project context and short copy/refresh instructions. This maintainer-only archive is excluded from product releases.
+
+Python 3.15.0 with `-I -S -B` verified all 93 archive members, CRC, byte preservation and all six Git repositories with `git fsck --full`. Extracted data passed smoke checks against published 0.1.22 and isolated current-source packages: all 16 fixture links, refresh to six repositories/eight roots, no-op refresh, validation/audit, Python examples, ticket create/archive/restore with attachment preservation, and relocation. Only the two intended context files replaced existing generated files. No native file-manager, VS Code, Copilot or Windows check was performed; manual statuses retain their previous scope.
+
+Evidence: `_tmp/test-data-single-zip.s_3ttl9m/archive.json` and `_tmp/test-data-overlay/run.84whnq4v/verification.json`, refresh transcripts and reports. Product/package/release files are unchanged.
+
 ## Unreleased overview Git naming guidance — 1 November 2026
 
 Added editable branch-name and commit-message defaults, ticket/no-ticket examples and a repository-specific exception table to the overview template. Shared orientation directs agents to these rules and applicable repository guidance; company/repository requirements take precedence over defaults. Copilot preparation guidance and the canonical design are aligned. This is formatting guidance, not a Git-operation implementation or authorization.
