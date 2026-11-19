@@ -1,7 +1,19 @@
 # Validation report — design 1.0
 
 **Last updated:** 19 November 2026<br>
-**Current scope:** Release 0.1.22 macOS pilot, including integrated ticket-creation recovery for issue #4 and the repository-only release skill. Design remains 1.0. Historical evidence below retains its original scope; current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md).
+**Current scope:** Release 0.1.23 macOS pilot. See [manual tests](MANUAL_TESTS.md) for native platform observations.
+
+## Release verification — 0.1.23
+
+Prepared on 19 November 2026 from `48248ba` on macOS 26.6.2 (25G83), arm64. On an isolated copy of the prepared package, all 120 tests passed under each interpreter with `-I -S -B`. Python 3.15.0 (`/opt/homebrew/bin/python3`) took 14.320 seconds. Python 3.9.6 (`/usr/bin/python3`) took 18.617 seconds.
+
+- Verified the exact candidate's 41 archive members, CRC, timestamps, macOS launcher executable bit, source bytes and all 37 manifest hashes. A rebuild from the isolated tested inputs produced identical bytes. The repository and package MIT license copies matched.
+- Checked 19 local links in the extracted user documentation. Default and custom-name setup each produced 31 daily files and six skills, with all 66 local links and fragments resolving in each layout.
+- Moved both generated trees and removed the extracted installer. From another working directory, version, validation, audit, refresh apply and ticket create/archive/restore passed for both layouts. Multiline ticket text and synthetic repository content survived.
+- Archived the previous 0.1.22 ZIP and sidecar in `_old zips/` and verified their original bytes. The repository README, design, manual tracker and mirrored root launchers passed preservation checks.
+- Native Windows, GUI launcher and Copilot checks were outside this run. Existing pilot observations and workarounds are documented in the [compatibility guide](../WORKSPACE_SETUP/COMPATIBILITY.md).
+
+Artifact `code-ai-workspace-0.1.23-macos-pilot.zip` has SHA-256 `16136d9d93638da30772a370e399ece2155b5853e0536f69be4051d5d4d05804`. Suite logs, verification script and artifact results are under `_tmp/release-0.1.23/`.
 
 ## Unreleased release notes and compatibility split — 19 November 2026
 

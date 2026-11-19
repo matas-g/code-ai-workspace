@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "package_version": "0.1.22",
+  "package_version": "0.1.23",
   "design_version": "1.0",
   "minimum_python": "3.9",
   "files": [
     {
       "source": "COMPATIBILITY.md",
-      "sha256": "ab005a70ab053b529a62e416857e695c3371c0058353a1a1805c607e94ca0eec",
+      "sha256": "ce4f73fc43272252f58af92c553501ca9a046026cd003c1f0bf44c0099e469d1",
       "destinations": []
     },
     {
@@ -23,7 +23,7 @@
     },
     {
       "source": "RELEASE_NOTES.md",
-      "sha256": "1b29fbce39137837c254201e3a9bb0ad575e44615d72aa01753c02a060aedcff",
+      "sha256": "9d374786b36b4001c76806d35c2845c0b7c130fd11d6e89830fa098db2e881e7",
       "destinations": []
     },
     {
@@ -370,7 +370,7 @@
     },
     {
       "source": "scripts/workspace_manager.py",
-      "sha256": "a7fd22304af776677554ac50f2f5c770d5bc04954f7aaf98042e59093084ddc5",
+      "sha256": "601a478df363a35588177df499f3e00ed5397c26df3df62d53b85f319f44e8ee",
       "destinations": [
         {
           "directory_id": "ai_work",

@@ -2,7 +2,7 @@
 
 A portable toolkit for working across independent Git repositories in VS Code, with shared project context, local tickets and optional GitHub Copilot workflows.
 
-**Package version:** 0.1.22
+**Package version:** 0.1.23
 
 See the [release notes](RELEASE_NOTES.md) for changes by version.
 
