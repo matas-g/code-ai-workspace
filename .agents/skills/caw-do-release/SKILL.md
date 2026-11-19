@@ -15,7 +15,7 @@ Confirm `origin` is `matas-g/code-ai-workspace`, the intended branch/upstream (n
 
 Use a version explicitly requested by the user. Otherwise use an already prepared product version newer than the latest release, or increment the latest release's patch number once. Read/edit product `VERSION` only in `WORKSPACE_SETUP/scripts/workspace_manager.py`; leave `DESIGN_VERSION` alone unless a design-version change was requested. Require a newer numeric `major.minor.patch` version; do not silently bump again after a failed attempt.
 
-Review changes since the previous release. Update concise user release notes, the development changelog and version-scoped validation evidence. Keep historical results and unresolved compatibility limits; describe existing-user transition without automatic workspace upgrades. Never present unobserved GUI/Copilot/native-platform results as passed.
+Review changes since the previous release. Add a dated entry to WORKSPACE_SETUP/RELEASE_NOTES.md for shipped user-visible changes and any action existing users need to take. Review WORKSPACE_SETUP/COMPATIBILITY.md against recorded platform evidence and carry forward applicable workarounds. Update the development changelog and version-scoped validation evidence. Never present unobserved GUI/Copilot/native-platform results as passed.
 
 ## Prepare and verify
 

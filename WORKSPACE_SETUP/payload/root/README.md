@@ -2,6 +2,8 @@
 
 Keep repositories, task notes and reusable knowledge in one development folder. Each repository retains its Git history and tests; Copilot is optional.
 
+The [MIT License]({{ai_work_link}}/tools/LICENSE) covers the Code AI Workspace toolkit. Repositories you add retain their own licensing terms.
+
 ## Get started
 
 1. **Clone repositories** directly under the groups below, for example `{{primary_repositories}}/my-repo/`. Ordinary documentation folders work too; groups can stay empty.

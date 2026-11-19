@@ -15,7 +15,7 @@ PACKAGE = Path(__file__).absolute().parent.parent
 # Only user-package inputs. Repository tests, build tools and maintainer documents
 # stay out of the manifest and ZIP even when present beside these sources.
 INVENTORY = [
-    'SETUP_GUIDE.md', 'RELEASE_NOTES.md',
+    'LICENSE', 'SETUP_GUIDE.md', 'COMPATIBILITY.md', 'RELEASE_NOTES.md',
     'scripts/workspace.py', 'scripts/workspace_manager.py', 'scripts/terminal_output_formatter.py', 'scripts/vscode_workspace_updater.py', 'settings.json', 'scripts/start.py',
     'launchers/refresh_vscode_workspace macOS.command', 'launchers/refresh_vscode_workspace Windows.cmd',
     'configuration-examples/default.json', 'configuration-examples/renamed.json',
@@ -104,7 +104,9 @@ def manifest(package=PACKAGE):
             raise ValueError("Framework skill names must use the ca- prefix: " + name)
         p = source_file(package, name)
         destinations = []
-        if name == 'payload/root/README.md':
+        if name == 'LICENSE':
+            destinations.append(mapping('ai_work', 'tools/LICENSE', owner='framework'))
+        elif name == 'payload/root/README.md':
             destinations.append(mapping('root', 'README.md', 'markdown', 'generated'))
         elif name == 'payload/root/gitignore.txt':
             destinations.append(mapping('root', '.gitignore', 'markdown', 'generated'))

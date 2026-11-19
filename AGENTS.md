@@ -21,7 +21,7 @@ Read the files relevant to the requested task; a small edit does not require ful
 | [maintenance/BACKLOG.md](maintenance/BACKLOG.md) | Legacy B-ID issue index, reconciled/completed scope and deferred ideas; GitHub Issues owns imported status/priority |
 | [maintenance/QUALITY_IMPROVEMENT_PLAN.md](maintenance/QUALITY_IMPROVEMENT_PLAN.md) | Detailed technical proposals and known-defect criteria; proposals are not implemented behavior |
 | [maintenance/MANUAL_TESTS.md](maintenance/MANUAL_TESTS.md), [validation report](maintenance/VALIDATION_REPORT.md) | Actual manual observations and versioned automated/release evidence respectively |
-| [maintenance/CHANGELOG.md](maintenance/CHANGELOG.md), [user release notes](WORKSPACE_SETUP/RELEASE_NOTES.md) | Full development history and concise shipped compatibility/known limitations respectively |
+| [Development changelog](maintenance/CHANGELOG.md), [release notes](WORKSPACE_SETUP/RELEASE_NOTES.md), [compatibility](WORKSPACE_SETUP/COMPATIBILITY.md) | Full development history, changes by release for users, and current platform limits and workarounds |
 
 For a requested full project read, use `$caw-chat-onboarding` at [.agents/skills/caw-chat-onboarding/SKILL.md](.agents/skills/caw-chat-onboarding/SKILL.md). It excludes `_old zips/`, `_tmp/` and ZIP archives. Those locations are historical artifacts or scratch work, not current implementation sources.
 
@@ -75,5 +75,5 @@ Record actual manual results in `maintenance/MANUAL_TESTS.md` and automated/rele
 - Prepare the user README version label and manifest hashes with `python3 -I -S -B WORKSPACE_SETUP/scripts/build_release.py`. The repository README is independent, and the canonical design is maintenance/DESIGN.md; preparation must never overwrite either. Document mirroring and `--sync-project-docs` have been removed. Preparation mutates package inputs; it is not a read-only integrity check.
 - Build a requested release with that command plus `--output-dir ABSOLUTE_RELEASE_DIRECTORY` for an automatically versioned ZIP filename. Use an existing directory; the builder refuses existing ZIP/checksum destinations.
 - When replacing a release, move the previous ZIP and its `.sha256` checksum into `_old zips/` without overwriting archived files. Keep the release inventory allowlisted.
-- Installation ZIPs contain user entrypoints, setup/release notes, essential code/configuration and the daily payload. Exclude maintenance documents, tests, the release builder and duplicate enclosing-entrypoint sources. See maintenance/DEVELOPMENT.md for inventory and artifact checks.
+- Installation ZIPs contain user entrypoints, setup guide, release notes, compatibility reference, essential code/configuration and the daily payload. Exclude maintenance documents, tests, the release builder and duplicate enclosing-entrypoint sources. See maintenance/DEVELOPMENT.md for inventory and artifact checks.
 - Record the changelog and actual verification evidence explicitly. Never replace historical version numbers automatically or present a proposed fix as completed.

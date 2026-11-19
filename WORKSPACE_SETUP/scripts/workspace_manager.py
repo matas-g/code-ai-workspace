@@ -43,6 +43,7 @@ class WorkspaceError(Exception):
 # Runtime-required paths only. No installer sources, manifests, tests or design documents.
 LAYOUT = [
     ("root", "README.md", "generated"), ("root", ".gitignore", "generated"),
+    ("ai_work", "tools/LICENSE", "framework"),
     ("ai_work", "DAILY_WORK.md", "generated"), ("ai_work", "tools/workspace_manager.py", "framework"),
     ("ai_work", "COPILOT_GUIDE.md", "generated"),
     ("ai_work", ".github/copilot-instructions.md", "user"),

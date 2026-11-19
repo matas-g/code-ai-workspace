@@ -8,7 +8,7 @@
 **Supported initial environments:** Native Windows 11 and macOS; shared files/Python tools usable with any editor. Generated IDE integration is VS Code only; other IDE project import and Copilot discovery require manual setup/testing.  
 **Use case:** Multi-repository development with shared project context, ticket notes, and reusable workflows.
 
-This repository-only document defines the complete implementation deliverables and behavior. Platform support claims require the [validation evidence](VALIDATION_REPORT.md). User installation instructions belong in WORKSPACE_SETUP/README.md, SETUP_GUIDE.md and RELEASE_NOTES.md; development/release commands belong in [DEVELOPMENT.md](DEVELOPMENT.md). This is the single canonical design; no package or root mirror is maintained.
+This repository-only document defines the complete implementation deliverables and behavior. Platform support claims require the [validation evidence](VALIDATION_REPORT.md). The package README and setup guide cover installation. RELEASE_NOTES.md records user-visible changes by release and COMPATIBILITY.md covers current limits and workarounds. Development and release commands belong in [DEVELOPMENT.md](DEVELOPMENT.md). This is the single canonical design; no package or root mirror is maintained.
 
 ## 1. Outcome and operating principles
 
@@ -160,6 +160,7 @@ The following tree uses placeholders for configurable names; section 5.4 maps ea
     ├── COPILOT_GUIDE.md          # onboarding, verification and fallback
     ├── .github/copilot-instructions.md  # short, user-editable orientation
     ├── tools/workspace_manager.py          # daily validation/audit/refresh/ticket commands
+    ├── tools/LICENSE                       # MIT notice for the toolkit
     ├── tools/terminal_output_formatter.py  # shared setup/refresh presentation
     ├── tools/vscode_workspace_updater.py   # minimal JSONC folder-list editor
     ├── .framework/
@@ -319,7 +320,7 @@ Code-AI-Setup-<version>/
   Start macOS.command
   Start Windows.cmd
   WORKSPACE_SETUP/
-    SETUP_GUIDE.md, RELEASE_NOTES.md
+    SETUP_GUIDE.md, RELEASE_NOTES.md, COMPATIBILITY.md
     settings.json
     package-manifest.json
     scripts/{workspace,start,workspace_manager,terminal_output_formatter,vscode_workspace_updater}.py
@@ -832,7 +833,7 @@ Do not implement optional specialist skills, Git automation, global customizatio
 
 ### 17.3 Delivery inventory
 
-The repository deliverable includes source code, tests, this canonical maintenance/DESIGN.md, maintenance/DEVELOPMENT.md, full changelog/validation history and the maintainer trackers. The user installation deliverable includes the enclosing user README and clickable entrypoints, allowlisted essential installer/runtime code, setup/concise release notes, payload/templates/static asset, default/custom configuration examples and manifest/checksum. The ZIP excludes tests, build tooling, design/maintenance documents and redundant enclosing-entrypoint sources. The generated development folder contains only the independently portable daily tools/guides/data structure defined above.
+The repository deliverable includes source code, tests, this canonical maintenance/DESIGN.md, maintenance/DEVELOPMENT.md, full changelog/validation history and the maintainer trackers. The user installation deliverable includes the enclosing user README and clickable entrypoints, allowlisted essential installer/runtime code, setup guide, release notes, compatibility reference, payload/templates/static asset, default/custom configuration examples and manifest/checksum. The ZIP excludes tests, build tooling, design/maintenance documents and redundant enclosing-entrypoint sources. The generated development folder contains only the independently portable daily tools/guides/data structure defined above.
 
 The validation report must list actual platforms/versions tested, commands/tests run, outcomes, manual checks pending, and known limitations. Do not assert Windows or macOS support based solely on tests on the other OS. No organizational approval claim or fabricated smoke-test evidence.
 

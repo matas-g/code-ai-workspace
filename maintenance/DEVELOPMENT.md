@@ -11,8 +11,9 @@ Run the commands below from the repository root using an installed approved Pyth
 | Formatter/JSONC helpers, launchers and `payload/` | User tools, generated guides, local skills and templates |
 | `WORKSPACE_SETUP/scripts/build_release.py`, `tests/` | Repository build tool and behavioral tests; excluded from installation ZIPs |
 | Repository `README.md` | Independent product/contributor entry point; never overwritten by the builder |
+| `LICENSE`, `WORKSPACE_SETUP/LICENSE` | Keep the MIT notices byte-identical. The package copy ships in the ZIP and installs at `<ai_work>/tools/LICENSE`. |
 | `WORKSPACE_SETUP/README.md` | Canonical user installation README; emitted once at the ZIP root with relocated links |
-| `WORKSPACE_SETUP/SETUP_GUIDE.md`, `RELEASE_NOTES.md` | User setup/reference and concise compatibility/known-issue information |
+| [Setup guide](../WORKSPACE_SETUP/SETUP_GUIDE.md), [release notes](../WORKSPACE_SETUP/RELEASE_NOTES.md), [compatibility](../WORKSPACE_SETUP/COMPATIBILITY.md) | Installation procedures, dated user-visible changes, and current platform limits and workarounds |
 | [DESIGN.md](DESIGN.md) | Single canonical architecture/current-contract document; no generated root copy |
 | [Issue-specific design drafts](designs/issue-16-git-worktree-support.md) under `designs/issue-<number>-<topic>.md` | Proposed behavior and open decisions linked to an owning GitHub issue; not current product contracts or a separate status queue; excluded from user delivery |
 | [BACKLOG.md](BACKLOG.md), [technical review](QUALITY_IMPROVEMENT_PLAN.md) | Legacy issue index/deferred ideas and detailed proposals; GitHub Issues owns imported status/priority |
@@ -28,7 +29,9 @@ Keep the two repository-root Start launchers byte-identical to their canonical s
 
 The five project-local skills in `.agents/skills/` support this repository's development process. They are excluded from installation ZIPs and generated workspaces by the release allowlist; a prefix alone is not an exclusion mechanism. See [AGENTS.md](../AGENTS.md#maintainer-skills-and-issue-workflows) for shared rules and skill links.
 
-| Invocation | Outcome |
+To explore the source, open a session at the repository root and enter `$caw-chat-onboarding` in Codex or `/caw-chat-onboarding` in GitHub Copilot CLI. Both invoke the same read-only skill.
+
+| Codex invocation | Outcome |
 |---|---|
 | `$caw-chat-onboarding` | Read and understand the complete current project; no changes |
 | `$caw-whats-next` | Summarize live open `next` issues briefly and recommend one |
@@ -90,7 +93,7 @@ The archive contains one enclosing `Code-AI-Setup-<version>/` folder: a user REA
 
 Before release, verify member paths, hashes, executable metadata, checksum and user-document links. Extract the exact candidate and exercise default/custom-name setup, validation, refresh and ticket operations. Move the complete generated tree, remove the extracted installer and repeat daily commands from another working directory. Check that generated file inventory remains the intended daily-only set.
 
-Update concise user release notes without exposing development history as setup instructions. Keep unresolved user-relevant limitations visible. Full test evidence and changelog history stay here.
+Add a dated entry to the release notes for shipped user-visible changes, newest first. Review the compatibility page against recorded platform checks and update affected workarounds. Verify that the extracted README links to both pages and that they link to each other. Keep installation procedures in the setup guide and detailed test evidence in the validation report.
 
 ## Publish a requested release
 

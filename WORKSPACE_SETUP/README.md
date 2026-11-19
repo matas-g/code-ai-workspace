@@ -4,7 +4,11 @@ A portable toolkit for working across independent Git repositories in VS Code, w
 
 **Package version:** 0.1.22
 
-**Status:** macOS pilot. Read the [compatibility and known limitations](RELEASE_NOTES.md) before relying on the workflow.
+See the [release notes](RELEASE_NOTES.md) for changes by version.
+
+Code AI Workspace is distributed under the [MIT License](LICENSE).
+
+**Status:** macOS pilot. Read the [compatibility and known limitations](COMPATIBILITY.md) before relying on the workflow.
 
 ## Before you start
 

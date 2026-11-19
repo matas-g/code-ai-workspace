@@ -5,13 +5,30 @@
   "minimum_python": "3.9",
   "files": [
     {
+      "source": "COMPATIBILITY.md",
+      "sha256": "ab005a70ab053b529a62e416857e695c3371c0058353a1a1805c607e94ca0eec",
+      "destinations": []
+    },
+    {
+      "source": "LICENSE",
+      "sha256": "b25827f25f2c125d8bfb79d0c5f9a0acd36a27099f9ead395e82863a311d1612",
+      "destinations": [
+        {
+          "directory_id": "ai_work",
+          "relative_path": "tools/LICENSE",
+          "render": "copy",
+          "owner": "framework"
+        }
+      ]
+    },
+    {
       "source": "RELEASE_NOTES.md",
-      "sha256": "ade52bd60098f06e3b49de181cdc2c9ec73c8c8f8827ef7964c7431502ed1e4e",
+      "sha256": "1b29fbce39137837c254201e3a9bb0ad575e44615d72aa01753c02a060aedcff",
       "destinations": []
     },
     {
       "source": "SETUP_GUIDE.md",
-      "sha256": "f2797334082ff5b2c4d918c039691e62028aa3b8c2b2db961cca1079648678e5",
+      "sha256": "5d93243339efa70493ecc44a29b832a6ea5df717d1cff49b5edacfb2e014b122",
       "destinations": []
     },
     {
@@ -139,7 +156,7 @@
     },
     {
       "source": "payload/root/README.md",
-      "sha256": "bd8173298765a0b57da95d18b92c443be9cb8386d6d3e34c84b6564ca0b25727",
+      "sha256": "64ed914681dc7773bbb4dcdef981f7fafd354b7e8a7ca7751a20202a8ead075a",
       "destinations": [
         {
           "directory_id": "root",
@@ -353,7 +370,7 @@
     },
     {
       "source": "scripts/workspace_manager.py",
-      "sha256": "da05b248fba8a6987c3a23611436e84757013f3d9f256071252a213e322b89fb",
+      "sha256": "a7fd22304af776677554ac50f2f5c770d5bc04954f7aaf98042e59093084ddc5",
       "destinations": [
         {
           "directory_id": "ai_work",

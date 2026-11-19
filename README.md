@@ -8,7 +8,7 @@ A portable toolkit for development across independent Git repositories, with sha
 
 Setup and daily tools run offline using Python's standard library. Copilot uses its normal service access. Shared files/tools also work with other editors; generated IDE configuration targets VS Code.
 
-**Status:** macOS pilot. See [compatibility and known limitations](WORKSPACE_SETUP/RELEASE_NOTES.md) before relying on the toolkit. Detailed test evidence belongs in the [maintainer validation report](maintenance/VALIDATION_REPORT.md).
+**Status: macOS pilot, still in testing.** Try the toolkit in a test workspace before relying on it for daily work. See [compatibility and known limitations](WORKSPACE_SETUP/COMPATIBILITY.md) for what has been verified and what still needs testing.
 
 ## Use the toolkit
 
@@ -26,6 +26,10 @@ Each repository retains its own Git history. Setup creates a separate new develo
 
 ## Develop the toolkit
 
+**External contributions are currently closed. Please do not open pull requests.**
+
+The maintainer examples use Codex syntax. To explore the source with Codex or GitHub Copilot CLI, start with the [read-only onboarding skill](maintenance/DEVELOPMENT.md#maintainer-skills). You can also follow the development guide without an AI assistant.
+
 | Document | Purpose |
 |---|---|
 | [Contributor instructions](AGENTS.md) | Change constraints and verification rules |
@@ -35,8 +39,12 @@ Each repository retains its own Git history. Setup creates a separate new develo
 | [Technical review](maintenance/QUALITY_IMPROVEMENT_PLAN.md) | Detailed proposals and known-defect criteria |
 | [Manual tests](maintenance/MANUAL_TESTS.md) | Actual environment-specific observations and remaining checks |
 | [Validation report](maintenance/VALIDATION_REPORT.md) | Versioned automated/release evidence |
-| [Changelog](maintenance/CHANGELOG.md) | Released and unreleased development history |
+| [Release notes](WORKSPACE_SETUP/RELEASE_NOTES.md), [development changelog](maintenance/CHANGELOG.md) | Shipped changes for users and full development history |
 
 `WORKSPACE_SETUP/` holds installer/runtime sources and the user payload. Tests and the release builder remain there as repository tools, excluded by the release allowlist. `maintenance/` and project-local `.agents/` skills are repository-only. Temporary development output belongs in `_tmp/`.
 
 When reporting a problem, include the package version, OS, Python version, reproduction and error output; include VS Code/Copilot versions for IDE behavior. Omit credentials and private project data.
+
+## License
+
+Code AI Workspace is distributed under the [MIT License](LICENSE).

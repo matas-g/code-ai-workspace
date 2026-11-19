@@ -1,7 +1,19 @@
 # Validation report — design 1.0
 
-**Last updated:** 1 November 2026<br>
+**Last updated:** 19 November 2026<br>
 **Current scope:** Release 0.1.22 macOS pilot, including integrated ticket-creation recovery for issue #4 and the repository-only release skill. Design remains 1.0. Historical evidence below retains its original scope; current native/manual observations remain in [MANUAL_TESTS.md](MANUAL_TESTS.md).
+
+## Unreleased release notes and compatibility split — 19 November 2026
+
+All 120 tests passed on macOS arm64 with Python 3.15.0 using an isolated copy of the 0.1.22 development sources. The archive test checked links from the relocated README to both guides and their links to each other.
+
+The candidate in `_tmp/compatibility-docs.y0l67C/` passed CRC and SHA-256 verification. After extraction, both documents matched their source bytes and manifest digests. All local links and heading fragments in the enclosing README, setup guide, release notes and compatibility page resolved offline.
+
+## Unreleased MIT license packaging — 19 November 2026
+
+On macOS 26.6.2 arm64 with Python 3.15.0 and `-I -S -B`, all 120 tests passed in an isolated copy of the 0.1.22 development sources. The installer-removal test compared installed license bytes in both default and renamed workspaces after relocation.
+
+The scratch ZIP passed CRC and SHA-256 checks. Its README linked to the packaged notice, whose bytes and manifest digest matched the repository-root `LICENSE`. The candidate ZIP and suite log are in `_tmp/mit-license.eegacY/`. The published 0.1.22 artifact predates this change.
 
 ## Test-data ZIP — 1 November 2026
 

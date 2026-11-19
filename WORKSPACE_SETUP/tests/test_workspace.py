@@ -1270,6 +1270,7 @@ mod.perform('create', 'EXIT-1', script=sys.argv[1], description='Synthetic priva
             folder = extracted / prefix
             self.assertEqual({p.name for p in folder.iterdir()}, {'README.md', 'Start macOS.command', 'Start Windows.cmd', 'WORKSPACE_SETUP'})
             self.assertIn('(WORKSPACE_SETUP/SETUP_GUIDE.md#quick-setup)', (folder / 'README.md').read_text())
+            self.assertIn('(WORKSPACE_SETUP/COMPATIBILITY.md)', (folder / 'README.md').read_text())
             self.assertIn('(WORKSPACE_SETUP/RELEASE_NOTES.md)', (folder / 'README.md').read_text())
             excluded = {'WORKSPACE_SETUP/.gitignore', 'WORKSPACE_SETUP/README.md', 'WORKSPACE_SETUP/DESIGN.md',
                         'WORKSPACE_SETUP/VALIDATION_REPORT.md', 'WORKSPACE_SETUP/CHANGELOG.md',
@@ -1283,7 +1284,11 @@ mod.perform('create', 'EXIT-1', script=sys.argv[1], description='Synthetic priva
             self.assertEqual({e['source'] for e in packaged_manifest['files']}, set(builder.INVENTORY))
             for entry in packaged_manifest['files']:
                 self.assertEqual(entry['sha256'], w.digest((folder / 'WORKSPACE_SETUP' / entry['source']).read_bytes()))
-            for name in ('README.md', 'WORKSPACE_SETUP/SETUP_GUIDE.md', 'WORKSPACE_SETUP/RELEASE_NOTES.md'):
+            package = folder / 'WORKSPACE_SETUP'
+            self.assertIn('(COMPATIBILITY.md)', (package / 'RELEASE_NOTES.md').read_text())
+            self.assertIn('(RELEASE_NOTES.md)', (package / 'COMPATIBILITY.md').read_text())
+            for name in ('README.md', 'WORKSPACE_SETUP/SETUP_GUIDE.md',
+                         'WORKSPACE_SETUP/RELEASE_NOTES.md', 'WORKSPACE_SETUP/COMPATIBILITY.md'):
                 text = (folder / name).read_text()
                 self.assertNotIn('maintenance/', text)
                 self.assertNotIn('VALIDATION_REPORT.md', text)
@@ -1402,6 +1407,7 @@ mod.perform('create', 'EXIT-1', script=sys.argv[1], description='Synthetic priva
         builder = module_at('user_archive_builder', self.source / 'scripts/build_release.py')
         archive_path = self.work / 'user-package.zip'
         builder.build(archive_path, self.source)
+        license_text = (self.source / 'LICENSE').read_bytes()
         extracted = self.work / 'Extracted user package'
         with zipfile.ZipFile(archive_path) as archive:
             archive.extractall(extracted)
@@ -1416,7 +1422,7 @@ mod.perform('create', 'EXIT-1', script=sys.argv[1], description='Synthetic priva
                 initializer.initialize(package, target, config)
             self.assertFalse((target / 'WORKSPACE_SETUP').exists())
             self.assertFalse((target / 'maintenance').exists())
-            self.assertEqual(len([p for p in target.rglob('*') if p.is_file()]), 30)
+            self.assertEqual(len([p for p in target.rglob('*') if p.is_file()]), 31)
             moved = self.work / ('Relocated ' + layout)
             target.rename(moved)
             repo = moved / config['directories']['primary_repositories'] / 'synthetic-repo'
@@ -1426,6 +1432,7 @@ mod.perform('create', 'EXIT-1', script=sys.argv[1], description='Synthetic priva
         shutil.rmtree(extracted)
         for moved, config, repo in moved_trees:
             ai = moved / config['directories']['ai_work']
+            self.assertEqual((ai / 'tools/LICENSE').read_bytes(), license_text)
             manager = ai / 'tools/workspace_manager.py'
             commands = (['validate', '--format', 'json'], ['audit', '--format', 'json'],
                         ['refresh', '--apply'], ['ticket', 'create', 'ZIP-1', '--description', 'Literal details.'],
